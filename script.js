@@ -5,27 +5,29 @@ document.addEventListener('DOMContentLoaded', function () {
   burger.addEventListener('click', () => {
     menu.classList.toggle('open');
   });
-});
 
+  
+  function isTouchDevice() {
+    return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  }
 
-function isTouchDevice() {
-  return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-}
+  if (isTouchDevice()) {
+    console.log('IntersectionObserver подключен');
+    const cards = document.querySelectorAll('.work-card');
 
-if (isTouchDevice()) {
-  const cards = document.querySelectorAll('.work-card');
-
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      } else {
-        entry.target.classList.remove('visible');
-      }
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          console.log('Добавляю visible к', entry.target);
+          entry.target.classList.add('visible');
+        } else {
+          entry.target.classList.remove('visible');
+        }
+      });
+    }, {
+      threshold: 0.5
     });
-  }, {
-    threshold: 0.5
-  });
 
-  cards.forEach(card => observer.observe(card));
-}
+    cards.forEach(card => observer.observe(card));
+  }
+});
