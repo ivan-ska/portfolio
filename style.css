@@ -18,7 +18,8 @@ body {
   right: 0;
   background-color: #ffffff;
   z-index: 1000; /* чтобы быть поверх всего */
-  padding: 32px 0;
+  padding-top: 32px;
+  padding-bottom: 16px;
 }
 
 
@@ -100,7 +101,7 @@ body {
 .burger {
   background-color: #eeeeee;
   border: none;
-  padding: 6px;
+  padding: 6px 8px;
   border-radius: 4px;
   cursor: pointer;
 }
@@ -394,6 +395,7 @@ body {
   .about .container {
     grid-template-columns: repeat(4, 1fr);
     gap: 16px;
+    padding: 0 16px;
   }
 
   .about__title,
@@ -427,6 +429,7 @@ body {
   .works .container {
     grid-template-columns: repeat(4, 1fr);
     gap: 16px;
+    padding: 0 16px;
   }
 
   .works__title {
@@ -465,6 +468,7 @@ body {
   .footer .container {
     grid-template-columns: repeat(4, 1fr);
     gap: 16px;
+    padding: 0 16px;
   }
 
   .footer__title {
