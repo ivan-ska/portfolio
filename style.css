@@ -440,15 +440,19 @@ body {
     gap: 40px;
   }
   
-  .work-card img {
+  .work-card {
   filter: grayscale(100%);
   transition: filter 0.3s ease;
 }
 
-  .work-card.visible img {
-  filter: grayscale(100%);
-  transition: filter 0.3s ease;
+.work-card.visible {
+  filter: grayscale(0%);
 }
+
+.work-card:hover {
+  filter: grayscale(0%);
+}
+
 
   /* --- */
 
