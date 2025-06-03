@@ -7,7 +7,7 @@
 
 body {
   font-family: 'Helvetica Neue Medium', sans-serif;
-  margin-top: 96px; /* 32px сверху + высота контента */
+  margin-top: 80px; /* 32px сверху + высота контента */
 }
 
 
@@ -327,6 +327,10 @@ body {
 
 /* Адаптив */
 @media (max-width: 768px) {
+
+  body {
+  margin-top: 40px; /* 32px сверху + высота контента */
+}
   
   .container {
   flex-direction: column;
@@ -436,6 +440,15 @@ body {
     gap: 40px;
   }
   
+  .work-card img {
+  filter: grayscale(100%);
+  transition: filter 0.3s ease;
+}
+
+  .work-card.visible img {
+  filter: grayscale(100%);
+  transition: filter 0.3s ease;
+}
 
   /* --- */
 
