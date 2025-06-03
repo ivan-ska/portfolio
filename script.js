@@ -13,7 +13,7 @@ function isTouchDevice() {
 }
 
 if (isTouchDevice()) {
-  const cards = document.querySelectorAll('.card');
+  const cards = document.querySelectorAll('.work-card');
 
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
