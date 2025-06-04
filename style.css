@@ -5,6 +5,11 @@
   font-display: swap;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+
 body {
   font-family: 'Helvetica Neue Medium', sans-serif;
   margin: 0px;
@@ -128,6 +133,11 @@ body {
   padding-top: 4px;
 }
 
+
+
+#top {
+  scroll-margin-top: 100px;
+}
 
 
 /* --- */
