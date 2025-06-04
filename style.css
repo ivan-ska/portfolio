@@ -18,7 +18,7 @@ body {
   top: 0;
   left: 0;
   right: 0;
-  background-color: #ffffff 0,99;
+  background-color: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(100px);
   z-index: 1000; /* чтобы быть поверх всего */
   padding-top: 16px;
