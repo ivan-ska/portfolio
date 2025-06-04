@@ -18,13 +18,18 @@ body {
   top: 0;
   left: 0;
   right: 0;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255,255,255,0.8);
   backdrop-filter: blur(100px);
   -webkit-backdrop-filter: blur(100px);
-  z-index: 1000; /* чтобы быть поверх всего */
-  padding-top: 16px;
-  padding-bottom: 16px;
+  z-index: 1000;
+  padding: 16px;
+  transition: transform 0.4s ease-in-out;
 }
+
+.header--hidden {
+  transform: translateY(-100%);
+}
+
 
 
 .container {
