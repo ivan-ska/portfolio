@@ -7,7 +7,9 @@
 
 body {
   font-family: 'Helvetica Neue Medium', sans-serif;
-  margin-top: 80px; /* 32px сверху + высота контента */
+  margin: 0px;
+  margin-top: 80px;
+
 }
 
 
@@ -16,7 +18,8 @@ body {
   top: 0;
   left: 0;
   right: 0;
-  background-color: #ffffff;
+  background-color: #ffffff 0,99;
+  backdrop-filter: blur(100px);
   z-index: 1000; /* чтобы быть поверх всего */
   padding-top: 32px;
   padding-bottom: 16px;
@@ -31,13 +34,6 @@ body {
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-}
-
-.grid {
-  max-width: 1440px;
-  margin: 0 auto;
-
-  width: 100%;
 }
 
 .header__left,
@@ -58,7 +54,7 @@ body {
 
 /* Стили кнопок */
 .button {
-  background-color: #eeeeee;
+  background-color: rgba(0, 0, 0, 0.06);
   color: rgba(0, 0, 0, 0.4);
   font-size: 16px;
   padding: 6px;
@@ -99,9 +95,9 @@ body {
 }
 
 .burger {
-  background-color: #eeeeee;
+  background-color: rgba(0, 0, 0, 0.06);
   border: none;
-  padding: 6px 8px;
+  padding: 8px 12px;
   border-radius: 4px;
   cursor: pointer;
 }
@@ -121,7 +117,7 @@ body {
   display: none;
   flex-direction: column;
   gap: 12px;
-  padding-top: 16px;
+  padding-top: 4px;
 }
 
 
@@ -330,7 +326,8 @@ body {
 @media (max-width: 768px) {
 
   body {
-  margin-top: 40px; /* 32px сверху + высота контента */
+  margin: 0px;
+  margin-top: 40px;
 }
   
   .container {
@@ -374,7 +371,7 @@ body {
   .mobile-menu {
     display: none;
     flex-direction: column;
-    gap: 16px;
+    gap: 12px;
   }
 
   .mobile-menu__group {
