@@ -98,7 +98,8 @@ body {
 .burger {
   background-color: rgba(0, 0, 0, 0.06);
   border: none;
-  padding: 8px 12px;
+  font-size: 0px;
+  padding: 10px 12px;
   border-radius: 4px;
   cursor: pointer;
 }
