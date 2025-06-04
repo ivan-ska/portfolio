@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function () {
     cards.forEach(card => observer.observe(card));
   }
 
-  // === 3. Скрытие шапки при скролле вниз ===
+  // === 3. Скрытие шапки при скролле вниз, показ при скролле вверх ===
   let lastScrollTop = 0;
   const header = document.querySelector('.header');
 
@@ -46,6 +46,11 @@ document.addEventListener('DOMContentLoaded', function () {
       } else {
         // Скролл вверх — показываем
         header.classList.remove('header--hidden');
+
+        // === Закрываем мобильное меню при обратном скролле ===
+        if (window.innerWidth <= 768 && menu.classList.contains('open')) {
+          menu.classList.remove('open');
+        }
       }
 
       lastScrollTop = currentScroll;
