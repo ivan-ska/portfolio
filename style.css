@@ -643,6 +643,10 @@ width: 100%;
   /* ---*/
 
 
+.project-info {
+  margin-top: 80px;
+}
+
   .project-info__info {
     grid-template-columns: repeat(4, 1fr);
   }
@@ -669,8 +673,12 @@ padding-top: 40px;
 
 .project-block__content {
   grid-template-columns: repeat(4, 1fr);
+  column-gap: 0px;
 }
 
+.project-block__description p {
+  grid-column: span 1;
+}
 
 
 }
