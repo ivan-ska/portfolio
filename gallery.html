@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Directory</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            background-color: #f5f5f7;
+            font-family: 'DM Mono', monospace; /* Устанавливаем как основной */
+            color: #1d1d1f;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        header {
+            padding: 40px;
+            background: #fff;
+            border-bottom: 1px solid #e5e5ea;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+        }
+
+        /* СЕТКА ПОРТФОЛИО */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 12px;
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* АДАПТИВ: По 2 картинки в строке на мобилках */
+        @media (max-width: 600px) {
+            .gallery {
+                grid-template-columns: 1fr 1fr;
+                padding: 16px;
+                gap: 8px;
+            }
+            header { padding: 24px 16px; }
+            h1 { font-size: 20px; }
+        }
+
+        /* ЗАГОЛОВОК ПРОЕКТА */
+        .project-header {
+            grid-column: 1 / -1;
+            margin-top: 40px;
+            font-size: 20px;
+            font-weight: 500;
+            color: #86868b;
+        }
+        
+        .project-header:first-child {
+            margin-top: 0;
+        }
+
+        /* КАРТОЧКА: Решение проблемы с углами */
+        .thumb-card {
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+            position: relative;
+            aspect-ratio: 1 / 1;
+            padding: 10px;
+            border-radius: 4px; /* Общий радиус */
+            background-color: transparent;
+            overflow: hidden; /* Это заставляет контент внутри (даже не достающий до краев) обрезаться по радиусу */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .thumb-card:hover {
+            transform: translateY(-2px);
+            background-color: rgba(0, 0, 0, 0.03);
+        }
+
+        .thumb-media-wrapper {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+            border-radius: 100px;
+        }
+
+        .thumb-media-wrapper img,
+        .thumb-media-wrapper video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; 
+            /* Если картинка меньше контейнера, она центрируется, а overflow карточки держит форму */
+        }
+
+        .video-icon {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 2px;
+            font-size: 10px;
+        }
+
+        /* ВСПЛЫВАЮЩЕЕ ОКНО (МОДАЛКА) */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #fff;
+            max-width: 1000px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            border-radius: 4px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 10;
+            font-family: 'DM Mono', monospace;
+        }
+
+        .modal-media {
+            width: 100%;
+            background: #f5f5f7;
+            display: flex;
+            justify-content: center;
+        }
+
+        .modal-media img,
+        .modal-media video {
+            max-width: 100%;
+            max-height: 70vh;
+            object-fit: contain;
+        }
+
+        .modal-info {
+            padding: 24px;
+        }
+
+        /* ТЕГИ */
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .tag {
+            background: #f5f5f7;
+            padding: 4px 10px;
+            border-radius: 2px;
+            font-size: 12px;
+            color: #1d1d1f;
+        }
+
+        .loader {
+            text-align: center;
+            padding: 100px;
+            font-size: 14px;
+            color: #86868b;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>directory</h1>
+    </header>
+
+    <div class="gallery" id="gallery">
+        <div class="loader">fetching data...</div>
+    </div>
+
+    <div class="modal" id="modal" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="close-btn" onclick="closeModal(event)">✕</button>
+            <div class="modal-media" id="modal-media">
+            </div>
+            <div class="modal-info">
+                <div class="tags-container" id="modal-tags">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtm-693Wc44CzQx_ASnwQanc45NuieQl6YkoYVavbQ2UBAyPrgxibzDzPoLkUo9cZpdd9RcsPHBsnI/pub?output=csv';
+
+        const fieldColors = {
+            'ui/ux': '#D0E4F2',
+            'web': '#D1EDF4',
+            'graphic design': '#D7EDE1',
+            'digital ad': '#DDEDD7',
+            'outdoor ad': '#EDF7D3',
+            'social media': '#F7F1D3',
+            'branding': '#FEF0D2',
+            'logo': '#FEE9D1',
+            'aso': '#FCE1D1',
+            'icon': '#FEE1DD',
+            'presentation': '#F8DADD',
+            'merch': '#F5E1F2',
+            'stickers': '#E7E3F2',
+            'motion design': '#DCE5F1'
+        };
+
+        let portfolioData = [];
+
+        function getDirectDropboxUrl(url) {
+            if (!url) return '';
+            let direct = url.trim();
+            if (direct.includes('dropbox.com')) {
+                const baseUrl = direct.split('?')[0];
+                const rlkeyMatch = direct.match(/rlkey=[a-zA-Z0-9]+/);
+                const rlkey = rlkeyMatch ? `&${rlkeyMatch[0]}` : '';
+                return `${baseUrl}?raw=1${rlkey}`;
+            }
+            return direct;
+        }
+
+        Papa.parse(SHEET_CSV_URL, {
+            download: true,
+            header: true,
+            transformHeader: h => h.trim().toLowerCase(),
+            complete: function (results) {
+                portfolioData = results.data.filter(row => row.url && row.url.trim() !== ''); 
+                renderGallery();
+            }
+        });
+
+        function renderGallery() {
+            const gallery = document.getElementById('gallery');
+            gallery.innerHTML = '';
+            const groupedProjects = {};
+            
+            portfolioData.forEach((item, index) => {
+                const projectName = item.project ? item.project.trim() : 'others';
+                if (!groupedProjects[projectName]) groupedProjects[projectName] = [];
+                groupedProjects[projectName].push({ item, index });
+            });
+
+            for (const projectName in groupedProjects) {
+                const sectionHeader = document.createElement('div');
+                sectionHeader.className = 'project-header';
+                sectionHeader.innerText = projectName.toLowerCase();
+                gallery.appendChild(sectionHeader);
+
+                groupedProjects[projectName].forEach(dataObj => {
+                    const item = dataObj.item;
+                    const directUrl = getDirectDropboxUrl(item.url);
+                    const isVideo = item.type && item.type.toLowerCase().trim() === 'vid';
+
+                    const card = document.createElement('div');
+                    card.className = 'thumb-card';
+                    card.onclick = () => openModal(dataObj.index);
+                    
+                    let mediaHTML = isVideo 
+                        ? `<video src="${directUrl}#t=0.1" preload="metadata" muted loop onmouseover="this.play()" onmouseout="this.pause()"></video><div class="video-icon">vid</div>`
+                        : `<img src="${directUrl}" loading="lazy">`;
+
+                    card.innerHTML = `<div class="thumb-media-wrapper">${mediaHTML}</div>`;
+                    gallery.appendChild(card);
+                });
+            }
+        }
+
+        function openModal(index) {
+            const item = portfolioData[index];
+            const directUrl = getDirectDropboxUrl(item.url);
+            const isVideo = item.type && item.type.toLowerCase().trim() === 'vid';
+
+            const mediaContainer = document.getElementById('modal-media');
+            mediaContainer.innerHTML = isVideo 
+                ? `<video src="${directUrl}" controls autoplay></video>` 
+                : `<img src="${directUrl}">`;
+
+            const tagsContainer = document.getElementById('modal-tags');
+            tagsContainer.innerHTML = '';
+
+            const tags = [
+                { text: item.project, color: false },
+                { text: item.field, color: true },
+                { text: item['field opt'], color: true },
+                { text: item.year, color: false }
+            ];
+
+            tags.forEach(t => {
+                if (t.text && t.text.trim() !== '') {
+                    const span = document.createElement('span');
+                    span.className = 'tag';
+                    span.innerText = t.text.toLowerCase();
+                    if (t.color && fieldColors[t.text.toLowerCase()]) {
+                        span.style.backgroundColor = fieldColors[t.text.toLowerCase()];
+                    }
+                    tagsContainer.appendChild(span);
+                }
+            });
+
+            document.getElementById('modal').classList.add('active');
+            document.body.style.overflow = 'hidden'; 
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+            document.body.style.overflow = '';
+            document.getElementById('modal-media').innerHTML = '';
+        }
+    </script>
+</body>
+
+</html>
