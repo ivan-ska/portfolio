@@ -11,16 +11,15 @@
     <style>
         body {
             margin: 0;
-            background-color: #f5f5f7;
-            font-family: 'DM Mono', monospace; /* Устанавливаем как основной */
+            background-color: #ffffff;
+            font-family: 'DM Mono', monospace;
             color: #1d1d1f;
             -webkit-font-smoothing: antialiased;
         }
 
         header {
-            padding: 40px;
+            padding: 40px 40px 20px 40px;
             background: #fff;
-            border-bottom: 1px solid #e5e5ea;
         }
 
         h1 {
@@ -28,6 +27,49 @@
             font-size: 24px;
             font-weight: 500;
             letter-spacing: -0.02em;
+        }
+
+        /* ФИЛЬТРЫ */
+        .filters-container {
+            background: #fff;
+            padding: 0 40px 20px 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .filter-row {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .filter-label {
+            font-size: 13px;
+            color: #86868b;
+            margin-right: 4px;
+        }
+
+        .filter-tag {
+            background: #f5f5f7;
+            border: 1px solid transparent;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #1d1d1f;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .filter-tag:hover {
+            background: #e5e5ea;
+        }
+
+        .filter-tag.active {
+            background: #1d1d1f !important;
+            color: #fff !important;
         }
 
         /* СЕТКА ПОРТФОЛИО */
@@ -40,17 +82,6 @@
             margin: 0 auto;
         }
 
-        /* АДАПТИВ: По 2 картинки в строке на мобилках */
-        @media (max-width: 600px) {
-            .gallery {
-                grid-template-columns: 1fr 1fr;
-                padding: 16px;
-                gap: 8px;
-            }
-            header { padding: 24px 16px; }
-            h1 { font-size: 20px; }
-        }
-
         /* ЗАГОЛОВОК ПРОЕКТА */
         .project-header {
             grid-column: 1 / -1;
@@ -60,78 +91,84 @@
             color: #86868b;
         }
         
-        .project-header:first-child {
-            margin-top: 0;
-        }
+        .project-header:first-child { margin-top: 0; }
 
-        /* КАРТОЧКА: Решение проблемы с углами */
-        .thumb-card {
-            cursor: pointer;
-            transition: transform 0.2s, background-color 0.2s;
-            position: relative;
-            aspect-ratio: 1 / 1;
-            padding: 10px;
-            border-radius: 4px; /* Общий радиус */
-            background-color: transparent;
-            overflow: hidden; /* Это заставляет контент внутри (даже не достающий до краев) обрезаться по радиусу */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+        /* КАРТОЧКА И ОБЕРТКА (Разделение логики) */
 
-        .thumb-card:hover {
-            transform: translateY(-2px);
-            background-color: rgba(0, 0, 0, 0.03);
-        }
+/* 3. Сама карточка в сетке - просто квадрат */
+.thumb-card {
+  aspect-ratio: 1 / 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  
+  /* Превращаем карточку в жесткий физический контейнер */
+  container-type: size;
+}
 
-        .thumb-media-wrapper {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            pointer-events: none;
-            border-radius: 100px;
-        }
+/* 2. Обертка - стягивается по размеру контента, добавляет паддинги */
+.thumb-media-wrapper {
+  padding: 12px;
+  background-color: transparent;
+  border-radius: 8px; /* Внешнее скругление обертки */
+  transition: transform 0.2s, background-color 0.2s;
+  
+  /* Обертка просто "обнимает" картинку. Мы убрали отсюда 100%, чтобы не ломать логику */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  box-sizing: border-box;
+}
 
-        .thumb-media-wrapper img,
-        .thumb-media-wrapper video {
-            width: 100%;
-            height: 100%;
-            object-fit: contain; 
-            /* Если картинка меньше контейнера, она центрируется, а overflow карточки держит форму */
-        }
+.thumb-card:hover .thumb-media-wrapper {
+  transform: translateY(-4px);
+  background-color: rgba(0, 0, 0, 0.05); /* Красится только обертка */
+}
 
-        .video-icon {
-            position: absolute;
-            top: 14px;
-            right: 14px;
-            background: rgba(0, 0, 0, 0.5);
-            color: white;
-            padding: 2px 6px;
-            border-radius: 2px;
-            font-size: 10px;
-        }
+/* 1. Сам медиа-контент */
+.thumb-media-wrapper img, 
+.thumb-media-wrapper video {
+  /* КРИТИЧНО: Картинка смотрит на физический размер квадрата (100cqw / 100cqh), а не на обертку! */
+  /* Вычитаем 24px, так как паддинг обертки = 12px со всех сторон (12 + 12 = 24) */
+  max-width: calc(100cqw - 24px);
+  max-height: calc(100cqh - 24px);
+  
+  /* Сохраняем пропорции, позволяем обертке стягиваться */
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 4px; /* Внутреннее скругление контента */
+  display: block;
+}
+
+.video-icon {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 2px 6px;
+  border-radius: 2px;
+  font-size: 10px;
+}
 
         /* ВСПЛЫВАЮЩЕЕ ОКНО (МОДАЛКА) */
         .modal {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             z-index: 100;
             justify-content: center;
             align-items: center;
             padding: 20px;
+            box-sizing: border-box; /* Чинит прилипание к правому краю */
         }
 
-        .modal.active {
-            display: flex;
-        }
+        .modal.active { display: flex; }
 
         .modal-content {
             background: #fff;
@@ -142,25 +179,26 @@
             position: relative;
             border-radius: 4px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            box-sizing: border-box;
         }
 
         .close-btn {
             position: absolute;
-            top: 16px;
-            right: 16px;
+            top: 16px; right: 16px;
             background: none;
             border: none;
             font-size: 24px;
             cursor: pointer;
             z-index: 10;
-            font-family: 'DM Mono', monospace;
+            font-family: inherit;
         }
 
         .modal-media {
             width: 100%;
-            background: #f5f5f7;
+            background: #ffffff;
             display: flex;
             justify-content: center;
+            position: relative; /* Для кнопок навигации */
         }
 
         .modal-media img,
@@ -170,15 +208,31 @@
             object-fit: contain;
         }
 
-        .modal-info {
-            padding: 24px;
+        /* СТРЕЛКИ НАВИГАЦИИ */
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #fff;
+            border: 1px solid #e5e5ea;
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            font-family: inherit;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex; justify-content: center; align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
         }
+        .nav-btn:hover { transform: translateY(-50%) scale(1.05); }
+        .nav-btn.prev { left: 16px; }
+        .nav-btn.next { right: 16px; }
 
-        /* ТЕГИ */
+        .modal-info { padding: 24px; }
+
+        /* ТЕГИ В МОДАЛКЕ */
         .tags-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
+            display: flex; flex-wrap: wrap; gap: 6px;
         }
 
         .tag {
@@ -187,13 +241,28 @@
             border-radius: 2px;
             font-size: 12px;
             color: #1d1d1f;
+            cursor: pointer; /* Делаем кликабельными */
+            transition: opacity 0.2s;
         }
+        
+        .tag:hover { opacity: 0.8; }
 
         .loader {
             text-align: center;
             padding: 100px;
             font-size: 14px;
             color: #86868b;
+        }
+
+        /* АДАПТИВ */
+        @media (max-width: 600px) {
+            header { padding: 24px 16px 16px 16px; }
+            .filters-container { padding: 0 16px 16px 16px; }
+            .gallery { grid-template-columns: 1fr 1fr; padding: 16px; gap: 8px; }
+            .modal { padding: 12px; }
+            .nav-btn { width: 32px; height: 32px; font-size: 14px; }
+            .nav-btn.prev { left: 8px; }
+            .nav-btn.next { right: 8px; }
         }
     </style>
 </head>
@@ -204,6 +273,18 @@
         <h1>directory</h1>
     </header>
 
+    <div class="filters-container" id="filters-container" style="display: none;">
+        <div class="filter-row" id="filter-row-project">
+            <span class="filter-label">Project:</span>
+            </div>
+        <div class="filter-row" id="filter-row-field">
+            <span class="filter-label">Field:</span>
+            </div>
+        <div class="filter-row" id="filter-row-year">
+            <span class="filter-label">Year:</span>
+            </div>
+    </div>
+
     <div class="gallery" id="gallery">
         <div class="loader">fetching data...</div>
     </div>
@@ -212,6 +293,9 @@
         <div class="modal-content" onclick="event.stopPropagation()">
             <button class="close-btn" onclick="closeModal(event)">✕</button>
             <div class="modal-media" id="modal-media">
+                <button class="nav-btn prev" onclick="navigateModal(-1, event)">←</button>
+                <div id="media-content-container"></div>
+                <button class="nav-btn next" onclick="navigateModal(1, event)">→</button>
             </div>
             <div class="modal-info">
                 <div class="tags-container" id="modal-tags">
@@ -224,23 +308,23 @@
         const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtm-693Wc44CzQx_ASnwQanc45NuieQl6YkoYVavbQ2UBAyPrgxibzDzPoLkUo9cZpdd9RcsPHBsnI/pub?output=csv';
 
         const fieldColors = {
-            'ui/ux': '#D0E4F2',
-            'web': '#D1EDF4',
-            'graphic design': '#D7EDE1',
-            'digital ad': '#DDEDD7',
-            'outdoor ad': '#EDF7D3',
-            'social media': '#F7F1D3',
-            'branding': '#FEF0D2',
-            'logo': '#FEE9D1',
-            'aso': '#FCE1D1',
-            'icon': '#FEE1DD',
-            'presentation': '#F8DADD',
-            'merch': '#F5E1F2',
-            'stickers': '#E7E3F2',
-            'motion design': '#DCE5F1'
+            'ui/ux': '#D0E4F2', 'web': '#D1EDF4', 'graphic design': '#D7EDE1',
+            'digital ad': '#DDEDD7', 'outdoor ad': '#EDF7D3', 'social media': '#F7F1D3',
+            'branding': '#FEF0D2', 'logo': '#FEE9D1', 'aso': '#FCE1D1',
+            'icon': '#FEE1DD', 'presentation': '#F8DADD', 'merch': '#F5E1F2',
+            'stickers': '#E7E3F2', 'motion design': '#DCE5F1'
         };
 
         let portfolioData = [];
+        let filteredIndices = []; // Массив индексов отображаемых сейчас элементов
+        let currentModalIndex = 0; // Позиция открытой картинки внутри массива filteredIndices
+
+        // Состояние фильтров
+        let activeFilters = {
+            project: new Set(),
+            field: new Set(),
+            year: new Set()
+        };
 
         function getDirectDropboxUrl(url) {
             if (!url) return '';
@@ -248,8 +332,7 @@
             if (direct.includes('dropbox.com')) {
                 const baseUrl = direct.split('?')[0];
                 const rlkeyMatch = direct.match(/rlkey=[a-zA-Z0-9]+/);
-                const rlkey = rlkeyMatch ? `&${rlkeyMatch[0]}` : '';
-                return `${baseUrl}?raw=1${rlkey}`;
+                return `${baseUrl}?raw=1${rlkeyMatch ? `&${rlkeyMatch[0]}` : ''}`;
             }
             return direct;
         }
@@ -260,19 +343,130 @@
             transformHeader: h => h.trim().toLowerCase(),
             complete: function (results) {
                 portfolioData = results.data.filter(row => row.url && row.url.trim() !== ''); 
+                filteredIndices = portfolioData.map((_, i) => i); // Сначала показываем всё
+                
+                buildFilters();
                 renderGallery();
             }
         });
 
+        // ------------------ ФИЛЬТРЫ ------------------
+        function buildFilters() {
+            const projects = new Set();
+            const fields = new Set();
+            const years = new Set();
+
+            portfolioData.forEach(item => {
+                if (item.project) projects.add(item.project.trim().toLowerCase());
+                if (item.year) years.add(item.year.trim());
+                if (item.field) fields.add(item.field.trim().toLowerCase());
+                if (item['field opt']) fields.add(item['field opt'].trim().toLowerCase());
+            });
+
+            renderFilterGroup('project', projects);
+            renderFilterGroup('field', fields);
+            renderFilterGroup('year', years);
+
+            document.getElementById('filters-container').style.display = 'flex';
+        }
+
+        function renderFilterGroup(type, valuesSet) {
+            const container = document.getElementById(`filter-row-${type}`);
+            const sortedValues = Array.from(valuesSet).sort();
+
+            sortedValues.forEach(val => {
+                if(!val) return;
+                const btn = document.createElement('button');
+                btn.className = 'filter-tag';
+                btn.innerText = val;
+                
+                // Цветная точка для Fields в панели фильтров
+                if (type === 'field' && fieldColors[val]) {
+                    btn.style.borderLeft = `4px solid ${fieldColors[val]}`;
+                }
+
+                btn.onclick = () => toggleFilter(type, val, btn);
+                container.appendChild(btn);
+            });
+        }
+
+        function toggleFilter(type, val) {
+            if (activeFilters[type].has(val)) {
+                activeFilters[type].delete(val);
+            } else {
+                activeFilters[type].add(val);
+            }
+            applyFilters();
+            updateFilterButtonsUI();
+        }
+
+        // При клике на тег в модалке - оставляем только этот фильтр
+        function setFilterExclusive(type, val) {
+            activeFilters.project.clear();
+            activeFilters.field.clear();
+            activeFilters.year.clear();
+            activeFilters[type].add(val);
+            applyFilters();
+            updateFilterButtonsUI();
+            
+            closeModal();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateFilterButtonsUI() {
+            ['project', 'field', 'year'].forEach(type => {
+                const container = document.getElementById(`filter-row-${type}`);
+                const buttons = container.querySelectorAll('.filter-tag');
+                buttons.forEach(btn => {
+                    if (activeFilters[type].has(btn.innerText)) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+            });
+        }
+
+        function applyFilters() {
+            filteredIndices = [];
+            portfolioData.forEach((item, index) => {
+                const p = item.project ? item.project.trim().toLowerCase() : 'others';
+                const y = item.year ? item.year.trim() : '';
+                const f1 = item.field ? item.field.trim().toLowerCase() : '';
+                const f2 = item['field opt'] ? item['field opt'].trim().toLowerCase() : '';
+
+                const passProject = activeFilters.project.size === 0 || activeFilters.project.has(p);
+                const passYear = activeFilters.year.size === 0 || activeFilters.year.has(y);
+                
+                let passField = activeFilters.field.size === 0;
+                if (!passField && (activeFilters.field.has(f1) || activeFilters.field.has(f2))) {
+                    passField = true;
+                }
+
+                if (passProject && passYear && passField) {
+                    filteredIndices.push(index);
+                }
+            });
+            renderGallery();
+        }
+
+        // ------------------ ГАЛЕРЕЯ ------------------
         function renderGallery() {
             const gallery = document.getElementById('gallery');
             gallery.innerHTML = '';
+
+            if (filteredIndices.length === 0) {
+                gallery.innerHTML = '<div class="loader">Nothing found.</div>';
+                return;
+            }
+
             const groupedProjects = {};
             
-            portfolioData.forEach((item, index) => {
+            filteredIndices.forEach((originalIndex) => {
+                const item = portfolioData[originalIndex];
                 const projectName = item.project ? item.project.trim() : 'others';
                 if (!groupedProjects[projectName]) groupedProjects[projectName] = [];
-                groupedProjects[projectName].push({ item, index });
+                groupedProjects[projectName].push({ item, index: originalIndex });
             });
 
             for (const projectName in groupedProjects) {
@@ -300,12 +494,16 @@
             }
         }
 
-        function openModal(index) {
-            const item = portfolioData[index];
+        // ------------------ МОДАЛКА ------------------
+        function openModal(originalIndex) {
+            // Находим текущую позицию элемента в отфильтрованном списке
+            currentModalIndex = filteredIndices.indexOf(originalIndex);
+            
+            const item = portfolioData[originalIndex];
             const directUrl = getDirectDropboxUrl(item.url);
             const isVideo = item.type && item.type.toLowerCase().trim() === 'vid';
 
-            const mediaContainer = document.getElementById('modal-media');
+            const mediaContainer = document.getElementById('media-content-container');
             mediaContainer.innerHTML = isVideo 
                 ? `<video src="${directUrl}" controls autoplay></video>` 
                 : `<img src="${directUrl}">`;
@@ -313,33 +511,58 @@
             const tagsContainer = document.getElementById('modal-tags');
             tagsContainer.innerHTML = '';
 
+            // Сохраняем тип тега, чтобы фильтр понимал, куда его применять
             const tags = [
-                { text: item.project, color: false },
-                { text: item.field, color: true },
-                { text: item['field opt'], color: true },
-                { text: item.year, color: false }
+                { text: item.project, type: 'project', color: false },
+                { text: item.field, type: 'field', color: true },
+                { text: item['field opt'], type: 'field', color: true },
+                { text: item.year, type: 'year', color: false }
             ];
 
             tags.forEach(t => {
                 if (t.text && t.text.trim() !== '') {
+                    const cleanText = t.text.toLowerCase().trim();
                     const span = document.createElement('span');
                     span.className = 'tag';
-                    span.innerText = t.text.toLowerCase();
-                    if (t.color && fieldColors[t.text.toLowerCase()]) {
-                        span.style.backgroundColor = fieldColors[t.text.toLowerCase()];
+                    span.innerText = cleanText;
+                    
+                    if (t.color && fieldColors[cleanText]) {
+                        span.style.backgroundColor = fieldColors[cleanText];
                     }
+
+                    // Обработчик клика по тегу в модалке
+                    span.onclick = () => setFilterExclusive(t.type, cleanText);
+                    
                     tagsContainer.appendChild(span);
                 }
             });
+
+            // Прячем стрелки, если показана всего 1 работа
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => btn.style.display = filteredIndices.length > 1 ? 'flex' : 'none');
 
             document.getElementById('modal').classList.add('active');
             document.body.style.overflow = 'hidden'; 
         }
 
-        function closeModal() {
+        function navigateModal(direction, event) {
+            event.stopPropagation(); // Чтобы клик по кнопке не закрывал модалку
+            currentModalIndex += direction;
+            
+            // Зацикливаем листание
+            if (currentModalIndex < 0) currentModalIndex = filteredIndices.length - 1;
+            if (currentModalIndex >= filteredIndices.length) currentModalIndex = 0;
+            
+            openModal(filteredIndices[currentModalIndex]);
+        }
+
+        function closeModal(event) {
+            if (event && event.target.closest('.modal-content') && !event.target.classList.contains('close-btn')) {
+                return;
+            }
             document.getElementById('modal').classList.remove('active');
             document.body.style.overflow = '';
-            document.getElementById('modal-media').innerHTML = '';
+            document.getElementById('media-content-container').innerHTML = '';
         }
     </script>
 </body>
