@@ -93,65 +93,53 @@
         
         .project-header:first-child { margin-top: 0; }
 
-        /* КАРТОЧКА И ОБЕРТКА (Разделение логики) */
-
-        /* 3. Сама карточка в сетке - просто квадрат */
+        /* КАРТОЧКА И ОБЕРТКА */
         .thumb-card {
-        aspect-ratio: 1 / 1;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-        
-        /* Превращаем карточку в жесткий физический контейнер */
-        container-type: size;
+            aspect-ratio: 1 / 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            container-type: size;
         }
 
-        /* 2. Обертка - стягивается по размеру контента, добавляет паддинги */
         .thumb-media-wrapper {
-        padding: 12px;
-        background-color: transparent;
-        border-radius: 8px; /* Внешнее скругление обертки */
-        transition: transform 0.2s, background-color 0.2s;
-        
-        /* Обертка просто "обнимает" картинку. Мы убрали отсюда 100%, чтобы не ломать логику */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-        box-sizing: border-box;
+            padding: 12px;
+            background-color: transparent;
+            border-radius: 8px; 
+            transition: transform 0.2s, background-color 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            box-sizing: border-box;
         }
 
         .thumb-card:hover .thumb-media-wrapper {
-        transform: translateY(-4px);
-        background-color: rgba(0, 0, 0, 0.05); /* Красится только обертка */
+            transform: translateY(-4px);
+            background-color: rgba(0, 0, 0, 0.05); 
         }
 
-        /* 1. Сам медиа-контент */
         .thumb-media-wrapper img, 
         .thumb-media-wrapper video {
-        /* КРИТИЧНО: Картинка смотрит на физический размер квадрата (100cqw / 100cqh), а не на обертку! */
-        /* Вычитаем 24px, так как паддинг обертки = 12px со всех сторон (12 + 12 = 24) */
-        max-width: calc(100cqw - 24px);
-        max-height: calc(100cqh - 24px);
-        
-        /* Сохраняем пропорции, позволяем обертке стягиваться */
-        width: auto;
-        height: auto;
-        object-fit: contain;
-        border-radius: 4px; /* Внутреннее скругление контента */
-        display: block;
+            max-width: calc(100cqw - 24px);
+            max-height: calc(100cqh - 24px);
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            border-radius: 4px; 
+            display: block;
         }
 
         .video-icon {
-        position: absolute;
-        top: 16px;
-        right: 16px;
-        background: rgba(0, 0, 0, 0.6);
-        color: white;
-        padding: 2px 6px;
-        border-radius: 2px;
-        font-size: 10px;
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 2px;
+            font-size: 10px;
         }
 
         /* ВСПЛЫВАЮЩЕЕ ОКНО (МОДАЛКА) */
@@ -165,7 +153,7 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
-            box-sizing: border-box; /* Чинит прилипание к правому краю */
+            box-sizing: border-box; 
         }
 
         .modal.active { display: flex; }
@@ -198,7 +186,7 @@
             background: #ffffff;
             display: flex;
             justify-content: center;
-            position: relative; /* Для кнопок навигации */
+            position: relative; 
         }
 
         .modal-media img,
@@ -230,7 +218,6 @@
 
         .modal-info { padding: 24px; }
 
-        /* ТЕГИ В МОДАЛКЕ */
         .tags-container {
             display: flex; flex-wrap: wrap; gap: 6px;
         }
@@ -241,7 +228,7 @@
             border-radius: 2px;
             font-size: 12px;
             color: #1d1d1f;
-            cursor: pointer; /* Делаем кликабельными */
+            cursor: pointer; 
             transition: opacity 0.2s;
         }
         
@@ -254,15 +241,21 @@
             color: #86868b;
         }
 
-        /* АДАПТИВ */
+        /* АДАПТИВ (с оптимизацией для мобильных устройств) */
         @media (max-width: 600px) {
             header { padding: 24px 16px 16px 16px; }
             .filters-container { padding: 0 16px 16px 16px; }
             .gallery { grid-template-columns: 1fr 1fr; padding: 16px; gap: 8px; }
-            .modal { padding: 12px; }
             .nav-btn { width: 32px; height: 32px; font-size: 14px; }
             .nav-btn.prev { left: 8px; }
             .nav-btn.next { right: 8px; }
+            
+            /* КРИТИЧНО ДЛЯ ТЕЛЕФОНОВ: Отключаем тяжелое размытие */
+            .modal { 
+                padding: 12px; 
+                backdrop-filter: none; 
+                background: rgba(255, 255, 255, 0.98);
+            }
         }
     </style>
 </head>
@@ -316,16 +309,18 @@
         };
 
         let portfolioData = [];
-        let filteredIndices = []; // Массив индексов отображаемых сейчас элементов
-        let currentModalIndex = 0; // Позиция открытой картинки внутри массива filteredIndices
+        let filteredIndices = []; 
+        let currentModalIndex = 0; 
 
-        // Состояние фильтров
         let activeFilters = {
             project: new Set(),
             field: new Set(),
             year: new Set()
         };
 
+        // --- ЛОГИКА ССЫЛОК И ОПТИМИЗАЦИИ ---
+
+        // Базовая функция: получает сырой файл напрямую из Dropbox
         function getDirectDropboxUrl(url) {
             if (!url) return '';
             let direct = url.trim();
@@ -337,13 +332,22 @@
             return direct;
         }
 
+        // НОВАЯ ФУНКЦИЯ: Пропускает прямую ссылку картинки через CDN
+        function getOptimizedImageUrl(url) {
+            const directUrl = getDirectDropboxUrl(url);
+            if (!directUrl) return '';
+            // Параметры: output=webp (формат), q=80 (качество), w=1500 (макс ширина 1500px, чтобы не качать 5к исходники)
+            return `https://wsrv.nl/?url=${encodeURIComponent(directUrl)}&output=webp&q=80&w=1500`;
+        }
+
+
         Papa.parse(SHEET_CSV_URL, {
             download: true,
             header: true,
             transformHeader: h => h.trim().toLowerCase(),
             complete: function (results) {
                 portfolioData = results.data.filter(row => row.url && row.url.trim() !== ''); 
-                filteredIndices = portfolioData.map((_, i) => i); // Сначала показываем всё
+                filteredIndices = portfolioData.map((_, i) => i); 
                 
                 buildFilters();
                 renderGallery();
@@ -380,7 +384,6 @@
                 btn.className = 'filter-tag';
                 btn.innerText = val;
                 
-                // Цветная точка для Fields в панели фильтров
                 if (type === 'field' && fieldColors[val]) {
                     btn.style.borderLeft = `4px solid ${fieldColors[val]}`;
                 }
@@ -400,7 +403,6 @@
             updateFilterButtonsUI();
         }
 
-        // При клике на тег в модалке - оставляем только этот фильтр
         function setFilterExclusive(type, val) {
             activeFilters.project.clear();
             activeFilters.field.clear();
@@ -477,16 +479,20 @@
 
                 groupedProjects[projectName].forEach(dataObj => {
                     const item = dataObj.item;
-                    const directUrl = getDirectDropboxUrl(item.url);
                     const isVideo = item.type && item.type.toLowerCase().trim() === 'vid';
+                    
+                    // Распределяем ссылки: видео идут напрямую, картинки через оптимизатор
+                    const directUrl = getDirectDropboxUrl(item.url);
+                    const optimizedImgUrl = isVideo ? '' : getOptimizedImageUrl(item.url);
 
                     const card = document.createElement('div');
                     card.className = 'thumb-card';
                     card.onclick = () => openModal(dataObj.index);
                     
+                    // Добавлен decoding="async" для устранения подвисаний при листании
                     let mediaHTML = isVideo 
                         ? `<video src="${directUrl}#t=0.1" preload="metadata" muted loop onmouseover="this.play()" onmouseout="this.pause()"></video><div class="video-icon">vid</div>`
-                        : `<img src="${directUrl}" loading="lazy">`;
+                        : `<img src="${optimizedImgUrl}" loading="lazy" decoding="async">`;
 
                     card.innerHTML = `<div class="thumb-media-wrapper">${mediaHTML}</div>`;
                     gallery.appendChild(card);
@@ -495,52 +501,47 @@
         }
 
         // ------------------ МОДАЛКА И ПРЕДЗАГРУЗКА ------------------
-
-        // Новая функция: невидимо скачивает картинки в кэш браузера
         function preloadMedia(index) {
             if (index < 0 || index >= filteredIndices.length) return;
             const item = portfolioData[filteredIndices[index]];
-            const directUrl = getDirectDropboxUrl(item.url);
             const isVideo = item.type && item.type.toLowerCase().trim() === 'vid';
 
             if (!isVideo) {
                 const img = new Image();
-                img.src = directUrl; // Браузер начинает скачивать картинку в фоне
+                img.src = getOptimizedImageUrl(item.url); // Скачиваем легкую версию
             } else {
-                // Для видео предзагружаем только метаданные (чтобы сэкономить трафик)
                 const vid = document.createElement('video');
                 vid.preload = 'metadata';
-                vid.src = directUrl;
+                vid.src = getDirectDropboxUrl(item.url);
             }
         }
 
         function openModal(originalIndex) {
-            // Находим текущую позицию элемента в отфильтрованном списке
             currentModalIndex = filteredIndices.indexOf(originalIndex);
             
             const item = portfolioData[originalIndex];
-            const directUrl = getDirectDropboxUrl(item.url);
             const isVideo = item.type && item.type.toLowerCase().trim() === 'vid';
 
-            const mediaContainer = document.getElementById('media-content-container');
-            mediaContainer.innerHTML = isVideo 
-                ? `<video src="${directUrl}" controls autoplay></video>` 
-                : `<img src="${directUrl}">`;
+            const directUrl = getDirectDropboxUrl(item.url);
+            const optimizedImgUrl = isVideo ? '' : getOptimizedImageUrl(item.url);
 
-            // === ЗАПУСК ПРЕДЗАГРУЗКИ ===
-            // Вычисляем индексы следующей и предыдущей работы с учетом зацикливания
+            const mediaContainer = document.getElementById('media-content-container');
+            
+            // playsinline не даст айфонам принудительно разворачивать видео на весь экран
+            mediaContainer.innerHTML = isVideo 
+                ? `<video src="${directUrl}" controls autoplay playsinline></video>` 
+                : `<img src="${optimizedImgUrl}" decoding="async">`;
+
+            // === ПРЕДЗАГРУЗКА ===
             const nextIndex = currentModalIndex + 1 >= filteredIndices.length ? 0 : currentModalIndex + 1;
             const prevIndex = currentModalIndex - 1 < 0 ? filteredIndices.length - 1 : currentModalIndex - 1;
-            
-            // Даем команду браузеру скачать их в фоне, пока пользователь смотрит текущую
             preloadMedia(nextIndex);
             preloadMedia(prevIndex);
-            // ==========================
+            // ====================
 
             const tagsContainer = document.getElementById('modal-tags');
             tagsContainer.innerHTML = '';
 
-            // Сохраняем тип тега, чтобы фильтр понимал, куда его применять
             const tags = [
                 { text: item.project, type: 'project', color: false },
                 { text: item.field, type: 'field', color: true },
@@ -559,14 +560,11 @@
                         span.style.backgroundColor = fieldColors[cleanText];
                     }
 
-                    // Обработчик клика по тегу в модалке
                     span.onclick = () => setFilterExclusive(t.type, cleanText);
-                    
                     tagsContainer.appendChild(span);
                 }
             });
 
-            // Прячем стрелки, если показана всего 1 работа
             const navButtons = document.querySelectorAll('.nav-btn');
             navButtons.forEach(btn => btn.style.display = filteredIndices.length > 1 ? 'flex' : 'none');
 
@@ -575,10 +573,9 @@
         }
 
         function navigateModal(direction, event) {
-            event.stopPropagation(); // Чтобы клик по кнопке не закрывал модалку
+            event.stopPropagation(); 
             currentModalIndex += direction;
             
-            // Зацикливаем листание
             if (currentModalIndex < 0) currentModalIndex = filteredIndices.length - 1;
             if (currentModalIndex >= filteredIndices.length) currentModalIndex = 0;
             
