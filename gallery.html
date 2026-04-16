@@ -95,64 +95,64 @@
 
         /* КАРТОЧКА И ОБЕРТКА (Разделение логики) */
 
-/* 3. Сама карточка в сетке - просто квадрат */
-.thumb-card {
-  aspect-ratio: 1 / 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  
-  /* Превращаем карточку в жесткий физический контейнер */
-  container-type: size;
-}
+        /* 3. Сама карточка в сетке - просто квадрат */
+        .thumb-card {
+        aspect-ratio: 1 / 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        
+        /* Превращаем карточку в жесткий физический контейнер */
+        container-type: size;
+        }
 
-/* 2. Обертка - стягивается по размеру контента, добавляет паддинги */
-.thumb-media-wrapper {
-  padding: 12px;
-  background-color: transparent;
-  border-radius: 8px; /* Внешнее скругление обертки */
-  transition: transform 0.2s, background-color 0.2s;
-  
-  /* Обертка просто "обнимает" картинку. Мы убрали отсюда 100%, чтобы не ломать логику */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  box-sizing: border-box;
-}
+        /* 2. Обертка - стягивается по размеру контента, добавляет паддинги */
+        .thumb-media-wrapper {
+        padding: 12px;
+        background-color: transparent;
+        border-radius: 8px; /* Внешнее скругление обертки */
+        transition: transform 0.2s, background-color 0.2s;
+        
+        /* Обертка просто "обнимает" картинку. Мы убрали отсюда 100%, чтобы не ломать логику */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        box-sizing: border-box;
+        }
 
-.thumb-card:hover .thumb-media-wrapper {
-  transform: translateY(-4px);
-  background-color: rgba(0, 0, 0, 0.05); /* Красится только обертка */
-}
+        .thumb-card:hover .thumb-media-wrapper {
+        transform: translateY(-4px);
+        background-color: rgba(0, 0, 0, 0.05); /* Красится только обертка */
+        }
 
-/* 1. Сам медиа-контент */
-.thumb-media-wrapper img, 
-.thumb-media-wrapper video {
-  /* КРИТИЧНО: Картинка смотрит на физический размер квадрата (100cqw / 100cqh), а не на обертку! */
-  /* Вычитаем 24px, так как паддинг обертки = 12px со всех сторон (12 + 12 = 24) */
-  max-width: calc(100cqw - 24px);
-  max-height: calc(100cqh - 24px);
-  
-  /* Сохраняем пропорции, позволяем обертке стягиваться */
-  width: auto;
-  height: auto;
-  object-fit: contain;
-  border-radius: 4px; /* Внутреннее скругление контента */
-  display: block;
-}
+        /* 1. Сам медиа-контент */
+        .thumb-media-wrapper img, 
+        .thumb-media-wrapper video {
+        /* КРИТИЧНО: Картинка смотрит на физический размер квадрата (100cqw / 100cqh), а не на обертку! */
+        /* Вычитаем 24px, так как паддинг обертки = 12px со всех сторон (12 + 12 = 24) */
+        max-width: calc(100cqw - 24px);
+        max-height: calc(100cqh - 24px);
+        
+        /* Сохраняем пропорции, позволяем обертке стягиваться */
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        border-radius: 4px; /* Внутреннее скругление контента */
+        display: block;
+        }
 
-.video-icon {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  background: rgba(0, 0, 0, 0.6);
-  color: white;
-  padding: 2px 6px;
-  border-radius: 2px;
-  font-size: 10px;
-}
+        .video-icon {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        background: rgba(0, 0, 0, 0.6);
+        color: white;
+        padding: 2px 6px;
+        border-radius: 2px;
+        font-size: 10px;
+        }
 
         /* ВСПЛЫВАЮЩЕЕ ОКНО (МОДАЛКА) */
         .modal {
@@ -494,7 +494,26 @@
             }
         }
 
-        // ------------------ МОДАЛКА ------------------
+        // ------------------ МОДАЛКА И ПРЕДЗАГРУЗКА ------------------
+
+        // Новая функция: невидимо скачивает картинки в кэш браузера
+        function preloadMedia(index) {
+            if (index < 0 || index >= filteredIndices.length) return;
+            const item = portfolioData[filteredIndices[index]];
+            const directUrl = getDirectDropboxUrl(item.url);
+            const isVideo = item.type && item.type.toLowerCase().trim() === 'vid';
+
+            if (!isVideo) {
+                const img = new Image();
+                img.src = directUrl; // Браузер начинает скачивать картинку в фоне
+            } else {
+                // Для видео предзагружаем только метаданные (чтобы сэкономить трафик)
+                const vid = document.createElement('video');
+                vid.preload = 'metadata';
+                vid.src = directUrl;
+            }
+        }
+
         function openModal(originalIndex) {
             // Находим текущую позицию элемента в отфильтрованном списке
             currentModalIndex = filteredIndices.indexOf(originalIndex);
@@ -507,6 +526,16 @@
             mediaContainer.innerHTML = isVideo 
                 ? `<video src="${directUrl}" controls autoplay></video>` 
                 : `<img src="${directUrl}">`;
+
+            // === ЗАПУСК ПРЕДЗАГРУЗКИ ===
+            // Вычисляем индексы следующей и предыдущей работы с учетом зацикливания
+            const nextIndex = currentModalIndex + 1 >= filteredIndices.length ? 0 : currentModalIndex + 1;
+            const prevIndex = currentModalIndex - 1 < 0 ? filteredIndices.length - 1 : currentModalIndex - 1;
+            
+            // Даем команду браузеру скачать их в фоне, пока пользователь смотрит текущую
+            preloadMedia(nextIndex);
+            preloadMedia(prevIndex);
+            // ==========================
 
             const tagsContainer = document.getElementById('modal-tags');
             tagsContainer.innerHTML = '';
