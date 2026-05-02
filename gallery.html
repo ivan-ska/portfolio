@@ -9,30 +9,154 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 
     <style>
+        /* ========================================= */
+        /*       DESIGN SYSTEM (ДИЗАЙН СИСТЕМА)      */
+        /* ========================================= */
+        
+        :root {
+            /* Цвета */
+            --color-black: #000000;
+            --color-white: #FFFFFF;
+            --color-translucent-w: rgba(255, 255, 255, 0.7);
+            --color-active: rgba(0, 0, 0, 0.07);
+            --color-inactive: rgba(0, 0, 0, 0.4);
+        
+            /* Эффекты */
+            --b-blur: blur(40px);
+        
+            /* Скругления */
+            --r-small: 2px;
+            --r-large: 4px;
+        
+            /* Типографика - Desktop Default */
+            --font-family: 'DM Mono', monospace;
+            --font-weight: 400;
+            
+            --h2-size: 20px;
+            --h2-line-height: 1.2;
+            --h2-letter-spacing: -0.03em;
+            
+            --h3-size: 16px;
+            --h3-line-height: 1.2;
+            --h3-letter-spacing: -0.03em;
+            
+            --text-size: 12px;
+            --text-line-height: 1.2;
+            --text-letter-spacing: -0.02em;
+        
+            /* Иконки - Desktop Default */
+            --icon-arrow-link: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/arrow-link.svg');
+            --icon-arrow-project-left: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/arrow-project-left-d.svg');
+            --icon-arrow-project-right: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/arrow-project-right-d.svg');
+            --icon-cross-large: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/cross-large-d.svg');
+            --icon-cross-small: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/cross-small-d.svg');
+            --icon-loading: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/loading-d.svg');
+            --icon-logo: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/logo-d.svg');
+            --icon-minus: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/minus-d.svg');
+            --icon-play: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/play-d.svg');
+            --icon-plus: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/plus-d.svg');
+        }
+        
+        /* --- АДАПТИВ ДИЗАЙН-СИСТЕМЫ (Mobile Overrides) --- */
+        @media (max-width: 600px) {
+            :root {
+                --h2-size: 18px;
+                --h3-size: 14px;
+                
+                --icon-arrow-project-left: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/arrow-project-left-m.svg');
+                --icon-arrow-project-right: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/arrow-project-right-m.svg');
+                --icon-cross-large: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/cross-large-m.svg');
+                --icon-cross-small: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/cross-small-m.svg');
+                --icon-loading: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/loading-m.svg');
+                --icon-logo: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/logo-m.svg');
+                --icon-minus: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/minus-m.svg');
+                --icon-play: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/play-m.svg');
+                --icon-plus: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/plus-m.svg');
+            }
+        }
+
+        /* ========================================= */
+        /*                  БАЗА                     */
+        /* ========================================= */
         body {
             margin: 0;
-            background-color: #ffffff;
-            font-family: 'DM Mono', monospace;
-            color: #1d1d1f;
+            background-color: var(--color-white);
+            font-family: var(--font-family);
+            font-weight: var(--font-weight);
+            color: var(--color-black);
             -webkit-font-smoothing: antialiased;
+            padding: 120px 0; /* Отступы 120px сверху и снизу у всего документа */
+        }
+
+        /* ОБЕРТКА ШАПКИ (Фикс сверху с эффектом бесконечности вверх) */
+        .header-wrapper {
+            position: fixed;
+            top: -100px; /* Сдвигаем на 100px вверх */
+            left: 0; 
+            right: 0;
+            padding-top: 100px; /* Компенсируем сдвиг, чтобы закрыть "резинку" Safari */
+            z-index: 50;
+            background-color: var(--color-translucent-w);
+            backdrop-filter: var(--b-blur);
+            -webkit-backdrop-filter: var(--b-blur);
         }
 
         header {
-            padding: 40px 40px 20px 40px;
-            background: #fff;
+            /* Отступы шапки: учитываем челку iPhone (safe-area) + 20px сверху и снизу */
+            padding: calc(20px + env(safe-area-inset-top, 0px)) 40px 20px 40px; 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        h1 {
-            margin: 0;
-            font-size: 24px;
-            font-weight: 500;
-            letter-spacing: -0.02em;
+        .logo {
+            height: 32px; 
+            width: 150px;
+            background-image: var(--icon-logo);
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: left center;
         }
 
-        /* ФИЛЬТРЫ */
+        /* Кнопка фильтров в шапке */
+        .filters-toggle {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            
+            font-family: var(--font-family);
+            font-weight: var(--font-weight);
+            font-size: var(--text-size);
+            line-height: var(--text-line-height);
+            letter-spacing: var(--text-letter-spacing);
+            color: var(--color-inactive);
+        }
+
+        .filters-toggle:hover {
+            opacity: 0.8;
+        }
+
+        /* Иконка плюса/минуса через маску, чтобы задать ей цвет inactive */
+        .toggle-icon {
+            width: 16px;
+            height: 16px;
+            background-color: var(--color-inactive);
+            -webkit-mask: var(--icon-plus) center/contain no-repeat;
+            mask: var(--icon-plus) center/contain no-repeat;
+        }
+
+        .filters-toggle.open .toggle-icon {
+            -webkit-mask: var(--icon-minus) center/contain no-repeat;
+            mask: var(--icon-minus) center/contain no-repeat;
+        }
+
+        /* ФИЛЬТРЫ (Выпадают из шапки) */
         .filters-container {
-            background: #fff;
-            padding: 0 40px 20px 40px;
+            padding: 0 40px 20px 40px; /* Паддинги по бокам равны паддингам сетки */
             display: flex;
             flex-direction: column;
             gap: 12px;
@@ -46,52 +170,69 @@
         }
 
         .filter-label {
-            font-size: 13px;
-            color: #86868b;
+            font-size: var(--text-size);
+            line-height: var(--text-line-height);
+            letter-spacing: var(--text-letter-spacing);
+            color: var(--color-inactive);
             margin-right: 4px;
         }
 
         .filter-tag {
-            background: #f5f5f7;
+            background: var(--color-active);
             border: 1px solid transparent;
             padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 12px;
-            color: #1d1d1f;
+            border-radius: var(--r-small);
+            
+            font-size: var(--text-size);
+            line-height: var(--text-line-height);
+            letter-spacing: var(--text-letter-spacing);
+            color: var(--color-black);
+            
             cursor: pointer;
             transition: all 0.2s;
             font-family: inherit;
         }
 
         .filter-tag:hover {
-            background: #e5e5ea;
+            opacity: 0.8;
         }
 
         .filter-tag.active {
-            background: #1d1d1f !important;
-            color: #fff !important;
+            background: var(--color-black) !important;
+            color: var(--color-white) !important;
         }
 
-        /* СЕТКА ПОРТФОЛИО */
+        /* ГАЛЕРЕЯ (Контейнер проектов) */
         .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 12px;
-            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 80px; /* Отступ 80px между проектами */
+            padding: 0 40px; /* Отступы по краям экрана */
             max-width: 1200px;
             margin: 0 auto;
         }
 
-        /* ЗАГОЛОВОК ПРОЕКТА */
-        .project-header {
-            grid-column: 1 / -1;
-            margin-top: 40px;
-            font-size: 20px;
-            font-weight: 500;
-            color: #86868b;
+        /* Обертка отдельного проекта */
+        .project-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 20px; /* Отступ 20px между названием (h2) и сеткой */
         }
-        
-        .project-header:first-child { margin-top: 0; }
+
+        .project-header {
+            margin: 0;
+            font-size: var(--h2-size);
+            line-height: var(--h2-line-height);
+            letter-spacing: var(--h2-letter-spacing);
+            color: var(--color-inactive);
+        }
+
+        /* Сама сетка карточек внутри проекта */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 12px;
+        }
 
         /* КАРТОЧКА И ОБЕРТКА */
         .thumb-card {
@@ -104,9 +245,9 @@
         }
 
         .thumb-media-wrapper {
-            padding: 12px;
+            padding: 8px; /* Десктопный паддинг обертки 8px */
             background-color: transparent;
-            border-radius: 8px; 
+            border-radius: var(--r-large); 
             transition: transform 0.2s, background-color 0.2s;
             display: flex;
             justify-content: center;
@@ -117,29 +258,49 @@
 
         .thumb-card:hover .thumb-media-wrapper {
             transform: translateY(-4px);
-            background-color: rgba(0, 0, 0, 0.05); 
+            background-color: var(--color-active); 
         }
 
         .thumb-media-wrapper img, 
         .thumb-media-wrapper video {
-            max-width: calc(100cqw - 24px);
-            max-height: calc(100cqh - 24px);
+            /* Вычитаем 16px (8px + 8px паддинги) */
+            max-width: calc(100cqw - 16px);
+            max-height: calc(100cqh - 16px);
             width: auto;
             height: auto;
             object-fit: contain;
-            border-radius: 4px; 
+            border-radius: var(--r-small); 
             display: block;
         }
 
+        /* Иконка Play для видео по центру */
         .video-icon {
             position: absolute;
-            top: 16px;
-            right: 16px;
-            background: rgba(0, 0, 0, 0.6);
-            color: white;
-            padding: 2px 6px;
-            border-radius: 2px;
-            font-size: 10px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: var(--color-translucent-w);
+            backdrop-filter: var(--b-blur);
+            -webkit-backdrop-filter: var(--b-blur);
+            border-radius: 50%;
+            padding: 20px; /* Отступы 20px вокруг иконки на десктопе */
+            
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* Не блокирует hover на видео */
+            pointer-events: none; 
+        }
+
+        /* Рисуем SVG маской, чтобы закрасить в inactive */
+        .video-icon::after {
+            content: '';
+            display: block;
+            width: 24px;
+            height: 24px;
+            background-color: var(--color-inactive);
+            -webkit-mask: var(--icon-play) center/contain no-repeat;
+            mask: var(--icon-play) center/contain no-repeat;
         }
 
         /* ВСПЛЫВАЮЩЕЕ ОКНО (МОДАЛКА) */
@@ -147,8 +308,11 @@
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+            
+            background-color: var(--color-translucent-w);
+            backdrop-filter: var(--b-blur);
+            -webkit-backdrop-filter: var(--b-blur);
+            
             z-index: 100;
             justify-content: center;
             align-items: center;
@@ -159,13 +323,13 @@
         .modal.active { display: flex; }
 
         .modal-content {
-            background: #fff;
+            background: var(--color-white);
             max-width: 1000px;
             width: 100%;
             max-height: 90vh;
             overflow-y: auto;
             position: relative;
-            border-radius: 4px;
+            border-radius: var(--r-large);
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
             box-sizing: border-box;
         }
@@ -173,17 +337,20 @@
         .close-btn {
             position: absolute;
             top: 16px; right: 16px;
-            background: none;
+            width: 32px; height: 32px;
+            background-image: var(--icon-cross-large);
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-color: transparent;
             border: none;
-            font-size: 24px;
             cursor: pointer;
             z-index: 10;
-            font-family: inherit;
         }
 
         .modal-media {
             width: 100%;
-            background: #ffffff;
+            background: transparent;
             display: flex;
             justify-content: center;
             position: relative; 
@@ -196,25 +363,22 @@
             object-fit: contain;
         }
 
-        /* СТРЕЛКИ НАВИГАЦИИ */
         .nav-btn {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background: #fff;
-            border: 1px solid #e5e5ea;
             width: 40px; height: 40px;
-            border-radius: 50%;
-            font-family: inherit;
-            font-size: 18px;
+            background-color: transparent;
+            border: none;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
             cursor: pointer;
-            display: flex; justify-content: center; align-items: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
             transition: transform 0.2s;
         }
         .nav-btn:hover { transform: translateY(-50%) scale(1.05); }
-        .nav-btn.prev { left: 16px; }
-        .nav-btn.next { right: 16px; }
+        .nav-btn.prev { left: 16px; background-image: var(--icon-arrow-project-left); }
+        .nav-btn.next { right: 16px; background-image: var(--icon-arrow-project-right); }
 
         .modal-info { padding: 24px; }
 
@@ -223,11 +387,13 @@
         }
 
         .tag {
-            background: #f5f5f7;
+            background: var(--color-active);
             padding: 4px 10px;
-            border-radius: 2px;
-            font-size: 12px;
-            color: #1d1d1f;
+            border-radius: var(--r-small);
+            font-size: var(--text-size);
+            line-height: var(--text-line-height);
+            letter-spacing: var(--text-letter-spacing);
+            color: var(--color-black);
             cursor: pointer; 
             transition: opacity 0.2s;
         }
@@ -235,26 +401,53 @@
         .tag:hover { opacity: 0.8; }
 
         .loader {
-            text-align: center;
-            padding: 100px;
-            font-size: 14px;
-            color: #86868b;
+            width: 32px;
+            height: 32px;
+            margin: 0 auto;
+            background-image: var(--icon-loading);
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            animation: spin 1s linear infinite;
         }
 
-        /* АДАПТИВ (с оптимизацией для мобильных устройств) */
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        /* АДАПТИВ */
         @media (max-width: 600px) {
-            header { padding: 24px 16px 16px 16px; }
-            .filters-container { padding: 0 16px 16px 16px; }
-            .gallery { grid-template-columns: 1fr 1fr; padding: 16px; gap: 8px; }
-            .nav-btn { width: 32px; height: 32px; font-size: 14px; }
+            /* Отступы шапки и галереи 20px на мобилках */
+            header { padding: calc(20px + env(safe-area-inset-top, 0px)) 20px 20px 20px; }
+            .filters-container { padding: 0 20px 20px 20px; }
+            .gallery { padding: 0 20px; }
+            
+            .project-grid { 
+                grid-template-columns: 1fr 1fr; 
+                gap: 8px; /* Мобильный гэп 8px */
+            }
+
+            .thumb-media-wrapper { padding: 6px; }
+            .thumb-media-wrapper img, 
+            .thumb-media-wrapper video {
+                /* Вычитаем 12px (6px + 6px паддинги) */
+                max-width: calc(100cqw - 12px);
+                max-height: calc(100cqh - 12px);
+            }
+
+            /* Круглая кнопка видео на телефоне (паддинг 13) */
+            .video-icon { padding: 13px; }
+            .video-icon::after { width: 20px; height: 20px; }
+
+            .nav-btn { width: 32px; height: 32px; }
             .nav-btn.prev { left: 8px; }
             .nav-btn.next { right: 8px; }
             
-            /* КРИТИЧНО ДЛЯ ТЕЛЕФОНОВ: Отключаем тяжелое размытие */
             .modal { 
                 padding: 12px; 
-                backdrop-filter: none; 
-                background: rgba(255, 255, 255, 0.98);
+                backdrop-filter: none;
+                -webkit-backdrop-filter: none;
+                background-color: var(--color-white);
             }
         }
     </style>
@@ -262,34 +455,42 @@
 
 <body>
 
-    <header>
-        <h1>directory</h1>
-    </header>
+    <div class="header-wrapper">
+        <header>
+            <div class="logo"></div>
+            <!-- Добавлена кнопка открытия фильтров -->
+            <button id="filters-toggle" class="filters-toggle" onclick="toggleFiltersMenu()">
+                Filters <span class="toggle-icon"></span>
+            </button>
+        </header>
 
-    <div class="filters-container" id="filters-container" style="display: none;">
-        <div class="filter-row" id="filter-row-project">
-            <span class="filter-label">Project:</span>
+        <div class="filters-container" id="filters-container" style="display: none;">
+            <div class="filter-row" id="filter-row-project">
+                <span class="filter-label">Project:</span>
             </div>
-        <div class="filter-row" id="filter-row-field">
-            <span class="filter-label">Field:</span>
+            <div class="filter-row" id="filter-row-field">
+                <span class="filter-label">Field:</span>
             </div>
-        <div class="filter-row" id="filter-row-year">
-            <span class="filter-label">Year:</span>
+            <div class="filter-row" id="filter-row-year">
+                <span class="filter-label">Year:</span>
             </div>
+        </div>
     </div>
 
-    <div class="gallery" id="gallery">
-        <div class="loader">fetching data...</div>
-    </div>
+    <main class="gallery" id="gallery">
+        <div class="loader"></div>
+    </main>
 
     <div class="modal" id="modal" onclick="closeModal(event)">
         <div class="modal-content" onclick="event.stopPropagation()">
-            <button class="close-btn" onclick="closeModal(event)">✕</button>
+            <button class="close-btn" onclick="closeModal(event)"></button>
+            
             <div class="modal-media" id="modal-media">
-                <button class="nav-btn prev" onclick="navigateModal(-1, event)">←</button>
+                <button class="nav-btn prev" onclick="navigateModal(-1, event)"></button>
                 <div id="media-content-container"></div>
-                <button class="nav-btn next" onclick="navigateModal(1, event)">→</button>
+                <button class="nav-btn next" onclick="navigateModal(1, event)"></button>
             </div>
+            
             <div class="modal-info">
                 <div class="tags-container" id="modal-tags">
                 </div>
@@ -309,7 +510,7 @@
         };
 
         let portfolioData = [];
-        let filteredIndices = []; 
+        let filteredIndices =[]; 
         let currentModalIndex = 0; 
 
         let activeFilters = {
@@ -318,9 +519,19 @@
             year: new Set()
         };
 
-        // --- ЛОГИКА ССЫЛОК И ОПТИМИЗАЦИИ ---
+        // Логика кнопки фильтров
+        function toggleFiltersMenu() {
+            const btn = document.getElementById('filters-toggle');
+            const container = document.getElementById('filters-container');
+            if (btn.classList.contains('open')) {
+                btn.classList.remove('open');
+                container.style.display = 'none';
+            } else {
+                btn.classList.add('open');
+                container.style.display = 'flex';
+            }
+        }
 
-        // Базовая функция: получает сырой файл напрямую из Dropbox
         function getDirectDropboxUrl(url) {
             if (!url) return '';
             let direct = url.trim();
@@ -332,14 +543,11 @@
             return direct;
         }
 
-        // НОВАЯ ФУНКЦИЯ: Пропускает прямую ссылку картинки через CDN
         function getOptimizedImageUrl(url) {
             const directUrl = getDirectDropboxUrl(url);
             if (!directUrl) return '';
-            // Параметры: output=webp (формат), q=80 (качество), w=1500 (макс ширина 1500px, чтобы не качать 5к исходники)
             return `https://wsrv.nl/?url=${encodeURIComponent(directUrl)}&output=webp&q=80&w=1500`;
         }
-
 
         Papa.parse(SHEET_CSV_URL, {
             download: true,
@@ -354,7 +562,6 @@
             }
         });
 
-        // ------------------ ФИЛЬТРЫ ------------------
         function buildFilters() {
             const projects = new Set();
             const fields = new Set();
@@ -370,8 +577,6 @@
             renderFilterGroup('project', projects);
             renderFilterGroup('field', fields);
             renderFilterGroup('year', years);
-
-            document.getElementById('filters-container').style.display = 'flex';
         }
 
         function renderFilterGroup(type, valuesSet) {
@@ -430,7 +635,7 @@
         }
 
         function applyFilters() {
-            filteredIndices = [];
+            filteredIndices =[];
             portfolioData.forEach((item, index) => {
                 const p = item.project ? item.project.trim().toLowerCase() : 'others';
                 const y = item.year ? item.year.trim() : '';
@@ -452,13 +657,12 @@
             renderGallery();
         }
 
-        // ------------------ ГАЛЕРЕЯ ------------------
         function renderGallery() {
             const gallery = document.getElementById('gallery');
             gallery.innerHTML = '';
 
             if (filteredIndices.length === 0) {
-                gallery.innerHTML = '<div class="loader">Nothing found.</div>';
+                gallery.innerHTML = '<div style="text-align:center; color:var(--color-inactive); font-size:var(--text-size);">Nothing found.</div>';
                 return;
             }
 
@@ -467,21 +671,27 @@
             filteredIndices.forEach((originalIndex) => {
                 const item = portfolioData[originalIndex];
                 const projectName = item.project ? item.project.trim() : 'others';
-                if (!groupedProjects[projectName]) groupedProjects[projectName] = [];
+                if (!groupedProjects[projectName]) groupedProjects[projectName] =[];
                 groupedProjects[projectName].push({ item, index: originalIndex });
             });
 
+            // Обновленный рендер: теперь каждый проект обернут в свой div с отступами
             for (const projectName in groupedProjects) {
-                const sectionHeader = document.createElement('div');
+                const projectWrapper = document.createElement('div');
+                projectWrapper.className = 'project-wrapper';
+
+                const sectionHeader = document.createElement('h2');
                 sectionHeader.className = 'project-header';
                 sectionHeader.innerText = projectName.toLowerCase();
-                gallery.appendChild(sectionHeader);
+                projectWrapper.appendChild(sectionHeader);
+
+                const projectGrid = document.createElement('div');
+                projectGrid.className = 'project-grid';
 
                 groupedProjects[projectName].forEach(dataObj => {
                     const item = dataObj.item;
                     const isVideo = item.type && item.type.toLowerCase().trim() === 'vid';
                     
-                    // Распределяем ссылки: видео идут напрямую, картинки через оптимизатор
                     const directUrl = getDirectDropboxUrl(item.url);
                     const optimizedImgUrl = isVideo ? '' : getOptimizedImageUrl(item.url);
 
@@ -489,18 +699,19 @@
                     card.className = 'thumb-card';
                     card.onclick = () => openModal(dataObj.index);
                     
-                    // Добавлен decoding="async" для устранения подвисаний при листании
                     let mediaHTML = isVideo 
-                        ? `<video src="${directUrl}#t=0.1" preload="metadata" muted loop onmouseover="this.play()" onmouseout="this.pause()"></video><div class="video-icon">vid</div>`
+                        ? `<video src="${directUrl}#t=0.1" preload="metadata" muted loop onmouseover="this.play()" onmouseout="this.pause()"></video><div class="video-icon"></div>`
                         : `<img src="${optimizedImgUrl}" loading="lazy" decoding="async">`;
 
                     card.innerHTML = `<div class="thumb-media-wrapper">${mediaHTML}</div>`;
-                    gallery.appendChild(card);
+                    projectGrid.appendChild(card);
                 });
+
+                projectWrapper.appendChild(projectGrid);
+                gallery.appendChild(projectWrapper);
             }
         }
 
-        // ------------------ МОДАЛКА И ПРЕДЗАГРУЗКА ------------------
         function preloadMedia(index) {
             if (index < 0 || index >= filteredIndices.length) return;
             const item = portfolioData[filteredIndices[index]];
@@ -508,7 +719,7 @@
 
             if (!isVideo) {
                 const img = new Image();
-                img.src = getOptimizedImageUrl(item.url); // Скачиваем легкую версию
+                img.src = getOptimizedImageUrl(item.url);
             } else {
                 const vid = document.createElement('video');
                 vid.preload = 'metadata';
@@ -527,22 +738,19 @@
 
             const mediaContainer = document.getElementById('media-content-container');
             
-            // playsinline не даст айфонам принудительно разворачивать видео на весь экран
             mediaContainer.innerHTML = isVideo 
                 ? `<video src="${directUrl}" controls autoplay playsinline></video>` 
                 : `<img src="${optimizedImgUrl}" decoding="async">`;
 
-            // === ПРЕДЗАГРУЗКА ===
             const nextIndex = currentModalIndex + 1 >= filteredIndices.length ? 0 : currentModalIndex + 1;
             const prevIndex = currentModalIndex - 1 < 0 ? filteredIndices.length - 1 : currentModalIndex - 1;
             preloadMedia(nextIndex);
             preloadMedia(prevIndex);
-            // ====================
 
             const tagsContainer = document.getElementById('modal-tags');
             tagsContainer.innerHTML = '';
 
-            const tags = [
+            const tags =[
                 { text: item.project, type: 'project', color: false },
                 { text: item.field, type: 'field', color: true },
                 { text: item['field opt'], type: 'field', color: true },
