@@ -85,24 +85,27 @@
             font-weight: var(--font-weight);
             color: var(--color-black);
             -webkit-font-smoothing: antialiased;
-            padding: 120px 0; /* Отступы 120px сверху и снизу у всего документа */
+            padding: 120px 0; 
         }
 
-        /* ОБЕРТКА ШАПКИ (Фикс сверху с эффектом бесконечности вверх) */
+        /* ОБЕРТКА ШАПКИ (Эффект бесконечной шапки вверх) */
         .header-wrapper {
             position: fixed;
-            top: -100px; /* Сдвигаем на 100px вверх */
+            /* Вытягиваем шапку на 500px вверх, чтобы закрыть любые "дыры" браузера */
+            top: -500px; 
             left: 0; 
             right: 0;
-            padding-top: 100px; /* Компенсируем сдвиг, чтобы закрыть "резинку" Safari */
+            padding-top: 500px; 
             z-index: 50;
+            
             background-color: var(--color-translucent-w);
             backdrop-filter: var(--b-blur);
             -webkit-backdrop-filter: var(--b-blur);
+            /* Устраняет баги обрезки блюра в Safari */
+            transform: translateZ(0); 
         }
 
         header {
-            /* Отступы шапки: учитываем челку iPhone (safe-area) + 20px сверху и снизу */
             padding: calc(20px + env(safe-area-inset-top, 0px)) 40px 20px 40px; 
             display: flex;
             justify-content: space-between;
@@ -118,8 +121,13 @@
             background-position: left center;
         }
 
-        /* Кнопка фильтров в шапке */
-        .filters-toggle {
+        /* Навигация в шапке */
+        .header-nav {
+            display: flex;
+            gap: 24px; /* Расстояние между кнопками About и Filters */
+        }
+
+        .nav-toggle {
             display: flex;
             align-items: center;
             gap: 6px;
@@ -128,19 +136,19 @@
             cursor: pointer;
             padding: 0;
             
+            /* Применяем стиль H3 */
             font-family: var(--font-family);
-            font-weight: var(--font-weight);
-            font-size: var(--text-size);
-            line-height: var(--text-line-height);
-            letter-spacing: var(--text-letter-spacing);
+            font-weight: var(--font-weight); /* Явно указываем толщину */
+            font-size: var(--h3-size);
+            line-height: var(--h3-line-height);
+            letter-spacing: var(--h3-letter-spacing);
             color: var(--color-inactive);
         }
 
-        .filters-toggle:hover {
+        .nav-toggle:hover {
             opacity: 0.8;
         }
 
-        /* Иконка плюса/минуса через маску, чтобы задать ей цвет inactive */
         .toggle-icon {
             width: 16px;
             height: 16px;
@@ -149,19 +157,20 @@
             mask: var(--icon-plus) center/contain no-repeat;
         }
 
-        .filters-toggle.open .toggle-icon {
+        .nav-toggle.open .toggle-icon {
             -webkit-mask: var(--icon-minus) center/contain no-repeat;
             mask: var(--icon-minus) center/contain no-repeat;
         }
 
-        /* ФИЛЬТРЫ (Выпадают из шапки) */
-        .filters-container {
-            padding: 0 40px 20px 40px; /* Паддинги по бокам равны паддингам сетки */
-            display: flex;
+        /* КОНТЕЙНЕРЫ (Filters & About) */
+        .dropdown-container {
+            padding: 0 40px 20px 40px;
+            display: none; /* скрыто по умолчанию */
             flex-direction: column;
             gap: 12px;
         }
 
+        /* Внутрянка Filters */
         .filter-row {
             display: flex;
             align-items: center;
@@ -177,6 +186,7 @@
             margin-right: 4px;
         }
 
+        /* Общий стиль тегов (используется и для фильтров, и для кнопок-ссылок) */
         .filter-tag {
             background: var(--color-active);
             border: 1px solid transparent;
@@ -191,6 +201,8 @@
             cursor: pointer;
             transition: all 0.2s;
             font-family: inherit;
+            text-decoration: none; /* Если это ссылка <a> */
+            display: inline-flex;
         }
 
         .filter-tag:hover {
@@ -202,21 +214,37 @@
             color: var(--color-white) !important;
         }
 
+        /* Внутрянка About */
+        .about-text {
+            margin: 0;
+            font-size: var(--text-size);
+            line-height: var(--text-line-height);
+            letter-spacing: var(--text-letter-spacing);
+            color: var(--color-inactive);
+            max-width: 600px; /* Чтобы текст не растягивался на весь экран */
+        }
+
+        .about-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+
         /* ГАЛЕРЕЯ (Контейнер проектов) */
         .gallery {
             display: flex;
             flex-direction: column;
-            gap: 80px; /* Отступ 80px между проектами */
-            padding: 0 40px; /* Отступы по краям экрана */
+            gap: 80px; 
+            padding: 0 40px; 
             max-width: 1200px;
             margin: 0 auto;
         }
 
-        /* Обертка отдельного проекта */
         .project-wrapper {
             display: flex;
             flex-direction: column;
-            gap: 20px; /* Отступ 20px между названием (h2) и сеткой */
+            gap: 20px; 
         }
 
         .project-header {
@@ -225,9 +253,10 @@
             line-height: var(--h2-line-height);
             letter-spacing: var(--h2-letter-spacing);
             color: var(--color-inactive);
+            /* КРИТИЧНО: Сбрасываем дефолтную жирность <h2> от браузера */
+            font-weight: var(--font-weight); 
         }
 
-        /* Сама сетка карточек внутри проекта */
         .project-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -245,7 +274,7 @@
         }
 
         .thumb-media-wrapper {
-            padding: 8px; /* Десктопный паддинг обертки 8px */
+            padding: 8px; 
             background-color: transparent;
             border-radius: var(--r-large); 
             transition: transform 0.2s, background-color 0.2s;
@@ -263,7 +292,6 @@
 
         .thumb-media-wrapper img, 
         .thumb-media-wrapper video {
-            /* Вычитаем 16px (8px + 8px паддинги) */
             max-width: calc(100cqw - 16px);
             max-height: calc(100cqh - 16px);
             width: auto;
@@ -273,7 +301,7 @@
             display: block;
         }
 
-        /* Иконка Play для видео по центру */
+        /* Иконка Play */
         .video-icon {
             position: absolute;
             top: 50%;
@@ -283,16 +311,14 @@
             backdrop-filter: var(--b-blur);
             -webkit-backdrop-filter: var(--b-blur);
             border-radius: 50%;
-            padding: 20px; /* Отступы 20px вокруг иконки на десктопе */
+            padding: 20px; 
             
             display: flex;
             justify-content: center;
             align-items: center;
-            /* Не блокирует hover на видео */
             pointer-events: none; 
         }
 
-        /* Рисуем SVG маской, чтобы закрасить в inactive */
         .video-icon::after {
             content: '';
             display: block;
@@ -308,11 +334,9 @@
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            
             background-color: var(--color-translucent-w);
             backdrop-filter: var(--b-blur);
             -webkit-backdrop-filter: var(--b-blur);
-            
             z-index: 100;
             justify-content: center;
             align-items: center;
@@ -386,20 +410,6 @@
             display: flex; flex-wrap: wrap; gap: 6px;
         }
 
-        .tag {
-            background: var(--color-active);
-            padding: 4px 10px;
-            border-radius: var(--r-small);
-            font-size: var(--text-size);
-            line-height: var(--text-line-height);
-            letter-spacing: var(--text-letter-spacing);
-            color: var(--color-black);
-            cursor: pointer; 
-            transition: opacity 0.2s;
-        }
-        
-        .tag:hover { opacity: 0.8; }
-
         .loader {
             width: 32px;
             height: 32px;
@@ -417,25 +427,23 @@
 
         /* АДАПТИВ */
         @media (max-width: 600px) {
-            /* Отступы шапки и галереи 20px на мобилках */
             header { padding: calc(20px + env(safe-area-inset-top, 0px)) 20px 20px 20px; }
-            .filters-container { padding: 0 20px 20px 20px; }
+            .header-nav { gap: 16px; }
+            .dropdown-container { padding: 0 20px 20px 20px; }
             .gallery { padding: 0 20px; }
             
             .project-grid { 
                 grid-template-columns: 1fr 1fr; 
-                gap: 8px; /* Мобильный гэп 8px */
+                gap: 8px; 
             }
 
             .thumb-media-wrapper { padding: 6px; }
             .thumb-media-wrapper img, 
             .thumb-media-wrapper video {
-                /* Вычитаем 12px (6px + 6px паддинги) */
                 max-width: calc(100cqw - 12px);
                 max-height: calc(100cqh - 12px);
             }
 
-            /* Круглая кнопка видео на телефоне (паддинг 13) */
             .video-icon { padding: 13px; }
             .video-icon::after { width: 20px; height: 20px; }
 
@@ -458,13 +466,33 @@
     <div class="header-wrapper">
         <header>
             <div class="logo"></div>
-            <!-- Добавлена кнопка открытия фильтров -->
-            <button id="filters-toggle" class="filters-toggle" onclick="toggleFiltersMenu()">
-                Filters <span class="toggle-icon"></span>
-            </button>
+            <div class="header-nav">
+                <!-- Кнопка About -->
+                <button id="about-toggle" class="nav-toggle" onclick="toggleMenu('about')">
+                    About <span class="toggle-icon"></span>
+                </button>
+                <!-- Кнопка Filters -->
+                <button id="filters-toggle" class="nav-toggle" onclick="toggleMenu('filters')">
+                    Filters <span class="toggle-icon"></span>
+                </button>
+            </div>
         </header>
 
-        <div class="filters-container" id="filters-container" style="display: none;">
+        <!-- Контейнер About -->
+        <div class="dropdown-container" id="about-container">
+            <p class="about-text">
+                Hi! I am a digital designer. Here is a selection of my recent works.
+            </p>
+            <div class="about-buttons">
+                <!-- Замените символ # в href на ваши реальные ссылки -->
+                <a href="#" target="_blank" class="filter-tag">CV</a>
+                <a href="mailto:hello@example.com" class="filter-tag">Email</a>
+                <a href="#" target="_blank" class="filter-tag">Telegram</a>
+            </div>
+        </div>
+
+        <!-- Контейнер Filters -->
+        <div class="dropdown-container" id="filters-container">
             <div class="filter-row" id="filter-row-project">
                 <span class="filter-label">Project:</span>
             </div>
@@ -519,16 +547,35 @@
             year: new Set()
         };
 
-        // Логика кнопки фильтров
-        function toggleFiltersMenu() {
-            const btn = document.getElementById('filters-toggle');
-            const container = document.getElementById('filters-container');
-            if (btn.classList.contains('open')) {
-                btn.classList.remove('open');
-                container.style.display = 'none';
-            } else {
-                btn.classList.add('open');
-                container.style.display = 'flex';
+        // Логика "Аккордеона" для меню шапки
+        function toggleMenu(menuName) {
+            const filtersBtn = document.getElementById('filters-toggle');
+            const filtersContainer = document.getElementById('filters-container');
+            const aboutBtn = document.getElementById('about-toggle');
+            const aboutContainer = document.getElementById('about-container');
+
+            if (menuName === 'filters') {
+                if (filtersBtn.classList.contains('open')) {
+                    filtersBtn.classList.remove('open');
+                    filtersContainer.style.display = 'none';
+                } else {
+                    filtersBtn.classList.add('open');
+                    filtersContainer.style.display = 'flex';
+                    // Закрываем About, если открыт
+                    aboutBtn.classList.remove('open');
+                    aboutContainer.style.display = 'none';
+                }
+            } else if (menuName === 'about') {
+                if (aboutBtn.classList.contains('open')) {
+                    aboutBtn.classList.remove('open');
+                    aboutContainer.style.display = 'none';
+                } else {
+                    aboutBtn.classList.add('open');
+                    aboutContainer.style.display = 'flex';
+                    // Закрываем Filters, если открыты
+                    filtersBtn.classList.remove('open');
+                    filtersContainer.style.display = 'none';
+                }
             }
         }
 
@@ -593,6 +640,7 @@
                     btn.style.borderLeft = `4px solid ${fieldColors[val]}`;
                 }
 
+                // Используем .closest('.dropdown-container'), чтобы клик по About-ссылке не ломал JS
                 btn.onclick = () => toggleFilter(type, val, btn);
                 container.appendChild(btn);
             });
@@ -671,11 +719,10 @@
             filteredIndices.forEach((originalIndex) => {
                 const item = portfolioData[originalIndex];
                 const projectName = item.project ? item.project.trim() : 'others';
-                if (!groupedProjects[projectName]) groupedProjects[projectName] =[];
+                if (!groupedProjects[projectName]) groupedProjects[projectName] = [];
                 groupedProjects[projectName].push({ item, index: originalIndex });
             });
 
-            // Обновленный рендер: теперь каждый проект обернут в свой div с отступами
             for (const projectName in groupedProjects) {
                 const projectWrapper = document.createElement('div');
                 projectWrapper.className = 'project-wrapper';
