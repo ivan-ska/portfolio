@@ -44,17 +44,11 @@
             --text-line-height: 1.2;
             --text-letter-spacing: -0.02em;
         
-            /* Иконки - Desktop Default */
-            --icon-arrow-link: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/arrow-link.svg');
+            /* Иконки */
             --icon-arrow-project-left: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/arrow-project-left-d.svg');
             --icon-arrow-project-right: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/arrow-project-right-d.svg');
             --icon-cross-large: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/cross-large-d.svg');
-            --icon-cross-small: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/cross-small-d.svg');
-            --icon-loading: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/loading-d.svg');
-            --icon-logo: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/logo-d.svg');
-            --icon-minus: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/minus-d.svg');
             --icon-play: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/play-d.svg');
-            --icon-plus: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/plus-d.svg');
         }
         
         /* --- АДАПТИВ ДИЗАЙН-СИСТЕМЫ (Mobile Overrides) --- */
@@ -66,13 +60,17 @@
                 --icon-arrow-project-left: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/arrow-project-left-m.svg');
                 --icon-arrow-project-right: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/arrow-project-right-m.svg');
                 --icon-cross-large: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/cross-large-m.svg');
-                --icon-cross-small: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/cross-small-m.svg');
-                --icon-loading: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/loading-m.svg');
-                --icon-logo: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/logo-m.svg');
-                --icon-minus: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/minus-m.svg');
                 --icon-play: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/play-m.svg');
-                --icon-plus: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/plus-m.svg');
             }
+        }
+
+        /* Управление инлайновыми SVG версиями (Desktop/Mobile) */
+        .icon-desktop { display: block; }
+        .icon-mobile { display: none; }
+        
+        @media (max-width: 600px) {
+            .icon-desktop { display: none; }
+            .icon-mobile { display: block; }
         }
 
         /* ========================================= */
@@ -88,20 +86,64 @@
             padding: 120px 0; 
         }
 
-        /* ОБЕРТКА ШАПКИ (Эффект бесконечной шапки вверх) */
+        /* --- ФЕЙКОВЫЙ ЭКРАН ЗАГРУЗКИ --- */
+        #loading-screen {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: var(--color-white);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px; 
+            padding: 20px 40px; 
+            background-color: var(--color-active);
+            backdrop-filter: var(--b-blur);
+            -webkit-backdrop-filter: var(--b-blur);
+            border-radius: var(--r-large);
+        }
+
+        .loading-badge-text {
+            font-family: var(--font-family);
+            font-weight: var(--font-weight);
+            font-size: var(--h3-size);
+            line-height: var(--h3-line-height);
+            letter-spacing: var(--h3-letter-spacing);
+            color: var(--color-black);
+            margin: 0;
+        }
+
+        .loading-dot {
+            fill-opacity: 0.07;
+            animation: dot-pulse 1.5s infinite;
+        }
+        .loading-dot:nth-child(1) { animation-delay: 0s; }
+        .loading-dot:nth-child(2) { animation-delay: 0.5s; }
+        .loading-dot:nth-child(3) { animation-delay: 1s; }
+
+        @keyframes dot-pulse {
+            0%, 15% { fill-opacity: 1; }
+            30%, 100% { fill-opacity: 0.07; }
+        }
+
+        /* ОБЕРТКА ШАПКИ */
         .header-wrapper {
             position: fixed;
-            /* Вытягиваем шапку на 500px вверх, чтобы закрыть любые "дыры" браузера */
             top: -500px; 
-            left: 0; 
-            right: 0;
+            left: 0; right: 0;
             padding-top: 500px; 
             z-index: 50;
             
             background-color: var(--color-translucent-w);
             backdrop-filter: var(--b-blur);
             -webkit-backdrop-filter: var(--b-blur);
-            /* Устраняет баги обрезки блюра в Safari */
             transform: translateZ(0); 
         }
 
@@ -112,19 +154,9 @@
             align-items: center;
         }
 
-        .logo {
-            height: 32px; 
-            width: 150px;
-            background-image: var(--icon-logo);
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: left center;
-        }
-
-        /* Навигация в шапке */
         .header-nav {
             display: flex;
-            gap: 24px; /* Расстояние между кнопками About и Filters */
+            gap: 24px;
         }
 
         .nav-toggle {
@@ -136,41 +168,86 @@
             cursor: pointer;
             padding: 0;
             
-            /* Применяем стиль H3 */
             font-family: var(--font-family);
-            font-weight: var(--font-weight); /* Явно указываем толщину */
+            font-weight: var(--font-weight); 
             font-size: var(--h3-size);
             line-height: var(--h3-line-height);
             letter-spacing: var(--h3-letter-spacing);
             color: var(--color-inactive);
         }
 
-        .nav-toggle:hover {
-            opacity: 0.8;
+        .nav-toggle:hover { opacity: 0.8; }
+
+        /* Анимация плюса в минус */
+        .toggle-svg {
+            color: var(--color-inactive);
+            transition: transform 0.2s ease; /* Вращение */
+        }
+        .toggle-vertical {
+            transition: opacity 0.2s ease; /* Растворение */
         }
 
-        .toggle-icon {
-            width: 16px;
-            height: 16px;
-            background-color: var(--color-inactive);
-            -webkit-mask: var(--icon-plus) center/contain no-repeat;
-            mask: var(--icon-plus) center/contain no-repeat;
+        .nav-toggle.open .toggle-svg {
+            transform: rotate(180deg);
+        }
+        .nav-toggle.open .toggle-vertical {
+            opacity: 0;
         }
 
-        .nav-toggle.open .toggle-icon {
-            -webkit-mask: var(--icon-minus) center/contain no-repeat;
-            mask: var(--icon-minus) center/contain no-repeat;
+        /* Кнопка + (вызывает модалку) */
+        .header-plus-btn {
+            padding: 9px;
+            border-radius: var(--r-small);
+            background-color: var(--color-active);
+            border: none;
+            cursor: pointer;
+            color: var(--color-black);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        /* Слой активного цвета при наведении (доп 7% черного) */
+        .header-plus-btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            background-color: var(--color-active);
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            pointer-events: none;
+        }
+        .header-plus-btn:hover::after {
+            opacity: 1;
         }
 
-        /* КОНТЕЙНЕРЫ (Filters & About) */
+        /* ПЛАВНЫЕ КОНТЕЙНЕРЫ (Filters & About) - CSS Grid анимация */
+        .dropdown-wrapper {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.2s ease, opacity 0.2s ease;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .dropdown-wrapper.open {
+            grid-template-rows: 1fr;
+            opacity: 1;
+            visibility: visible;
+        }
+
         .dropdown-container {
+            overflow: hidden;
+        }
+
+        .dropdown-inner {
             padding: 0 40px 20px 40px;
-            display: none; /* скрыто по умолчанию */
+            display: flex;
             flex-direction: column;
             gap: 12px;
         }
 
-        /* Внутрянка Filters */
         .filter-row {
             display: flex;
             align-items: center;
@@ -186,12 +263,12 @@
             margin-right: 4px;
         }
 
-        /* Общий стиль тегов (используется и для фильтров, и для кнопок-ссылок) */
+        /* button-small: Теги и ссылки */
         .filter-tag {
-            background: var(--color-active);
+            background-color: var(--color-active);
             border: 1px solid transparent;
-            padding: 4px 10px;
-            border-radius: var(--r-small);
+            padding: 4px 8px; /* Паддинги: 4px вертикаль, 8px горизонталь */
+            border-radius: var(--r-small); /* Скругление 2px */
             
             font-size: var(--text-size);
             line-height: var(--text-line-height);
@@ -201,27 +278,46 @@
             cursor: pointer;
             transition: all 0.2s;
             font-family: inherit;
-            text-decoration: none; /* Если это ссылка <a> */
+            text-decoration: none; 
+            
             display: inline-flex;
+            align-items: center;
+            gap: 4px; 
+            position: relative; /* Для псевдоэлемента с фоном */
         }
 
-        .filter-tag:hover {
-            opacity: 0.8;
+        /* Эффект ховера (дополнительные 7% черного) */
+        .filter-tag::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-color: var(--color-active);
+            border-radius: inherit;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            pointer-events: none;
         }
-
+        .filter-tag:hover::after { opacity: 1; }
+        
         .filter-tag.active {
-            background: var(--color-black) !important;
+            background-color: var(--color-black) !important;
             color: var(--color-white) !important;
         }
 
-        /* Внутрянка About */
+        /* АНИМАЦИЯ СТРЕЛОЧКИ ССЫЛОК */
+        .arrow-diag, .arrow-corn {
+            transition: d 0.2s ease-out; 
+        }
+        .filter-tag:hover .arrow-diag { d: path("M9 3L3 9"); }
+        .filter-tag:hover .arrow-corn { d: path("M9 10L9 3L2 3"); }
+
         .about-text {
             margin: 0;
             font-size: var(--text-size);
             line-height: var(--text-line-height);
             letter-spacing: var(--text-letter-spacing);
             color: var(--color-inactive);
-            max-width: 600px; /* Чтобы текст не растягивался на весь экран */
+            max-width: 600px; 
         }
 
         .about-buttons {
@@ -231,7 +327,7 @@
             margin-top: 8px;
         }
 
-        /* ГАЛЕРЕЯ (Контейнер проектов) */
+        /* ГАЛЕРЕЯ */
         .gallery {
             display: flex;
             flex-direction: column;
@@ -239,6 +335,13 @@
             padding: 0 40px; 
             max-width: 1200px;
             margin: 0 auto;
+        }
+
+        .loader {
+            display: flex;
+            justify-content: center;
+            margin: 0 auto;
+            color: var(--color-inactive);
         }
 
         .project-wrapper {
@@ -253,7 +356,6 @@
             line-height: var(--h2-line-height);
             letter-spacing: var(--h2-letter-spacing);
             color: var(--color-inactive);
-            /* КРИТИЧНО: Сбрасываем дефолтную жирность <h2> от браузера */
             font-weight: var(--font-weight); 
         }
 
@@ -263,7 +365,6 @@
             gap: 12px;
         }
 
-        /* КАРТОЧКА И ОБЕРТКА */
         .thumb-card {
             aspect-ratio: 1 / 1;
             display: flex;
@@ -301,18 +402,15 @@
             display: block;
         }
 
-        /* Иконка Play */
         .video-icon {
             position: absolute;
-            top: 50%;
-            left: 50%;
+            top: 50%; left: 50%;
             transform: translate(-50%, -50%);
             background-color: var(--color-translucent-w);
             backdrop-filter: var(--b-blur);
             -webkit-backdrop-filter: var(--b-blur);
             border-radius: 50%;
             padding: 20px; 
-            
             display: flex;
             justify-content: center;
             align-items: center;
@@ -322,8 +420,7 @@
         .video-icon::after {
             content: '';
             display: block;
-            width: 24px;
-            height: 24px;
+            width: 24px; height: 24px;
             background-color: var(--color-inactive);
             -webkit-mask: var(--icon-play) center/contain no-repeat;
             mask: var(--icon-play) center/contain no-repeat;
@@ -405,31 +502,17 @@
         .nav-btn.next { right: 16px; background-image: var(--icon-arrow-project-right); }
 
         .modal-info { padding: 24px; }
-
-        .tags-container {
-            display: flex; flex-wrap: wrap; gap: 6px;
-        }
-
-        .loader {
-            width: 32px;
-            height: 32px;
-            margin: 0 auto;
-            background-image: var(--icon-loading);
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            100% { transform: rotate(360deg); }
-        }
+        .tags-container { display: flex; flex-wrap: wrap; gap: 6px; }
 
         /* АДАПТИВ */
         @media (max-width: 600px) {
+            .loading-badge { gap: 8px; }
+
             header { padding: calc(20px + env(safe-area-inset-top, 0px)) 20px 20px 20px; }
             .header-nav { gap: 16px; }
-            .dropdown-container { padding: 0 20px 20px 20px; }
+            .header-plus-btn { padding: 8px; }
+
+            .dropdown-inner { padding: 0 20px 20px 20px; }
             .gallery { padding: 0 20px; }
             
             .project-grid { 
@@ -463,50 +546,129 @@
 
 <body>
 
+    <div id="loading-screen">
+        <div class="loading-badge">
+            <h3 class="loading-badge-text">Loading</h3>
+            <svg class="icon-desktop" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle class="loading-dot" cx="2" cy="8" r="1.5" fill="currentColor"/>
+                <circle class="loading-dot" cx="8" cy="8" r="1.5" fill="currentColor"/>
+                <circle class="loading-dot" cx="14" cy="8" r="1.5" fill="currentColor"/>
+            </svg>
+            <svg class="icon-mobile" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle class="loading-dot" cx="1.75" cy="7" r="1.25" fill="currentColor"/>
+                <circle class="loading-dot" cx="7" cy="7" r="1.25" fill="currentColor"/>
+                <circle class="loading-dot" cx="12.25" cy="7" r="1.25" fill="currentColor"/>
+            </svg>
+        </div>
+    </div>
+
     <div class="header-wrapper">
         <header>
-            <div class="logo"></div>
             <div class="header-nav">
-                <!-- Кнопка About -->
-                <button id="about-toggle" class="nav-toggle" onclick="toggleMenu('about')">
-                    About <span class="toggle-icon"></span>
-                </button>
                 <!-- Кнопка Filters -->
-                <button id="filters-toggle" class="nav-toggle" onclick="toggleMenu('filters')">
-                    Filters <span class="toggle-icon"></span>
+                <button id="filters-toggle" class="nav-toggle" onclick="toggleMenu('filters', event)">
+                    Filters 
+                    <svg class="toggle-svg icon-desktop" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path class="toggle-vertical" d="M7 2V12" stroke="currentColor" stroke-width="1.2"/>
+                        <path class="toggle-horizontal" d="M2 7L12 7" stroke="currentColor" stroke-width="1.2"/>
+                    </svg>
+                    <svg class="toggle-svg icon-mobile" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path class="toggle-vertical" d="M6 2V10" stroke="currentColor"/>
+                        <path class="toggle-horizontal" d="M2 6L10 6" stroke="currentColor"/>
+                    </svg>
+                </button>
+                
+                <!-- Кнопка About -->
+                <button id="about-toggle" class="nav-toggle" onclick="toggleMenu('about', event)">
+                    About
+                    <svg class="toggle-svg icon-desktop" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path class="toggle-vertical" d="M7 2V12" stroke="currentColor" stroke-width="1.2"/>
+                        <path class="toggle-horizontal" d="M2 7L12 7" stroke="currentColor" stroke-width="1.2"/>
+                    </svg>
+                    <svg class="toggle-svg icon-mobile" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path class="toggle-vertical" d="M6 2V10" stroke="currentColor"/>
+                        <path class="toggle-horizontal" d="M2 6L10 6" stroke="currentColor"/>
+                    </svg>
                 </button>
             </div>
+
+            <!-- Новая Кнопка Плюс (Пока без функционала, можно добавить onClick) -->
+            <button class="header-plus-btn">
+                <svg class="icon-desktop" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7 2V12" stroke="currentColor" stroke-width="1.2"/>
+                    <path d="M2 7L12 7" stroke="currentColor" stroke-width="1.2"/>
+                </svg>
+                <svg class="icon-mobile" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6 2V10" stroke="currentColor"/>
+                    <path d="M2 6L10 6" stroke="currentColor"/>
+                </svg>
+            </button>
         </header>
 
-        <!-- Контейнер About -->
-        <div class="dropdown-container" id="about-container">
-            <p class="about-text">
-                Hi! I am a digital designer. Here is a selection of my recent works.
-            </p>
-            <div class="about-buttons">
-                <!-- Замените символ # в href на ваши реальные ссылки -->
-                <a href="#" target="_blank" class="filter-tag">CV</a>
-                <a href="mailto:hello@example.com" class="filter-tag">Email</a>
-                <a href="#" target="_blank" class="filter-tag">Telegram</a>
+        <!-- Плавные контейнеры (Wrapper -> Container -> Inner) -->
+        <div class="dropdown-wrapper" id="about-wrapper">
+            <div class="dropdown-container">
+                <div class="dropdown-inner">
+                    <p class="about-text">
+                        Hi! I am a digital designer. Here is a selection of my recent works.
+                    </p>
+                    <div class="about-buttons">
+                        <a href="#" target="_blank" class="filter-tag">
+                            <svg class="arrow-link-svg" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path class="arrow-diag" d="M10 2L2 10" stroke="currentColor"/>
+                                <path class="arrow-corn" d="M10 9L10 2L3 2" stroke="currentColor"/>
+                            </svg>
+                            CV
+                        </a>
+                        <a href="mailto:hello@example.com" class="filter-tag">
+                            <svg class="arrow-link-svg" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path class="arrow-diag" d="M10 2L2 10" stroke="currentColor"/>
+                                <path class="arrow-corn" d="M10 9L10 2L3 2" stroke="currentColor"/>
+                            </svg>
+                            Email
+                        </a>
+                        <a href="#" target="_blank" class="filter-tag">
+                            <svg class="arrow-link-svg" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path class="arrow-diag" d="M10 2L2 10" stroke="currentColor"/>
+                                <path class="arrow-corn" d="M10 9L10 2L3 2" stroke="currentColor"/>
+                            </svg>
+                            Telegram
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- Контейнер Filters -->
-        <div class="dropdown-container" id="filters-container">
-            <div class="filter-row" id="filter-row-project">
-                <span class="filter-label">Project:</span>
-            </div>
-            <div class="filter-row" id="filter-row-field">
-                <span class="filter-label">Field:</span>
-            </div>
-            <div class="filter-row" id="filter-row-year">
-                <span class="filter-label">Year:</span>
+        <div class="dropdown-wrapper" id="filters-wrapper">
+            <div class="dropdown-container">
+                <div class="dropdown-inner">
+                    <div class="filter-row" id="filter-row-project">
+                        <span class="filter-label">Project:</span>
+                    </div>
+                    <div class="filter-row" id="filter-row-field">
+                        <span class="filter-label">Field:</span>
+                    </div>
+                    <div class="filter-row" id="filter-row-year">
+                        <span class="filter-label">Year:</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <main class="gallery" id="gallery">
-        <div class="loader"></div>
+        <div class="loader">
+            <svg class="icon-desktop" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle class="loading-dot" cx="2" cy="8" r="1.5" fill="currentColor"/>
+                <circle class="loading-dot" cx="8" cy="8" r="1.5" fill="currentColor"/>
+                <circle class="loading-dot" cx="14" cy="8" r="1.5" fill="currentColor"/>
+            </svg>
+            <svg class="icon-mobile" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle class="loading-dot" cx="1.75" cy="7" r="1.25" fill="currentColor"/>
+                <circle class="loading-dot" cx="7" cy="7" r="1.25" fill="currentColor"/>
+                <circle class="loading-dot" cx="12.25" cy="7" r="1.25" fill="currentColor"/>
+            </svg>
+        </div>
     </main>
 
     <div class="modal" id="modal" onclick="closeModal(event)">
@@ -527,6 +689,29 @@
     </div>
 
     <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const loader = document.getElementById('loading-screen');
+                if (loader) {
+                    loader.style.pointerEvents = 'none';
+                    loader.style.opacity = '0';
+                    setTimeout(() => loader.remove(), 500); 
+                }
+            }, 3000); 
+        });
+
+        // ГЛОБАЛЬНЫЙ КЛИК: Закрытие меню шапки при клике в пустое место
+        document.addEventListener('click', function(event) {
+            const headerWrapper = document.querySelector('.header-wrapper');
+            // Если кликнули не на элементы шапки, то скрываем меню
+            if (!headerWrapper.contains(event.target)) {
+                document.getElementById('filters-toggle').classList.remove('open');
+                document.getElementById('filters-wrapper').classList.remove('open');
+                document.getElementById('about-toggle').classList.remove('open');
+                document.getElementById('about-wrapper').classList.remove('open');
+            }
+        });
+
         const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtm-693Wc44CzQx_ASnwQanc45NuieQl6YkoYVavbQ2UBAyPrgxibzDzPoLkUo9cZpdd9RcsPHBsnI/pub?output=csv';
 
         const fieldColors = {
@@ -547,34 +732,33 @@
             year: new Set()
         };
 
-        // Логика "Аккордеона" для меню шапки
-        function toggleMenu(menuName) {
+        function toggleMenu(menuName, event) {
+            if(event) event.stopPropagation(); // Не даем клику проброситься в document
+
             const filtersBtn = document.getElementById('filters-toggle');
-            const filtersContainer = document.getElementById('filters-container');
+            const filtersWrapper = document.getElementById('filters-wrapper');
             const aboutBtn = document.getElementById('about-toggle');
-            const aboutContainer = document.getElementById('about-container');
+            const aboutWrapper = document.getElementById('about-wrapper');
 
             if (menuName === 'filters') {
                 if (filtersBtn.classList.contains('open')) {
                     filtersBtn.classList.remove('open');
-                    filtersContainer.style.display = 'none';
+                    filtersWrapper.classList.remove('open');
                 } else {
                     filtersBtn.classList.add('open');
-                    filtersContainer.style.display = 'flex';
-                    // Закрываем About, если открыт
+                    filtersWrapper.classList.add('open');
                     aboutBtn.classList.remove('open');
-                    aboutContainer.style.display = 'none';
+                    aboutWrapper.classList.remove('open');
                 }
             } else if (menuName === 'about') {
                 if (aboutBtn.classList.contains('open')) {
                     aboutBtn.classList.remove('open');
-                    aboutContainer.style.display = 'none';
+                    aboutWrapper.classList.remove('open');
                 } else {
                     aboutBtn.classList.add('open');
-                    aboutContainer.style.display = 'flex';
-                    // Закрываем Filters, если открыты
+                    aboutWrapper.classList.add('open');
                     filtersBtn.classList.remove('open');
-                    filtersContainer.style.display = 'none';
+                    filtersWrapper.classList.remove('open');
                 }
             }
         }
@@ -636,11 +820,11 @@
                 btn.className = 'filter-tag';
                 btn.innerText = val;
                 
+                // ВАЖНО: Заливаем весь фон цветом ниши
                 if (type === 'field' && fieldColors[val]) {
-                    btn.style.borderLeft = `4px solid ${fieldColors[val]}`;
+                    btn.style.backgroundColor = fieldColors[val];
                 }
 
-                // Используем .closest('.dropdown-container'), чтобы клик по About-ссылке не ломал JS
                 btn.onclick = () => toggleFilter(type, val, btn);
                 container.appendChild(btn);
             });
@@ -668,8 +852,7 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function updateFilterButtonsUI() {
-            ['project', 'field', 'year'].forEach(type => {
+        function updateFilterButtonsUI() {['project', 'field', 'year'].forEach(type => {
                 const container = document.getElementById(`filter-row-${type}`);
                 const buttons = container.querySelectorAll('.filter-tag');
                 buttons.forEach(btn => {
@@ -808,7 +991,7 @@
                 if (t.text && t.text.trim() !== '') {
                     const cleanText = t.text.toLowerCase().trim();
                     const span = document.createElement('span');
-                    span.className = 'tag';
+                    span.className = 'filter-tag';
                     span.innerText = cleanText;
                     
                     if (t.color && fieldColors[cleanText]) {
