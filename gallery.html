@@ -14,21 +14,17 @@
         /* ========================================= */
         
         :root {
-            /* Цвета */
             --color-black: #000000;
             --color-white: #FFFFFF;
             --color-translucent-w: rgba(255, 255, 255, 0.7);
             --color-active: rgba(0, 0, 0, 0.07);
             --color-inactive: rgba(0, 0, 0, 0.4);
         
-            /* Эффекты */
             --b-blur: blur(40px);
         
-            /* Скругления */
             --r-small: 2px;
             --r-large: 4px;
         
-            /* Типографика - Desktop Default */
             --font-family: 'DM Mono', monospace;
             --font-weight: 400;
             
@@ -44,14 +40,12 @@
             --text-line-height: 1.2;
             --text-letter-spacing: -0.02em;
         
-            /* Иконки */
             --icon-arrow-project-left: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/arrow-project-left-d.svg');
             --icon-arrow-project-right: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/arrow-project-right-d.svg');
             --icon-cross-large: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/cross-large-d.svg');
             --icon-play: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/play-d.svg');
         }
         
-        /* --- АДАПТИВ ДИЗАЙН-СИСТЕМЫ (Mobile Overrides) --- */
         @media (max-width: 600px) {
             :root {
                 --h2-size: 18px;
@@ -64,10 +58,8 @@
             }
         }
 
-        /* Управление инлайновыми SVG версиями (Desktop/Mobile) */
         .icon-desktop { display: block; }
         .icon-mobile { display: none; }
-        
         @media (max-width: 600px) {
             .icon-desktop { display: none; }
             .icon-mobile { display: block; }
@@ -83,7 +75,8 @@
             font-weight: var(--font-weight);
             color: var(--color-black);
             -webkit-font-smoothing: antialiased;
-            padding: 120px 0; 
+            /* 120px отступ сверху */
+            padding: 120px 0 0 0; 
         }
 
         /* --- ФЕЙКОВЫЙ ЭКРАН ЗАГРУЗКИ --- */
@@ -148,6 +141,10 @@
         }
 
         header {
+            max-width: 1280px;
+            margin: 0 auto;
+            width: 100%;
+            box-sizing: border-box;
             padding: calc(20px + env(safe-area-inset-top, 0px)) 40px 20px 40px; 
             display: flex;
             justify-content: space-between;
@@ -173,28 +170,21 @@
             font-size: var(--h3-size);
             line-height: var(--h3-line-height);
             letter-spacing: var(--h3-letter-spacing);
-            color: var(--color-inactive);
+            color: var(--color-black); 
+            transition: opacity 0.2s ease;
         }
 
-        .nav-toggle:hover { opacity: 0.8; }
+        .nav-toggle:hover { opacity: 0.7; }
 
-        /* Анимация плюса в минус */
         .toggle-svg {
-            color: var(--color-inactive);
-            transition: transform 0.2s ease; /* Вращение */
+            color: var(--color-black);
+            transition: transform 0.2s ease; 
         }
-        .toggle-vertical {
-            transition: opacity 0.2s ease; /* Растворение */
-        }
+        .toggle-vertical { transition: opacity 0.2s ease; }
 
-        .nav-toggle.open .toggle-svg {
-            transform: rotate(180deg);
-        }
-        .nav-toggle.open .toggle-vertical {
-            opacity: 0;
-        }
+        .nav-toggle.open .toggle-svg { transform: rotate(180deg); }
+        .nav-toggle.open .toggle-vertical { opacity: 0; }
 
-        /* Кнопка + (вызывает модалку) */
         .header-plus-btn {
             padding: 9px;
             border-radius: var(--r-small);
@@ -207,7 +197,6 @@
             justify-content: center;
             position: relative;
         }
-        /* Слой активного цвета при наведении (доп 7% черного) */
         .header-plus-btn::after {
             content: '';
             position: absolute;
@@ -218,30 +207,31 @@
             transition: opacity 0.2s ease;
             pointer-events: none;
         }
-        .header-plus-btn:hover::after {
-            opacity: 1;
-        }
+        .header-plus-btn:hover::after { opacity: 1; }
 
-        /* ПЛАВНЫЕ КОНТЕЙНЕРЫ (Filters & About) - CSS Grid анимация */
+        /* ПЛАВНЫЕ КОНТЕЙНЕРЫ (Filters & About) */
         .dropdown-wrapper {
             display: grid;
             grid-template-rows: 0fr;
-            transition: grid-template-rows 0.2s ease, opacity 0.2s ease;
             opacity: 0;
             visibility: hidden;
+            transition: grid-template-rows 0.2s ease, opacity 0.2s ease, visibility 0s 0.2s; 
         }
 
         .dropdown-wrapper.open {
             grid-template-rows: 1fr;
             opacity: 1;
             visibility: visible;
+            transition: grid-template-rows 0.2s ease, opacity 0.2s ease, visibility 0s 0s;
         }
 
-        .dropdown-container {
-            overflow: hidden;
-        }
+        .dropdown-container { overflow: hidden; }
 
         .dropdown-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            width: 100%;
+            box-sizing: border-box;
             padding: 0 40px 20px 40px;
             display: flex;
             flex-direction: column;
@@ -259,16 +249,17 @@
             font-size: var(--text-size);
             line-height: var(--text-line-height);
             letter-spacing: var(--text-letter-spacing);
-            color: var(--color-inactive);
+            color: var(--color-black); 
             margin-right: 4px;
         }
 
-        /* button-small: Теги и ссылки */
+        /* button-small: Теги и ссылки (убран border: 1px solid transparent) */
         .filter-tag {
             background-color: var(--color-active);
-            border: 1px solid transparent;
-            padding: 4px 8px; /* Паддинги: 4px вертикаль, 8px горизонталь */
-            border-radius: var(--r-small); /* Скругление 2px */
+            border: none;
+            outline: none;
+            padding: 4px 8px; 
+            border-radius: var(--r-small); 
             
             font-size: var(--text-size);
             line-height: var(--text-line-height);
@@ -276,17 +267,17 @@
             color: var(--color-black);
             
             cursor: pointer;
-            transition: all 0.2s;
+            transition: opacity 0.2s ease;
             font-family: inherit;
             text-decoration: none; 
             
             display: inline-flex;
             align-items: center;
             gap: 4px; 
-            position: relative; /* Для псевдоэлемента с фоном */
+            position: relative; 
         }
 
-        /* Эффект ховера (дополнительные 7% черного) */
+        /* Псевдослой ховера теперь плотно прилегает к краям кнопки */
         .filter-tag::after {
             content: '';
             position: absolute;
@@ -304,10 +295,7 @@
             color: var(--color-white) !important;
         }
 
-        /* АНИМАЦИЯ СТРЕЛОЧКИ ССЫЛОК */
-        .arrow-diag, .arrow-corn {
-            transition: d 0.2s ease-out; 
-        }
+        .arrow-diag, .arrow-corn { transition: d 0.2s ease-out; }
         .filter-tag:hover .arrow-diag { d: path("M9 3L3 9"); }
         .filter-tag:hover .arrow-corn { d: path("M9 10L9 3L2 3"); }
 
@@ -316,7 +304,7 @@
             font-size: var(--text-size);
             line-height: var(--text-line-height);
             letter-spacing: var(--text-letter-spacing);
-            color: var(--color-inactive);
+            color: var(--color-black); 
             max-width: 600px; 
         }
 
@@ -329,19 +317,21 @@
 
         /* ГАЛЕРЕЯ */
         .gallery {
+            max-width: 1280px;
+            margin: 0 auto;
+            width: 100%;
+            box-sizing: border-box;
             display: flex;
             flex-direction: column;
             gap: 80px; 
             padding: 0 40px; 
-            max-width: 1200px;
-            margin: 0 auto;
         }
 
         .loader {
             display: flex;
             justify-content: center;
             margin: 0 auto;
-            color: var(--color-inactive);
+            color: var(--color-black);
         }
 
         .project-wrapper {
@@ -352,11 +342,12 @@
 
         .project-header {
             margin: 0;
+            font-family: var(--font-family);
+            font-weight: 400; 
             font-size: var(--h2-size);
             line-height: var(--h2-line-height);
             letter-spacing: var(--h2-letter-spacing);
-            color: var(--color-inactive);
-            font-weight: var(--font-weight); 
+            color: var(--color-black); 
         }
 
         .project-grid {
@@ -424,6 +415,39 @@
             background-color: var(--color-inactive);
             -webkit-mask: var(--icon-play) center/contain no-repeat;
             mask: var(--icon-play) center/contain no-repeat;
+        }
+
+        /* ПОДВАЛ (ФУТЕР) */
+        .site-footer {
+            max-width: 1280px;
+            /* Отступы: 80px от галереи, 120px от самого низа страницы */
+            margin: 80px auto 120px auto; 
+            padding: 20px 40px; 
+            box-sizing: border-box;
+            width: 100%;
+            display: flex;
+            justify-content: center; 
+        }
+        
+        .site-footer-inner {
+            display: flex;
+            align-items: center;
+            gap: 8px; 
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .footer-text {
+            font-family: var(--font-family);
+            font-weight: var(--font-weight);
+            font-size: var(--h3-size);
+            line-height: var(--h3-line-height);
+            letter-spacing: var(--h3-letter-spacing);
+            color: var(--color-black);
+            margin: 0;
         }
 
         /* ВСПЛЫВАЮЩЕЕ ОКНО (МОДАЛКА) */
@@ -515,6 +539,8 @@
             .dropdown-inner { padding: 0 20px 20px 20px; }
             .gallery { padding: 0 20px; }
             
+            .site-footer { padding: 20px; }
+            
             .project-grid { 
                 grid-template-columns: 1fr 1fr; 
                 gap: 8px; 
@@ -565,7 +591,6 @@
     <div class="header-wrapper">
         <header>
             <div class="header-nav">
-                <!-- Кнопка Filters -->
                 <button id="filters-toggle" class="nav-toggle" onclick="toggleMenu('filters', event)">
                     Filters 
                     <svg class="toggle-svg icon-desktop" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -578,7 +603,6 @@
                     </svg>
                 </button>
                 
-                <!-- Кнопка About -->
                 <button id="about-toggle" class="nav-toggle" onclick="toggleMenu('about', event)">
                     About
                     <svg class="toggle-svg icon-desktop" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -592,7 +616,6 @@
                 </button>
             </div>
 
-            <!-- Новая Кнопка Плюс (Пока без функционала, можно добавить onClick) -->
             <button class="header-plus-btn">
                 <svg class="icon-desktop" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M7 2V12" stroke="currentColor" stroke-width="1.2"/>
@@ -605,7 +628,6 @@
             </button>
         </header>
 
-        <!-- Плавные контейнеры (Wrapper -> Container -> Inner) -->
         <div class="dropdown-wrapper" id="about-wrapper">
             <div class="dropdown-container">
                 <div class="dropdown-inner">
@@ -671,6 +693,25 @@
         </div>
     </main>
 
+    <!-- ПОДВАЛ / ФУТЕР -->
+    <footer class="site-footer">
+        <div class="site-footer-inner">
+            <div class="footer-logo">
+                <svg class="icon-desktop" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12.374 1.73457L13.0975 5.15444C13.1612 5.45376 13.3945 5.68709 13.6938 5.75073L17.1137 6.4743C17.5214 6.56033 17.5214 7.14366 17.1137 7.22969L13.6938 7.95325C13.3945 8.01689 13.1612 8.25022 13.0975 8.54955L12.374 11.9694C12.2879 12.3772 11.7046 12.3772 11.6186 11.9694L10.895 8.54955C10.8314 8.25022 10.598 8.01689 10.2987 7.95325L6.88003 7.22851C6.47228 7.14248 6.47228 6.55915 6.88003 6.47312L10.2999 5.74955C10.5992 5.68592 10.8325 5.45258 10.8962 5.15326L11.6198 1.7334C11.7046 1.32565 12.2879 1.32565 12.374 1.73457Z" fill="black"/>
+                    <path d="M11.2 19.9996H7.11906C6.94937 19.9996 6.81267 19.8629 6.81267 19.6932V18.7033C6.81267 18.2319 6.66536 17.7723 6.3896 17.3882L4.20947 14.3042C3.87832 13.7998 3.5625 13.2966 3.5625 12.6473L3.70274 6.13042C3.72041 5.27605 4.9896 5.2678 5.02024 6.121L5.19583 11.1247C5.20526 11.4005 5.30661 11.6656 5.48573 11.8765L7.21216 13.9164C7.61755 14.3961 8.35172 13.8292 7.99112 13.3154L6.49684 11.1872C5.86166 10.3917 7.00947 9.41005 7.6965 10.1619L10.3197 13.0338C11.0822 13.8681 11.5053 14.9582 11.5053 16.0895V19.6967C11.5029 19.8641 11.3674 19.9996 11.2 19.9996Z" fill="black"/>
+                    <path d="M12.7974 19.9996H16.8784C17.0481 19.9996 17.1848 19.8629 17.1848 19.6932V18.7033C17.1848 18.2319 17.3321 17.7723 17.6078 17.3882L19.788 14.3042C20.1191 13.7998 20.4349 13.2966 20.4349 12.6473L20.2947 6.13042C20.277 5.27605 19.0078 5.2678 18.9772 6.121L18.8016 11.1247C18.7922 11.4005 18.6908 11.6656 18.5117 11.8765L16.7853 13.9164C16.3799 14.3961 15.6457 13.8292 16.0063 13.3154L17.5006 11.1872C18.1358 10.3917 16.988 9.41005 16.3009 10.1619L13.6777 13.0338C12.9153 13.8681 12.4922 14.9582 12.4922 16.0895V19.6967C12.4945 19.8641 12.6301 19.9996 12.7974 19.9996Z" fill="black"/>
+                </svg>
+                <svg class="icon-mobile" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10.2978 1.75467L10.8983 4.5931C10.9512 4.84154 11.1448 5.0352 11.3932 5.08802L14.2315 5.68857C14.5699 5.75997 14.5699 6.24412 14.2315 6.31553L11.3932 6.91607C11.1448 6.96889 10.9512 7.16255 10.8983 7.41099L10.2978 10.2494C10.2264 10.5878 9.7423 10.5878 9.6709 10.2494L9.07038 7.41099C9.01757 7.16255 8.82391 6.96889 8.57549 6.91607L5.73818 6.31455C5.39977 6.24315 5.39977 5.75899 5.73818 5.68759L8.57647 5.08704C8.82489 5.03422 9.01854 4.84056 9.07136 4.59212L9.67188 1.75369C9.7423 1.41527 10.2264 1.41527 10.2978 1.75467Z" fill="black"/>
+                    <path d="M9.33481 16.9148H5.94784C5.807 16.9148 5.69354 16.8013 5.69354 16.6604V15.8388C5.69354 15.4476 5.57129 15.0662 5.34243 14.7473L3.53304 12.1876C3.25821 11.769 2.99609 11.3514 2.99609 10.8124L3.11248 5.40356C3.12715 4.69444 4.18051 4.6876 4.20594 5.39574L4.35167 9.54873C4.35949 9.7776 4.4436 9.99767 4.59226 10.1727L6.0251 11.8658C6.36155 12.2639 6.97087 11.7935 6.67159 11.367L5.43143 9.60056C4.90426 8.94035 5.85688 8.1256 6.42708 8.74962L8.60421 11.1332C9.23701 11.8257 9.58812 12.7305 9.58812 13.6694V16.6634C9.58617 16.8023 9.47369 16.9148 9.33481 16.9148Z" fill="black"/>
+                    <path d="M10.6557 16.9148H14.0426C14.1835 16.9148 14.2969 16.8013 14.2969 16.6604V15.8388C14.2969 15.4476 14.4192 15.0662 14.648 14.7473L16.4574 12.1876C16.7323 11.769 16.9944 11.3514 16.9944 10.8124L16.878 5.40356C16.8633 4.69444 15.81 4.6876 15.7845 5.39574L15.6388 9.54873C15.631 9.7776 15.5469 9.99767 15.3982 10.1727L13.9654 11.8658C13.6289 12.2639 13.0196 11.7935 13.3189 11.367L14.559 9.60056C15.0862 8.94035 14.1336 8.1256 13.5634 8.74962L11.3863 11.1332C10.7535 11.8257 10.4023 12.7305 10.4023 13.6694V16.6634C10.4043 16.8023 10.5168 16.9148 10.6557 16.9148Z" fill="black"/>
+                </svg>
+            </div>
+            <span class="footer-text">Ivan Skarabahatau, Warsaw, 2026</span>
+        </div>
+    </footer>
+
     <div class="modal" id="modal" onclick="closeModal(event)">
         <div class="modal-content" onclick="event.stopPropagation()">
             <button class="close-btn" onclick="closeModal(event)"></button>
@@ -700,10 +741,8 @@
             }, 3000); 
         });
 
-        // ГЛОБАЛЬНЫЙ КЛИК: Закрытие меню шапки при клике в пустое место
         document.addEventListener('click', function(event) {
             const headerWrapper = document.querySelector('.header-wrapper');
-            // Если кликнули не на элементы шапки, то скрываем меню
             if (!headerWrapper.contains(event.target)) {
                 document.getElementById('filters-toggle').classList.remove('open');
                 document.getElementById('filters-wrapper').classList.remove('open');
@@ -722,6 +761,25 @@
             'stickers': '#E7E3F2', 'motion design': '#DCE5F1'
         };
 
+        const nameMapping = {
+            'ecards': 'eCards', 'snrg': 'SNRG', 'pra': 'Pocket Rocket', 'life': 'life:)',
+            'embacy': 'Embacy', 'qelvio': 'Qelvio', 'dazzle': 'dazzle', 'mix': 'Mix',
+            'ui/ux': 'UI/UX', 'web': 'Web', 'graphic design': 'Graphic Design',
+            'digital ad': 'Digital Ad', 'outdoor ad': 'Outdoor Ad', 'social media': 'SMM',
+            'branding': 'Branding', 'logo': 'Logo', 'aso': 'ASO', 'icon': 'Icon',
+            'presentation': 'Presentation', 'merch': 'Merch', 'stickers': 'Stickers',
+            'motion design': 'Motion Design'
+        };
+
+        function getDisplayName(val) {
+            if (!val) return '';
+            const lower = val.toLowerCase().trim();
+            return nameMapping[lower] || val;
+        }
+
+        const projectOrder =['ecards', 'snrg', 'pra', 'life', 'embacy', 'qelvio', 'dazzle', 'mix'];
+        const fieldOrder =['ui/ux', 'web', 'graphic design', 'digital ad', 'outdoor ad', 'social media', 'branding', 'logo', 'aso', 'icon', 'presentation', 'merch', 'stickers', 'motion design'];
+
         let portfolioData = [];
         let filteredIndices =[]; 
         let currentModalIndex = 0; 
@@ -733,7 +791,7 @@
         };
 
         function toggleMenu(menuName, event) {
-            if(event) event.stopPropagation(); // Не даем клику проброситься в document
+            if(event) event.stopPropagation(); 
 
             const filtersBtn = document.getElementById('filters-toggle');
             const filtersWrapper = document.getElementById('filters-wrapper');
@@ -812,15 +870,32 @@
 
         function renderFilterGroup(type, valuesSet) {
             const container = document.getElementById(`filter-row-${type}`);
-            const sortedValues = Array.from(valuesSet).sort();
+            
+            const sortedValues = Array.from(valuesSet).sort((a, b) => {
+                if (type === 'project') {
+                    let indexA = projectOrder.indexOf(a);
+                    let indexB = projectOrder.indexOf(b);
+                    if (indexA === -1) indexA = 999;
+                    if (indexB === -1) indexB = 999;
+                    return indexA - indexB;
+                } else if (type === 'field') {
+                    let indexA = fieldOrder.indexOf(a);
+                    let indexB = fieldOrder.indexOf(b);
+                    if (indexA === -1) indexA = 999;
+                    if (indexB === -1) indexB = 999;
+                    return indexA - indexB;
+                }
+                return b.localeCompare(a); 
+            });
 
             sortedValues.forEach(val => {
                 if(!val) return;
                 const btn = document.createElement('button');
                 btn.className = 'filter-tag';
-                btn.innerText = val;
                 
-                // ВАЖНО: Заливаем весь фон цветом ниши
+                btn.dataset.val = val;
+                btn.innerText = getDisplayName(val);
+                
                 if (type === 'field' && fieldColors[val]) {
                     btn.style.backgroundColor = fieldColors[val];
                 }
@@ -850,13 +925,26 @@
             
             closeModal();
             window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            const filtersBtn = document.getElementById('filters-toggle');
+            const filtersWrapper = document.getElementById('filters-wrapper');
+            const aboutBtn = document.getElementById('about-toggle');
+            const aboutWrapper = document.getElementById('about-wrapper');
+
+            if (!filtersBtn.classList.contains('open')) {
+                filtersBtn.classList.add('open');
+                filtersWrapper.classList.add('open');
+                aboutBtn.classList.remove('open');
+                aboutWrapper.classList.remove('open');
+            }
         }
 
         function updateFilterButtonsUI() {['project', 'field', 'year'].forEach(type => {
                 const container = document.getElementById(`filter-row-${type}`);
                 const buttons = container.querySelectorAll('.filter-tag');
                 buttons.forEach(btn => {
-                    if (activeFilters[type].has(btn.innerText)) {
+                    const rawVal = btn.dataset.val;
+                    if (activeFilters[type].has(rawVal)) {
                         btn.classList.add('active');
                     } else {
                         btn.classList.remove('active');
@@ -893,7 +981,7 @@
             gallery.innerHTML = '';
 
             if (filteredIndices.length === 0) {
-                gallery.innerHTML = '<div style="text-align:center; color:var(--color-inactive); font-size:var(--text-size);">Nothing found.</div>';
+                gallery.innerHTML = '<div style="text-align:center; color:var(--color-black); font-size:var(--text-size);">Nothing found.</div>';
                 return;
             }
 
@@ -902,21 +990,35 @@
             filteredIndices.forEach((originalIndex) => {
                 const item = portfolioData[originalIndex];
                 const projectName = item.project ? item.project.trim() : 'others';
-                if (!groupedProjects[projectName]) groupedProjects[projectName] = [];
+                if (!groupedProjects[projectName]) groupedProjects[projectName] =[];
                 groupedProjects[projectName].push({ item, index: originalIndex });
             });
 
-            for (const projectName in groupedProjects) {
+            const sortedProjectNames = Object.keys(groupedProjects).sort((a, b) => {
+                let indexA = projectOrder.indexOf(a);
+                let indexB = projectOrder.indexOf(b);
+                if (indexA === -1) indexA = 999;
+                if (indexB === -1) indexB = 999;
+                return indexA - indexB;
+            });
+
+            sortedProjectNames.forEach(projectName => {
                 const projectWrapper = document.createElement('div');
                 projectWrapper.className = 'project-wrapper';
 
                 const sectionHeader = document.createElement('h2');
                 sectionHeader.className = 'project-header';
-                sectionHeader.innerText = projectName.toLowerCase();
+                sectionHeader.innerText = getDisplayName(projectName); 
                 projectWrapper.appendChild(sectionHeader);
 
                 const projectGrid = document.createElement('div');
                 projectGrid.className = 'project-grid';
+
+                groupedProjects[projectName].sort((a, b) => {
+                    const yearA = parseInt(a.item.year) || 0;
+                    const yearB = parseInt(b.item.year) || 0;
+                    return yearB - yearA; 
+                });
 
                 groupedProjects[projectName].forEach(dataObj => {
                     const item = dataObj.item;
@@ -939,7 +1041,7 @@
 
                 projectWrapper.appendChild(projectGrid);
                 gallery.appendChild(projectWrapper);
-            }
+            });
         }
 
         function preloadMedia(index) {
@@ -992,7 +1094,7 @@
                     const cleanText = t.text.toLowerCase().trim();
                     const span = document.createElement('span');
                     span.className = 'filter-tag';
-                    span.innerText = cleanText;
+                    span.innerText = getDisplayName(cleanText); 
                     
                     if (t.color && fieldColors[cleanText]) {
                         span.style.backgroundColor = fieldColors[cleanText];
