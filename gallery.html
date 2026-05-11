@@ -36,7 +36,8 @@
             --h3-line-height: 1.2;
             --h3-letter-spacing: -0.03em;
             
-            --text-size: 12px;
+            /* Обновлено: 13px на десктопе */
+            --text-size: 13px;
             --text-line-height: 1.2;
             --text-letter-spacing: -0.02em;
         
@@ -50,6 +51,8 @@
             :root {
                 --h2-size: 18px;
                 --h3-size: 14px;
+                /* Возвращаем 12px на мобилке */
+                --text-size: 12px;
                 
                 --icon-arrow-project-left: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/arrow-project-left-m.svg');
                 --icon-arrow-project-right: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/arrow-project-right-m.svg');
@@ -75,7 +78,6 @@
             font-weight: var(--font-weight);
             color: var(--color-black);
             -webkit-font-smoothing: antialiased;
-            /* 120px отступ сверху */
             padding: 120px 0 0 0; 
         }
 
@@ -133,29 +135,43 @@
             left: 0; right: 0;
             padding-top: 500px; 
             z-index: 50;
-            
             background-color: var(--color-translucent-w);
             backdrop-filter: var(--b-blur);
             -webkit-backdrop-filter: var(--b-blur);
             transform: translateZ(0); 
         }
 
-        header {
+        .header-main {
             max-width: 1280px;
             margin: 0 auto;
             width: 100%;
             box-sizing: border-box;
             padding: calc(20px + env(safe-area-inset-top, 0px)) 40px 20px 40px; 
-            display: flex;
-            justify-content: space-between;
+        }
+
+        /* 12-КОЛОНОЧНАЯ СЕТКА ШАПКИ (ДЕСКТОП) */
+        .header-top-row {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 12px;
             align-items: center;
         }
 
-        .header-nav {
-            display: flex;
-            gap: 24px;
-        }
+        .header-col-filters { grid-column: 1 / span 6; display: flex; }
+        .header-col-about { grid-column: 7 / span 5; display: flex; }
+        .header-col-plus { grid-column: 12 / span 1; display: flex; justify-content: flex-end; }
 
+        .header-dropdowns-row {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 12px;
+            align-items: start;
+        }
+        
+        #filters-wrapper { grid-column: 1 / span 6; }
+        #about-wrapper { grid-column: 7 / span 5; }
+
+        /* Кнопки меню в шапке (Toggles) */
         .nav-toggle {
             display: flex;
             align-items: center;
@@ -163,25 +179,30 @@
             background: transparent;
             border: none;
             cursor: pointer;
-            padding: 0;
+            
+            padding: 6px;
+            margin-left: -6px;
+            border-radius: var(--r-small);
             
             font-family: var(--font-family);
             font-weight: var(--font-weight); 
             font-size: var(--h3-size);
             line-height: var(--h3-line-height);
             letter-spacing: var(--h3-letter-spacing);
+            
             color: var(--color-black); 
-            transition: opacity 0.2s ease;
+            transition: color 0.2s ease;
         }
 
-        .nav-toggle:hover { opacity: 0.7; }
+        .nav-toggle:hover, .nav-toggle.open {
+            color: var(--color-inactive);
+        }
 
         .toggle-svg {
-            color: var(--color-black);
+            color: inherit;
             transition: transform 0.2s ease; 
         }
         .toggle-vertical { transition: opacity 0.2s ease; }
-
         .nav-toggle.open .toggle-svg { transform: rotate(180deg); }
         .nav-toggle.open .toggle-vertical { opacity: 0; }
 
@@ -209,51 +230,74 @@
         }
         .header-plus-btn:hover::after { opacity: 1; }
 
-        /* ПЛАВНЫЕ КОНТЕЙНЕРЫ (Filters & About) */
+        /* ВЫПАДАЮЩИЕ БЛОКИ */
         .dropdown-wrapper {
             display: grid;
             grid-template-rows: 0fr;
+            padding-top: 0; 
             opacity: 0;
             visibility: hidden;
-            transition: grid-template-rows 0.2s ease, opacity 0.2s ease, visibility 0s 0.2s; 
+            transition: grid-template-rows 0.2s ease, padding-top 0.2s ease, opacity 0.2s ease, visibility 0s 0.2s; 
         }
 
         .dropdown-wrapper.open {
             grid-template-rows: 1fr;
+            padding-top: 12px; 
             opacity: 1;
             visibility: visible;
-            transition: grid-template-rows 0.2s ease, opacity 0.2s ease, visibility 0s 0s;
+            transition: grid-template-rows 0.2s ease, padding-top 0.2s ease, opacity 0.2s ease, visibility 0s 0s;
         }
 
         .dropdown-container { overflow: hidden; }
 
         .dropdown-inner {
-            max-width: 1280px;
-            margin: 0 auto;
-            width: 100%;
-            box-sizing: border-box;
-            padding: 0 40px 20px 40px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
         }
 
-        .filter-row {
+        #filters-wrapper .dropdown-inner {
+            gap: 12px; 
+            padding-right: 28px; 
+        }
+
+        .filter-group {
             display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 8px;
+            flex-direction: column;
+            gap: 8px; 
         }
 
         .filter-label {
+            font-family: var(--font-family); /* Явное указание шрифта */
+            font-weight: var(--font-weight); /* Сбрасываем жирность браузера */
             font-size: var(--text-size);
             line-height: var(--text-line-height);
             letter-spacing: var(--text-letter-spacing);
             color: var(--color-black); 
-            margin-right: 4px;
+            margin: 0; 
         }
 
-        /* button-small: Теги и ссылки (убран border: 1px solid transparent) */
+        .filter-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px; 
+        }
+
+        /* --- ВНУТРЯНКА ABOUT --- */
+        .about-text {
+            margin: 0 0 8px 0; 
+            font-size: var(--text-size);
+            line-height: var(--text-line-height);
+            letter-spacing: var(--text-letter-spacing);
+            color: var(--color-black); 
+        }
+
+        .about-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px; 
+        }
+
+        /* Универсальные кнопки-теги */
         .filter-tag {
             background-color: var(--color-active);
             border: none;
@@ -277,7 +321,6 @@
             position: relative; 
         }
 
-        /* Псевдослой ховера теперь плотно прилегает к краям кнопки */
         .filter-tag::after {
             content: '';
             position: absolute;
@@ -299,21 +342,6 @@
         .filter-tag:hover .arrow-diag { d: path("M9 3L3 9"); }
         .filter-tag:hover .arrow-corn { d: path("M9 10L9 3L2 3"); }
 
-        .about-text {
-            margin: 0;
-            font-size: var(--text-size);
-            line-height: var(--text-line-height);
-            letter-spacing: var(--text-letter-spacing);
-            color: var(--color-black); 
-            max-width: 600px; 
-        }
-
-        .about-buttons {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-top: 8px;
-        }
 
         /* ГАЛЕРЕЯ */
         .gallery {
@@ -343,7 +371,7 @@
         .project-header {
             margin: 0;
             font-family: var(--font-family);
-            font-weight: 400; 
+            font-weight: var(--font-weight); /* Сбрасываем жирность браузера */
             font-size: var(--h2-size);
             line-height: var(--h2-line-height);
             letter-spacing: var(--h2-letter-spacing);
@@ -393,6 +421,7 @@
             display: block;
         }
 
+        /* ЖЕЛЕЗОБЕТОННЫЙ ФИКС ДЛЯ ИКОНКИ PLAY НА APPLE-УСТРОЙСТВАХ */
         .video-icon {
             position: absolute;
             top: 50%; left: 50%;
@@ -406,6 +435,7 @@
             justify-content: center;
             align-items: center;
             pointer-events: none; 
+            z-index: 2;
         }
 
         .video-icon::after {
@@ -413,16 +443,23 @@
             display: block;
             width: 24px; height: 24px;
             background-color: var(--color-inactive);
-            -webkit-mask: var(--icon-play) center/contain no-repeat;
-            mask: var(--icon-play) center/contain no-repeat;
+            
+            -webkit-mask-image: var(--icon-play);
+            -webkit-mask-size: contain;
+            -webkit-mask-position: center;
+            -webkit-mask-repeat: no-repeat;
+            
+            mask-image: var(--icon-play);
+            mask-size: contain;
+            mask-position: center;
+            mask-repeat: no-repeat;
         }
 
         /* ПОДВАЛ (ФУТЕР) */
         .site-footer {
             max-width: 1280px;
-            /* Отступы: 80px от галереи, 120px от самого низа страницы */
             margin: 80px auto 120px auto; 
-            padding: 20px 40px; 
+            padding: 0 40px; 
             box-sizing: border-box;
             width: 100%;
             display: flex;
@@ -435,10 +472,7 @@
             gap: 8px; 
         }
 
-        .footer-logo {
-            display: flex;
-            align-items: center;
-        }
+        .footer-logo { display: flex; align-items: center; }
 
         .footer-text {
             font-family: var(--font-family);
@@ -528,23 +562,41 @@
         .modal-info { padding: 24px; }
         .tags-container { display: flex; flex-wrap: wrap; gap: 6px; }
 
-        /* АДАПТИВ */
+        /* АДАПТИВ (МОБИЛКА) */
         @media (max-width: 600px) {
             .loading-badge { gap: 8px; }
 
-            header { padding: calc(20px + env(safe-area-inset-top, 0px)) 20px 20px 20px; }
-            .header-nav { gap: 16px; }
-            .header-plus-btn { padding: 8px; }
-
-            .dropdown-inner { padding: 0 20px 20px 20px; }
-            .gallery { padding: 0 20px; }
+            .header-main { padding: calc(20px + env(safe-area-inset-top, 0px)) 20px 20px 20px; }
             
-            .site-footer { padding: 20px; }
-            
-            .project-grid { 
-                grid-template-columns: 1fr 1fr; 
-                gap: 8px; 
+            .header-top-row {
+                display: flex;
+                gap: 20px; 
             }
+            .header-col-filters, .header-col-about {
+                grid-column: auto;
+                display: block;
+            }
+            .header-col-plus {
+                grid-column: auto;
+                margin-left: auto; 
+            }
+
+            .header-dropdowns-row {
+                display: flex;
+                flex-direction: column;
+                gap: 0;
+            }
+            #filters-wrapper, #about-wrapper { grid-column: auto; }
+
+            /* Сброс левого отступа для фильтров на мобилке */
+            #filters-wrapper .dropdown-inner { padding-left: 0px; }
+
+            .nav-toggle { margin-left: 0; }
+
+            .gallery { padding: 0 20px; }
+            .site-footer { padding: 0 20px; }
+            
+            .project-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
 
             .thumb-media-wrapper { padding: 6px; }
             .thumb-media-wrapper img, 
@@ -589,93 +641,115 @@
     </div>
 
     <div class="header-wrapper">
-        <header>
-            <div class="header-nav">
-                <button id="filters-toggle" class="nav-toggle" onclick="toggleMenu('filters', event)">
-                    Filters 
-                    <svg class="toggle-svg icon-desktop" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path class="toggle-vertical" d="M7 2V12" stroke="currentColor" stroke-width="1.2"/>
-                        <path class="toggle-horizontal" d="M2 7L12 7" stroke="currentColor" stroke-width="1.2"/>
-                    </svg>
-                    <svg class="toggle-svg icon-mobile" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path class="toggle-vertical" d="M6 2V10" stroke="currentColor"/>
-                        <path class="toggle-horizontal" d="M2 6L10 6" stroke="currentColor"/>
-                    </svg>
-                </button>
+        <header class="header-main">
+            <!-- ВЕРХНИЙ РЯД (КНОПКИ) -->
+            <div class="header-top-row">
+                <div class="header-col-filters">
+                    <button id="filters-toggle" class="nav-toggle" onclick="toggleMenu('filters', event)">
+                        Filters 
+                        <svg class="toggle-svg icon-desktop" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path class="toggle-vertical" d="M7 2V12" stroke="currentColor" stroke-width="1.2"/>
+                            <path class="toggle-horizontal" d="M2 7L12 7" stroke="currentColor" stroke-width="1.2"/>
+                        </svg>
+                        <svg class="toggle-svg icon-mobile" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path class="toggle-vertical" d="M6 2V10" stroke="currentColor"/>
+                            <path class="toggle-horizontal" d="M2 6L10 6" stroke="currentColor"/>
+                        </svg>
+                    </button>
+                </div>
                 
-                <button id="about-toggle" class="nav-toggle" onclick="toggleMenu('about', event)">
-                    About
-                    <svg class="toggle-svg icon-desktop" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path class="toggle-vertical" d="M7 2V12" stroke="currentColor" stroke-width="1.2"/>
-                        <path class="toggle-horizontal" d="M2 7L12 7" stroke="currentColor" stroke-width="1.2"/>
-                    </svg>
-                    <svg class="toggle-svg icon-mobile" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path class="toggle-vertical" d="M6 2V10" stroke="currentColor"/>
-                        <path class="toggle-horizontal" d="M2 6L10 6" stroke="currentColor"/>
-                    </svg>
-                </button>
+                <div class="header-col-about">
+                    <button id="about-toggle" class="nav-toggle" onclick="toggleMenu('about', event)">
+                        About
+                        <svg class="toggle-svg icon-desktop" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path class="toggle-vertical" d="M7 2V12" stroke="currentColor" stroke-width="1.2"/>
+                            <path class="toggle-horizontal" d="M2 7L12 7" stroke="currentColor" stroke-width="1.2"/>
+                        </svg>
+                        <svg class="toggle-svg icon-mobile" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path class="toggle-vertical" d="M6 2V10" stroke="currentColor"/>
+                            <path class="toggle-horizontal" d="M2 6L10 6" stroke="currentColor"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="header-col-plus">
+                    <button class="header-plus-btn">
+                        <svg class="icon-desktop" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7 2V12" stroke="currentColor" stroke-width="1.2"/>
+                            <path d="M2 7L12 7" stroke="currentColor" stroke-width="1.2"/>
+                        </svg>
+                        <svg class="icon-mobile" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6 2V10" stroke="currentColor"/>
+                            <path d="M2 6L10 6" stroke="currentColor"/>
+                        </svg>
+                    </button>
+                </div>
             </div>
 
-            <button class="header-plus-btn">
-                <svg class="icon-desktop" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M7 2V12" stroke="currentColor" stroke-width="1.2"/>
-                    <path d="M2 7L12 7" stroke="currentColor" stroke-width="1.2"/>
-                </svg>
-                <svg class="icon-mobile" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M6 2V10" stroke="currentColor"/>
-                    <path d="M2 6L10 6" stroke="currentColor"/>
-                </svg>
-            </button>
+            <!-- НИЖНИЙ РЯД (ВЫПАДАЮЩИЙ КОНТЕНТ) -->
+            <div class="header-dropdowns-row">
+                <!-- Контейнер Filters -->
+                <div class="dropdown-wrapper" id="filters-wrapper">
+                    <div class="dropdown-container">
+                        <div class="dropdown-inner">
+                            <div class="filter-group">
+                                <h3 class="filter-label">Project</h3>
+                                <div class="filter-tags" id="filter-row-project"></div>
+                            </div>
+                            <div class="filter-group">
+                                <h3 class="filter-label">Field</h3>
+                                <div class="filter-tags" id="filter-row-field"></div>
+                            </div>
+                            <div class="filter-group">
+                                <h3 class="filter-label">Year</h3>
+                                <div class="filter-tags" id="filter-row-year"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Контейнер About -->
+                <div class="dropdown-wrapper" id="about-wrapper">
+                    <div class="dropdown-container">
+                        <div class="dropdown-inner">
+                            <p class="about-text">
+                                Hi! I am a digital designer. Here is a selection of my recent works.
+                            </p>
+                            <div class="about-buttons">
+                                <a href="#" target="_blank" class="filter-tag">
+                                    <svg class="arrow-link-svg" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path class="arrow-diag" d="M10 2L2 10" stroke="currentColor"/>
+                                        <path class="arrow-corn" d="M10 9L10 2L3 2" stroke="currentColor"/>
+                                    </svg>
+                                    UI/UX Portfolio
+                                </a>
+                                <a href="#" target="_blank" class="filter-tag">
+                                    <svg class="arrow-link-svg" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path class="arrow-diag" d="M10 2L2 10" stroke="currentColor"/>
+                                        <path class="arrow-corn" d="M10 9L10 2L3 2" stroke="currentColor"/>
+                                    </svg>
+                                    CV
+                                </a>
+                                <a href="mailto:hello@example.com" class="filter-tag">
+                                    <svg class="arrow-link-svg" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path class="arrow-diag" d="M10 2L2 10" stroke="currentColor"/>
+                                        <path class="arrow-corn" d="M10 9L10 2L3 2" stroke="currentColor"/>
+                                    </svg>
+                                    Email
+                                </a>
+                                <a href="#" target="_blank" class="filter-tag">
+                                    <svg class="arrow-link-svg" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path class="arrow-diag" d="M10 2L2 10" stroke="currentColor"/>
+                                        <path class="arrow-corn" d="M10 9L10 2L3 2" stroke="currentColor"/>
+                                    </svg>
+                                    Telegram
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </header>
-
-        <div class="dropdown-wrapper" id="about-wrapper">
-            <div class="dropdown-container">
-                <div class="dropdown-inner">
-                    <p class="about-text">
-                        Hi! I am a digital designer. Here is a selection of my recent works.
-                    </p>
-                    <div class="about-buttons">
-                        <a href="#" target="_blank" class="filter-tag">
-                            <svg class="arrow-link-svg" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path class="arrow-diag" d="M10 2L2 10" stroke="currentColor"/>
-                                <path class="arrow-corn" d="M10 9L10 2L3 2" stroke="currentColor"/>
-                            </svg>
-                            CV
-                        </a>
-                        <a href="mailto:hello@example.com" class="filter-tag">
-                            <svg class="arrow-link-svg" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path class="arrow-diag" d="M10 2L2 10" stroke="currentColor"/>
-                                <path class="arrow-corn" d="M10 9L10 2L3 2" stroke="currentColor"/>
-                            </svg>
-                            Email
-                        </a>
-                        <a href="#" target="_blank" class="filter-tag">
-                            <svg class="arrow-link-svg" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path class="arrow-diag" d="M10 2L2 10" stroke="currentColor"/>
-                                <path class="arrow-corn" d="M10 9L10 2L3 2" stroke="currentColor"/>
-                            </svg>
-                            Telegram
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="dropdown-wrapper" id="filters-wrapper">
-            <div class="dropdown-container">
-                <div class="dropdown-inner">
-                    <div class="filter-row" id="filter-row-project">
-                        <span class="filter-label">Project:</span>
-                    </div>
-                    <div class="filter-row" id="filter-row-field">
-                        <span class="filter-label">Field:</span>
-                    </div>
-                    <div class="filter-row" id="filter-row-year">
-                        <span class="filter-label">Year:</span>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <main class="gallery" id="gallery">
@@ -792,7 +866,8 @@
 
         function toggleMenu(menuName, event) {
             if(event) event.stopPropagation(); 
-
+            
+            const isMobile = window.innerWidth <= 600;
             const filtersBtn = document.getElementById('filters-toggle');
             const filtersWrapper = document.getElementById('filters-wrapper');
             const aboutBtn = document.getElementById('about-toggle');
@@ -805,8 +880,10 @@
                 } else {
                     filtersBtn.classList.add('open');
                     filtersWrapper.classList.add('open');
-                    aboutBtn.classList.remove('open');
-                    aboutWrapper.classList.remove('open');
+                    if (isMobile) {
+                        aboutBtn.classList.remove('open');
+                        aboutWrapper.classList.remove('open');
+                    }
                 }
             } else if (menuName === 'about') {
                 if (aboutBtn.classList.contains('open')) {
@@ -815,8 +892,10 @@
                 } else {
                     aboutBtn.classList.add('open');
                     aboutWrapper.classList.add('open');
-                    filtersBtn.classList.remove('open');
-                    filtersWrapper.classList.remove('open');
+                    if (isMobile) {
+                        filtersBtn.classList.remove('open');
+                        filtersWrapper.classList.remove('open');
+                    }
                 }
             }
         }
