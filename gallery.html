@@ -36,7 +36,6 @@
             --h3-line-height: 1.2;
             --h3-letter-spacing: -0.03em;
             
-            /* Обновлено: 13px на десктопе */
             --text-size: 13px;
             --text-line-height: 1.2;
             --text-letter-spacing: -0.02em;
@@ -51,7 +50,6 @@
             :root {
                 --h2-size: 18px;
                 --h3-size: 14px;
-                /* Возвращаем 12px на мобилке */
                 --text-size: 12px;
                 
                 --icon-arrow-project-left: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/arrow-project-left-m.svg');
@@ -135,6 +133,7 @@
             left: 0; right: 0;
             padding-top: 500px; 
             z-index: 50;
+            
             background-color: var(--color-translucent-w);
             backdrop-filter: var(--b-blur);
             -webkit-backdrop-filter: var(--b-blur);
@@ -171,7 +170,12 @@
         #filters-wrapper { grid-column: 1 / span 6; }
         #about-wrapper { grid-column: 7 / span 5; }
 
-        /* Кнопки меню в шапке (Toggles) */
+        .header-nav {
+            display: flex;
+            gap: 24px;
+        }
+
+        /* Кнопки меню в шапке */
         .nav-toggle {
             display: flex;
             align-items: center;
@@ -181,7 +185,7 @@
             cursor: pointer;
             
             padding: 6px;
-            margin-left: -6px;
+            margin-left: -6px; /* Ореол клика не смещает визуальную границу текста */
             border-radius: var(--r-small);
             
             font-family: var(--font-family);
@@ -191,12 +195,11 @@
             letter-spacing: var(--h3-letter-spacing);
             
             color: var(--color-black); 
-            transition: color 0.2s ease;
+            transition: color 0.2s ease, opacity 0.2s ease;
         }
 
-        .nav-toggle:hover, .nav-toggle.open {
-            color: var(--color-inactive);
-        }
+        .nav-toggle:hover { opacity: 0.7; }
+        .nav-toggle.open { color: var(--color-inactive); opacity: 1; }
 
         .toggle-svg {
             color: inherit;
@@ -242,7 +245,7 @@
 
         .dropdown-wrapper.open {
             grid-template-rows: 1fr;
-            padding-top: 12px; 
+            padding-top: 16px; /* Зазор 16px от меню */
             opacity: 1;
             visibility: visible;
             transition: grid-template-rows 0.2s ease, padding-top 0.2s ease, opacity 0.2s ease, visibility 0s 0s;
@@ -255,9 +258,10 @@
             flex-direction: column;
         }
 
+        /* --- ВНУТРЯНКА FILTERS --- */
         #filters-wrapper .dropdown-inner {
-            gap: 12px; 
-            padding-right: 28px; 
+            gap: 16px;
+            padding-right: 28px;
         }
 
         .filter-group {
@@ -267,8 +271,8 @@
         }
 
         .filter-label {
-            font-family: var(--font-family); /* Явное указание шрифта */
-            font-weight: var(--font-weight); /* Сбрасываем жирность браузера */
+            font-family: var(--font-family);
+            font-weight: var(--font-weight); 
             font-size: var(--text-size);
             line-height: var(--text-line-height);
             letter-spacing: var(--text-letter-spacing);
@@ -342,7 +346,6 @@
         .filter-tag:hover .arrow-diag { d: path("M9 3L3 9"); }
         .filter-tag:hover .arrow-corn { d: path("M9 10L9 3L2 3"); }
 
-
         /* ГАЛЕРЕЯ */
         .gallery {
             max-width: 1280px;
@@ -371,7 +374,7 @@
         .project-header {
             margin: 0;
             font-family: var(--font-family);
-            font-weight: var(--font-weight); /* Сбрасываем жирность браузера */
+            font-weight: var(--font-weight); 
             font-size: var(--h2-size);
             line-height: var(--h2-line-height);
             letter-spacing: var(--h2-letter-spacing);
@@ -421,7 +424,6 @@
             display: block;
         }
 
-        /* ЖЕЛЕЗОБЕТОННЫЙ ФИКС ДЛЯ ИКОНКИ PLAY НА APPLE-УСТРОЙСТВАХ */
         .video-icon {
             position: absolute;
             top: 50%; left: 50%;
@@ -443,12 +445,10 @@
             display: block;
             width: 24px; height: 24px;
             background-color: var(--color-inactive);
-            
             -webkit-mask-image: var(--icon-play);
             -webkit-mask-size: contain;
             -webkit-mask-position: center;
             -webkit-mask-repeat: no-repeat;
-            
             mask-image: var(--icon-play);
             mask-size: contain;
             mask-position: center;
@@ -588,15 +588,19 @@
             }
             #filters-wrapper, #about-wrapper { grid-column: auto; }
 
-            /* Сброс левого отступа для фильтров на мобилке */
-            #filters-wrapper .dropdown-inner { padding-left: 0px; }
+            /* На мобилке сбрасываем правый отступ */
+            #filters-wrapper .dropdown-inner { padding-right: 20px; }
 
-            .nav-toggle { margin-left: 0; }
+            .header-nav { gap: 20px; }
+            .header-plus-btn { padding: 8px; }
 
             .gallery { padding: 0 20px; }
             .site-footer { padding: 0 20px; }
             
-            .project-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+            .project-grid { 
+                grid-template-columns: 1fr 1fr; 
+                gap: 8px; 
+            }
 
             .thumb-media-wrapper { padding: 6px; }
             .thumb-media-wrapper img, 
@@ -642,7 +646,6 @@
 
     <div class="header-wrapper">
         <header class="header-main">
-            <!-- ВЕРХНИЙ РЯД (КНОПКИ) -->
             <div class="header-top-row">
                 <div class="header-col-filters">
                     <button id="filters-toggle" class="nav-toggle" onclick="toggleMenu('filters', event)">
@@ -686,9 +689,7 @@
                 </div>
             </div>
 
-            <!-- НИЖНИЙ РЯД (ВЫПАДАЮЩИЙ КОНТЕНТ) -->
             <div class="header-dropdowns-row">
-                <!-- Контейнер Filters -->
                 <div class="dropdown-wrapper" id="filters-wrapper">
                     <div class="dropdown-container">
                         <div class="dropdown-inner">
@@ -708,7 +709,6 @@
                     </div>
                 </div>
 
-                <!-- Контейнер About -->
                 <div class="dropdown-wrapper" id="about-wrapper">
                     <div class="dropdown-container">
                         <div class="dropdown-inner">
@@ -767,7 +767,6 @@
         </div>
     </main>
 
-    <!-- ПОДВАЛ / ФУТЕР -->
     <footer class="site-footer">
         <div class="site-footer-inner">
             <div class="footer-logo">
@@ -785,23 +784,6 @@
             <span class="footer-text">Ivan Skarabahatau, Warsaw, 2026</span>
         </div>
     </footer>
-
-    <div class="modal" id="modal" onclick="closeModal(event)">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <button class="close-btn" onclick="closeModal(event)"></button>
-            
-            <div class="modal-media" id="modal-media">
-                <button class="nav-btn prev" onclick="navigateModal(-1, event)"></button>
-                <div id="media-content-container"></div>
-                <button class="nav-btn next" onclick="navigateModal(1, event)"></button>
-            </div>
-            
-            <div class="modal-info">
-                <div class="tags-container" id="modal-tags">
-                </div>
-            </div>
-        </div>
-    </div>
 
     <script>
         window.addEventListener('DOMContentLoaded', () => {
