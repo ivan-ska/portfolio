@@ -12,46 +12,46 @@
         /* ========================================= */
         /*       DESIGN SYSTEM (ДИЗАЙН СИСТЕМА)      */
         /* ========================================= */
-        
+
         :root {
             --color-black: #000000;
             --color-white: #FFFFFF;
             --color-translucent-w: rgba(255, 255, 255, 0.7);
             --color-active: rgba(0, 0, 0, 0.07);
             --color-inactive: rgba(0, 0, 0, 0.4);
-        
+
             --b-blur: blur(40px);
-        
+
             --r-small: 2px;
             --r-large: 4px;
-        
+
             --font-family: 'DM Mono', monospace;
             --font-weight: 400;
-            
+
             --h2-size: 20px;
             --h2-line-height: 1.2;
             --h2-letter-spacing: -0.03em;
-            
+
             --h3-size: 16px;
             --h3-line-height: 1.2;
             --h3-letter-spacing: -0.03em;
-            
+
             --text-size: 13px;
             --text-line-height: 1.2;
             --text-letter-spacing: -0.02em;
-        
+
             --icon-arrow-project-left: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/arrow-project-left-d.svg');
             --icon-arrow-project-right: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/arrow-project-right-d.svg');
             --icon-cross-large: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/cross-large-d.svg');
             --icon-play: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/play-d.svg');
         }
-        
+
         @media (max-width: 600px) {
             :root {
                 --h2-size: 18px;
                 --h3-size: 14px;
                 --text-size: 12px;
-                
+
                 --icon-arrow-project-left: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/arrow-project-left-m.svg');
                 --icon-arrow-project-right: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/arrow-project-right-m.svg');
                 --icon-cross-large: url('https://raw.githubusercontent.com/ivan-ska/portfolio/c6dfe764cddcc7e3cb2316ec28d2dac1b3317be7/gallery/icons/cross-large-m.svg');
@@ -59,11 +59,22 @@
             }
         }
 
-        .icon-desktop { display: block; }
-        .icon-mobile { display: none; }
+        .icon-desktop {
+            display: block;
+        }
+
+        .icon-mobile {
+            display: none;
+        }
+
         @media (max-width: 600px) {
-            .icon-desktop { display: none; }
-            .icon-mobile { display: block; }
+            .icon-desktop {
+                display: none;
+            }
+
+            .icon-mobile {
+                display: block;
+            }
         }
 
         /* ========================================= */
@@ -76,13 +87,16 @@
             font-weight: var(--font-weight);
             color: var(--color-black);
             -webkit-font-smoothing: antialiased;
-            padding: 120px 0 0 0; 
+            padding: 120px 0 0 0;
         }
 
         /* --- ФЕЙКОВЫЙ ЭКРАН ЗАГРУЗКИ --- */
         #loading-screen {
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             background-color: var(--color-white);
             z-index: 9999;
             display: flex;
@@ -95,8 +109,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px; 
-            padding: 20px 40px; 
+            gap: 12px;
+            padding: 20px 40px;
             background-color: var(--color-active);
             backdrop-filter: var(--b-blur);
             -webkit-backdrop-filter: var(--b-blur);
@@ -117,27 +131,45 @@
             fill-opacity: 0.07;
             animation: dot-pulse 1.5s infinite;
         }
-        .loading-dot:nth-child(1) { animation-delay: 0s; }
-        .loading-dot:nth-child(2) { animation-delay: 0.5s; }
-        .loading-dot:nth-child(3) { animation-delay: 1s; }
+
+        .loading-dot:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .loading-dot:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+
+        .loading-dot:nth-child(3) {
+            animation-delay: 1s;
+        }
 
         @keyframes dot-pulse {
-            0%, 15% { fill-opacity: 1; }
-            30%, 100% { fill-opacity: 0.07; }
+
+            0%,
+            15% {
+                fill-opacity: 1;
+            }
+
+            30%,
+            100% {
+                fill-opacity: 0.07;
+            }
         }
 
         /* ОБЕРТКА ШАПКИ */
         .header-wrapper {
             position: fixed;
-            top: -500px; 
-            left: 0; right: 0;
-            padding-top: 500px; 
+            top: -500px;
+            left: 0;
+            right: 0;
+            padding-top: 500px;
             z-index: 50;
-            
+
             background-color: var(--color-translucent-w);
             backdrop-filter: var(--b-blur);
             -webkit-backdrop-filter: var(--b-blur);
-            transform: translateZ(0); 
+            transform: translateZ(0);
         }
 
         .header-main {
@@ -145,7 +177,7 @@
             margin: 0 auto;
             width: 100%;
             box-sizing: border-box;
-            padding: calc(20px + env(safe-area-inset-top, 0px)) 40px 20px 40px; 
+            padding: calc(20px + env(safe-area-inset-top, 0px)) 40px 20px 40px;
         }
 
         /* 12-КОЛОНОЧНАЯ СЕТКА ШАПКИ (ДЕСКТОП) */
@@ -156,9 +188,21 @@
             align-items: center;
         }
 
-        .header-col-filters { grid-column: 1 / span 6; display: flex; }
-        .header-col-about { grid-column: 7 / span 5; display: flex; }
-        .header-col-plus { grid-column: 12 / span 1; display: flex; justify-content: flex-end; }
+        .header-col-filters {
+            grid-column: 1 / span 6;
+            display: flex;
+        }
+
+        .header-col-about {
+            grid-column: 7 / span 5;
+            display: flex;
+        }
+
+        .header-col-plus {
+            grid-column: 12 / span 1;
+            display: flex;
+            justify-content: flex-end;
+        }
 
         .header-dropdowns-row {
             display: grid;
@@ -166,9 +210,14 @@
             gap: 12px;
             align-items: start;
         }
-        
-        #filters-wrapper { grid-column: 1 / span 6; }
-        #about-wrapper { grid-column: 7 / span 5; }
+
+        #filters-wrapper {
+            grid-column: 1 / span 6;
+        }
+
+        #about-wrapper {
+            grid-column: 7 / span 5;
+        }
 
         .header-nav {
             display: flex;
@@ -183,31 +232,47 @@
             background: transparent;
             border: none;
             cursor: pointer;
-            
+
             padding: 6px;
-            margin-left: -6px; /* Ореол клика не смещает визуальную границу текста */
+            margin-left: -6px;
+            /* Ореол клика не смещает визуальную границу текста */
             border-radius: var(--r-small);
-            
+
             font-family: var(--font-family);
-            font-weight: var(--font-weight); 
+            font-weight: var(--font-weight);
             font-size: var(--h3-size);
             line-height: var(--h3-line-height);
             letter-spacing: var(--h3-letter-spacing);
-            
-            color: var(--color-black); 
+
+            color: var(--color-black);
             transition: color 0.2s ease, opacity 0.2s ease;
         }
 
-        .nav-toggle:hover { opacity: 0.7; }
-        .nav-toggle.open { color: var(--color-inactive); opacity: 1; }
+        .nav-toggle:hover {
+            opacity: 0.7;
+        }
+
+        .nav-toggle.open {
+            color: var(--color-inactive);
+            opacity: 1;
+        }
 
         .toggle-svg {
             color: inherit;
-            transition: transform 0.2s ease; 
+            transition: transform 0.2s ease;
         }
-        .toggle-vertical { transition: opacity 0.2s ease; }
-        .nav-toggle.open .toggle-svg { transform: rotate(180deg); }
-        .nav-toggle.open .toggle-vertical { opacity: 0; }
+
+        .toggle-vertical {
+            transition: opacity 0.2s ease;
+        }
+
+        .nav-toggle.open .toggle-svg {
+            transform: rotate(180deg);
+        }
+
+        .nav-toggle.open .toggle-vertical {
+            opacity: 0;
+        }
 
         .header-plus-btn {
             padding: 9px;
@@ -221,6 +286,7 @@
             justify-content: center;
             position: relative;
         }
+
         .header-plus-btn::after {
             content: '';
             position: absolute;
@@ -231,27 +297,33 @@
             transition: opacity 0.2s ease;
             pointer-events: none;
         }
-        .header-plus-btn:hover::after { opacity: 1; }
+
+        .header-plus-btn:hover::after {
+            opacity: 1;
+        }
 
         /* ВЫПАДАЮЩИЕ БЛОКИ */
         .dropdown-wrapper {
             display: grid;
             grid-template-rows: 0fr;
-            padding-top: 0; 
+            padding-top: 0;
             opacity: 0;
             visibility: hidden;
-            transition: grid-template-rows 0.2s ease, padding-top 0.2s ease, opacity 0.2s ease, visibility 0s 0.2s; 
+            transition: grid-template-rows 0.2s ease, padding-top 0.2s ease, opacity 0.2s ease, visibility 0s 0.2s;
         }
 
         .dropdown-wrapper.open {
             grid-template-rows: 1fr;
-            padding-top: 16px; /* Зазор 16px от меню */
+            padding-top: 16px;
+            /* Зазор 16px от меню */
             opacity: 1;
             visibility: visible;
             transition: grid-template-rows 0.2s ease, padding-top 0.2s ease, opacity 0.2s ease, visibility 0s 0s;
         }
 
-        .dropdown-container { overflow: hidden; }
+        .dropdown-container {
+            overflow: hidden;
+        }
 
         .dropdown-inner {
             display: flex;
@@ -262,43 +334,44 @@
         #filters-wrapper .dropdown-inner {
             gap: 16px;
             padding-right: 28px;
+            /* Базовые 40px + 28px дополнительного пространства справа */
         }
 
         .filter-group {
             display: flex;
             flex-direction: column;
-            gap: 8px; 
+            gap: 8px;
         }
 
         .filter-label {
             font-family: var(--font-family);
-            font-weight: var(--font-weight); 
+            font-weight: var(--font-weight);
             font-size: var(--text-size);
             line-height: var(--text-line-height);
             letter-spacing: var(--text-letter-spacing);
-            color: var(--color-black); 
-            margin: 0; 
+            color: var(--color-black);
+            margin: 0;
         }
 
         .filter-tags {
             display: flex;
             flex-wrap: wrap;
-            gap: 4px; 
+            gap: 4px;
         }
 
         /* --- ВНУТРЯНКА ABOUT --- */
         .about-text {
-            margin: 0 0 8px 0; 
+            margin: 0 0 8px 0;
             font-size: var(--text-size);
             line-height: var(--text-line-height);
             letter-spacing: var(--text-letter-spacing);
-            color: var(--color-black); 
+            color: var(--color-black);
         }
 
         .about-buttons {
             display: flex;
             flex-wrap: wrap;
-            gap: 4px; 
+            gap: 4px;
         }
 
         /* Универсальные кнопки-теги */
@@ -306,23 +379,23 @@
             background-color: var(--color-active);
             border: none;
             outline: none;
-            padding: 4px 8px; 
-            border-radius: var(--r-small); 
-            
+            padding: 4px 8px;
+            border-radius: var(--r-small);
+
             font-size: var(--text-size);
             line-height: var(--text-line-height);
             letter-spacing: var(--text-letter-spacing);
             color: var(--color-black);
-            
+
             cursor: pointer;
             transition: opacity 0.2s ease;
             font-family: inherit;
-            text-decoration: none; 
-            
+            text-decoration: none;
+
             display: inline-flex;
             align-items: center;
-            gap: 4px; 
-            position: relative; 
+            gap: 4px;
+            position: relative;
         }
 
         .filter-tag::after {
@@ -335,16 +408,28 @@
             transition: opacity 0.2s ease;
             pointer-events: none;
         }
-        .filter-tag:hover::after { opacity: 1; }
-        
+
+        .filter-tag:hover::after {
+            opacity: 1;
+        }
+
         .filter-tag.active {
             background-color: var(--color-black) !important;
             color: var(--color-white) !important;
         }
 
-        .arrow-diag, .arrow-corn { transition: d 0.2s ease-out; }
-        .filter-tag:hover .arrow-diag { d: path("M9 3L3 9"); }
-        .filter-tag:hover .arrow-corn { d: path("M9 10L9 3L2 3"); }
+        .arrow-diag,
+        .arrow-corn {
+            transition: d 0.2s ease-out;
+        }
+
+        .filter-tag:hover .arrow-diag {
+            d: path("M9 3L3 9");
+        }
+
+        .filter-tag:hover .arrow-corn {
+            d: path("M9 10L9 3L2 3");
+        }
 
         /* ГАЛЕРЕЯ */
         .gallery {
@@ -354,8 +439,8 @@
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
-            gap: 80px; 
-            padding: 0 40px; 
+            gap: 80px;
+            padding: 0 40px;
         }
 
         .loader {
@@ -368,17 +453,17 @@
         .project-wrapper {
             display: flex;
             flex-direction: column;
-            gap: 20px; 
+            gap: 20px;
         }
 
         .project-header {
             margin: 0;
             font-family: var(--font-family);
-            font-weight: var(--font-weight); 
+            font-weight: var(--font-weight);
             font-size: var(--h2-size);
             line-height: var(--h2-line-height);
             letter-spacing: var(--h2-letter-spacing);
-            color: var(--color-black); 
+            color: var(--color-black);
         }
 
         .project-grid {
@@ -397,9 +482,9 @@
         }
 
         .thumb-media-wrapper {
-            padding: 8px; 
+            padding: 8px;
             background-color: transparent;
-            border-radius: var(--r-large); 
+            border-radius: var(--r-large);
             transition: transform 0.2s, background-color 0.2s;
             display: flex;
             justify-content: center;
@@ -410,40 +495,42 @@
 
         .thumb-card:hover .thumb-media-wrapper {
             transform: translateY(-4px);
-            background-color: var(--color-active); 
+            background-color: var(--color-active);
         }
 
-        .thumb-media-wrapper img, 
+        .thumb-media-wrapper img,
         .thumb-media-wrapper video {
             max-width: calc(100cqw - 16px);
             max-height: calc(100cqh - 16px);
             width: auto;
             height: auto;
             object-fit: contain;
-            border-radius: var(--r-small); 
+            border-radius: var(--r-small);
             display: block;
         }
 
         .video-icon {
             position: absolute;
-            top: 50%; left: 50%;
+            top: 50%;
+            left: 50%;
             transform: translate(-50%, -50%);
             background-color: var(--color-translucent-w);
             backdrop-filter: var(--b-blur);
             -webkit-backdrop-filter: var(--b-blur);
             border-radius: 50%;
-            padding: 20px; 
+            padding: 20px;
             display: flex;
             justify-content: center;
             align-items: center;
-            pointer-events: none; 
+            pointer-events: none;
             z-index: 2;
         }
 
         .video-icon::after {
             content: '';
             display: block;
-            width: 24px; height: 24px;
+            width: 24px;
+            height: 24px;
             background-color: var(--color-inactive);
             -webkit-mask-image: var(--icon-play);
             -webkit-mask-size: contain;
@@ -458,21 +545,24 @@
         /* ПОДВАЛ (ФУТЕР) */
         .site-footer {
             max-width: 1280px;
-            margin: 80px auto 120px auto; 
-            padding: 0 40px; 
+            margin: 80px auto 120px auto;
+            padding: 0 40px;
             box-sizing: border-box;
             width: 100%;
             display: flex;
-            justify-content: center; 
+            justify-content: center;
         }
-        
+
         .site-footer-inner {
             display: flex;
             align-items: center;
-            gap: 8px; 
+            gap: 8px;
         }
 
-        .footer-logo { display: flex; align-items: center; }
+        .footer-logo {
+            display: flex;
+            align-items: center;
+        }
 
         .footer-text {
             font-family: var(--font-family);
@@ -488,7 +578,10 @@
         .modal {
             display: none;
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background-color: var(--color-translucent-w);
             backdrop-filter: var(--b-blur);
             -webkit-backdrop-filter: var(--b-blur);
@@ -496,10 +589,12 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
-            box-sizing: border-box; 
+            box-sizing: border-box;
         }
 
-        .modal.active { display: flex; }
+        .modal.active {
+            display: flex;
+        }
 
         .modal-content {
             background: var(--color-white);
@@ -509,14 +604,16 @@
             overflow-y: auto;
             position: relative;
             border-radius: var(--r-large);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
             box-sizing: border-box;
         }
 
         .close-btn {
             position: absolute;
-            top: 16px; right: 16px;
-            width: 32px; height: 32px;
+            top: 16px;
+            right: 16px;
+            width: 32px;
+            height: 32px;
             background-image: var(--icon-cross-large);
             background-size: contain;
             background-repeat: no-repeat;
@@ -532,7 +629,7 @@
             background: transparent;
             display: flex;
             justify-content: center;
-            position: relative; 
+            position: relative;
         }
 
         .modal-media img,
@@ -546,7 +643,8 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            width: 40px; height: 40px;
+            width: 40px;
+            height: 40px;
             background-color: transparent;
             border: none;
             background-size: contain;
@@ -555,30 +653,55 @@
             cursor: pointer;
             transition: transform 0.2s;
         }
-        .nav-btn:hover { transform: translateY(-50%) scale(1.05); }
-        .nav-btn.prev { left: 16px; background-image: var(--icon-arrow-project-left); }
-        .nav-btn.next { right: 16px; background-image: var(--icon-arrow-project-right); }
 
-        .modal-info { padding: 24px; }
-        .tags-container { display: flex; flex-wrap: wrap; gap: 6px; }
+        .nav-btn:hover {
+            transform: translateY(-50%) scale(1.05);
+        }
+
+        .nav-btn.prev {
+            left: 16px;
+            background-image: var(--icon-arrow-project-left);
+        }
+
+        .nav-btn.next {
+            right: 16px;
+            background-image: var(--icon-arrow-project-right);
+        }
+
+        .modal-info {
+            padding: 24px;
+        }
+
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
 
         /* АДАПТИВ (МОБИЛКА) */
         @media (max-width: 600px) {
-            .loading-badge { gap: 8px; }
+            .loading-badge {
+                gap: 8px;
+            }
 
-            .header-main { padding: calc(20px + env(safe-area-inset-top, 0px)) 20px 20px 20px; }
-            
+            .header-main {
+                padding: calc(20px + env(safe-area-inset-top, 0px)) 20px 20px 20px;
+            }
+
             .header-top-row {
                 display: flex;
-                gap: 20px; 
+                gap: 20px;
             }
-            .header-col-filters, .header-col-about {
+
+            .header-col-filters,
+            .header-col-about {
                 grid-column: auto;
                 display: block;
             }
+
             .header-col-plus {
                 grid-column: auto;
-                margin-left: auto; 
+                margin-left: auto;
             }
 
             .header-dropdowns-row {
@@ -586,38 +709,72 @@
                 flex-direction: column;
                 gap: 0;
             }
-            #filters-wrapper, #about-wrapper { grid-column: auto; }
 
-            /* На мобилке сбрасываем правый отступ */
-            #filters-wrapper .dropdown-inner { padding-right: 20px; }
-
-            .header-nav { gap: 20px; }
-            .header-plus-btn { padding: 8px; }
-
-            .gallery { padding: 0 20px; }
-            .site-footer { padding: 0 20px; }
-            
-            .project-grid { 
-                grid-template-columns: 1fr 1fr; 
-                gap: 8px; 
+            #filters-wrapper,
+            #about-wrapper {
+                grid-column: auto;
             }
 
-            .thumb-media-wrapper { padding: 6px; }
-            .thumb-media-wrapper img, 
+            /* На мобилке сбрасываем правый отступ */
+            #filters-wrapper .dropdown-inner {
+                padding-right: 20px;
+            }
+
+            .header-nav {
+                gap: 20px;
+            }
+
+            .header-plus-btn {
+                padding: 8px;
+            }
+
+            .gallery {
+                padding: 0 20px;
+            }
+
+            .site-footer {
+                padding: 0 20px;
+            }
+
+            .project-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+
+            .thumb-media-wrapper {
+                padding: 6px;
+            }
+
+            .thumb-media-wrapper img,
             .thumb-media-wrapper video {
                 max-width: calc(100cqw - 12px);
                 max-height: calc(100cqh - 12px);
             }
 
-            .video-icon { padding: 13px; }
-            .video-icon::after { width: 20px; height: 20px; }
+            .video-icon {
+                padding: 13px;
+            }
 
-            .nav-btn { width: 32px; height: 32px; }
-            .nav-btn.prev { left: 8px; }
-            .nav-btn.next { right: 8px; }
-            
-            .modal { 
-                padding: 12px; 
+            .video-icon::after {
+                width: 20px;
+                height: 20px;
+            }
+
+            .nav-btn {
+                width: 32px;
+                height: 32px;
+            }
+
+            .nav-btn.prev {
+                left: 8px;
+            }
+
+            .nav-btn.next {
+                right: 8px;
+            }
+
+            .modal {
+                padding: 12px;
                 backdrop-filter: none;
                 -webkit-backdrop-filter: none;
                 background-color: var(--color-white);
@@ -631,15 +788,17 @@
     <div id="loading-screen">
         <div class="loading-badge">
             <h3 class="loading-badge-text">Loading</h3>
-            <svg class="icon-desktop" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle class="loading-dot" cx="2" cy="8" r="1.5" fill="currentColor"/>
-                <circle class="loading-dot" cx="8" cy="8" r="1.5" fill="currentColor"/>
-                <circle class="loading-dot" cx="14" cy="8" r="1.5" fill="currentColor"/>
+            <svg class="icon-desktop" width="16" height="16" viewBox="0 0 16 16" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <circle class="loading-dot" cx="2" cy="8" r="1.5" fill="currentColor" />
+                <circle class="loading-dot" cx="8" cy="8" r="1.5" fill="currentColor" />
+                <circle class="loading-dot" cx="14" cy="8" r="1.5" fill="currentColor" />
             </svg>
-            <svg class="icon-mobile" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle class="loading-dot" cx="1.75" cy="7" r="1.25" fill="currentColor"/>
-                <circle class="loading-dot" cx="7" cy="7" r="1.25" fill="currentColor"/>
-                <circle class="loading-dot" cx="12.25" cy="7" r="1.25" fill="currentColor"/>
+            <svg class="icon-mobile" width="14" height="14" viewBox="0 0 14 14" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <circle class="loading-dot" cx="1.75" cy="7" r="1.25" fill="currentColor" />
+                <circle class="loading-dot" cx="7" cy="7" r="1.25" fill="currentColor" />
+                <circle class="loading-dot" cx="12.25" cy="7" r="1.25" fill="currentColor" />
             </svg>
         </div>
     </div>
@@ -649,41 +808,47 @@
             <div class="header-top-row">
                 <div class="header-col-filters">
                     <button id="filters-toggle" class="nav-toggle" onclick="toggleMenu('filters', event)">
-                        Filters 
-                        <svg class="toggle-svg icon-desktop" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path class="toggle-vertical" d="M7 2V12" stroke="currentColor" stroke-width="1.2"/>
-                            <path class="toggle-horizontal" d="M2 7L12 7" stroke="currentColor" stroke-width="1.2"/>
+                        Filters
+                        <svg class="toggle-svg icon-desktop" width="14" height="14" viewBox="0 0 14 14" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path class="toggle-vertical" d="M7 2V12" stroke="currentColor" stroke-width="1.2" />
+                            <path class="toggle-horizontal" d="M2 7L12 7" stroke="currentColor" stroke-width="1.2" />
                         </svg>
-                        <svg class="toggle-svg icon-mobile" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path class="toggle-vertical" d="M6 2V10" stroke="currentColor"/>
-                            <path class="toggle-horizontal" d="M2 6L10 6" stroke="currentColor"/>
+                        <svg class="toggle-svg icon-mobile" width="12" height="12" viewBox="0 0 12 12" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path class="toggle-vertical" d="M6 2V10" stroke="currentColor" />
+                            <path class="toggle-horizontal" d="M2 6L10 6" stroke="currentColor" />
                         </svg>
                     </button>
                 </div>
-                
+
                 <div class="header-col-about">
                     <button id="about-toggle" class="nav-toggle" onclick="toggleMenu('about', event)">
                         About
-                        <svg class="toggle-svg icon-desktop" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path class="toggle-vertical" d="M7 2V12" stroke="currentColor" stroke-width="1.2"/>
-                            <path class="toggle-horizontal" d="M2 7L12 7" stroke="currentColor" stroke-width="1.2"/>
+                        <svg class="toggle-svg icon-desktop" width="14" height="14" viewBox="0 0 14 14" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path class="toggle-vertical" d="M7 2V12" stroke="currentColor" stroke-width="1.2" />
+                            <path class="toggle-horizontal" d="M2 7L12 7" stroke="currentColor" stroke-width="1.2" />
                         </svg>
-                        <svg class="toggle-svg icon-mobile" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path class="toggle-vertical" d="M6 2V10" stroke="currentColor"/>
-                            <path class="toggle-horizontal" d="M2 6L10 6" stroke="currentColor"/>
+                        <svg class="toggle-svg icon-mobile" width="12" height="12" viewBox="0 0 12 12" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path class="toggle-vertical" d="M6 2V10" stroke="currentColor" />
+                            <path class="toggle-horizontal" d="M2 6L10 6" stroke="currentColor" />
                         </svg>
                     </button>
                 </div>
 
                 <div class="header-col-plus">
                     <button class="header-plus-btn">
-                        <svg class="icon-desktop" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M7 2V12" stroke="currentColor" stroke-width="1.2"/>
-                            <path d="M2 7L12 7" stroke="currentColor" stroke-width="1.2"/>
+                        <svg class="icon-desktop" width="14" height="14" viewBox="0 0 14 14" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7 2V12" stroke="currentColor" stroke-width="1.2" />
+                            <path d="M2 7L12 7" stroke="currentColor" stroke-width="1.2" />
                         </svg>
-                        <svg class="icon-mobile" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M6 2V10" stroke="currentColor"/>
-                            <path d="M2 6L10 6" stroke="currentColor"/>
+                        <svg class="icon-mobile" width="12" height="12" viewBox="0 0 12 12" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6 2V10" stroke="currentColor" />
+                            <path d="M2 6L10 6" stroke="currentColor" />
                         </svg>
                     </button>
                 </div>
@@ -717,30 +882,34 @@
                             </p>
                             <div class="about-buttons">
                                 <a href="#" target="_blank" class="filter-tag">
-                                    <svg class="arrow-link-svg" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path class="arrow-diag" d="M10 2L2 10" stroke="currentColor"/>
-                                        <path class="arrow-corn" d="M10 9L10 2L3 2" stroke="currentColor"/>
+                                    <svg class="arrow-link-svg" width="12" height="12" viewBox="0 0 12 12" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path class="arrow-diag" d="M10 2L2 10" stroke="currentColor" />
+                                        <path class="arrow-corn" d="M10 9L10 2L3 2" stroke="currentColor" />
                                     </svg>
                                     UI/UX Portfolio
                                 </a>
                                 <a href="#" target="_blank" class="filter-tag">
-                                    <svg class="arrow-link-svg" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path class="arrow-diag" d="M10 2L2 10" stroke="currentColor"/>
-                                        <path class="arrow-corn" d="M10 9L10 2L3 2" stroke="currentColor"/>
+                                    <svg class="arrow-link-svg" width="12" height="12" viewBox="0 0 12 12" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path class="arrow-diag" d="M10 2L2 10" stroke="currentColor" />
+                                        <path class="arrow-corn" d="M10 9L10 2L3 2" stroke="currentColor" />
                                     </svg>
                                     CV
                                 </a>
                                 <a href="mailto:hello@example.com" class="filter-tag">
-                                    <svg class="arrow-link-svg" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path class="arrow-diag" d="M10 2L2 10" stroke="currentColor"/>
-                                        <path class="arrow-corn" d="M10 9L10 2L3 2" stroke="currentColor"/>
+                                    <svg class="arrow-link-svg" width="12" height="12" viewBox="0 0 12 12" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path class="arrow-diag" d="M10 2L2 10" stroke="currentColor" />
+                                        <path class="arrow-corn" d="M10 9L10 2L3 2" stroke="currentColor" />
                                     </svg>
                                     Email
                                 </a>
                                 <a href="#" target="_blank" class="filter-tag">
-                                    <svg class="arrow-link-svg" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path class="arrow-diag" d="M10 2L2 10" stroke="currentColor"/>
-                                        <path class="arrow-corn" d="M10 9L10 2L3 2" stroke="currentColor"/>
+                                    <svg class="arrow-link-svg" width="12" height="12" viewBox="0 0 12 12" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path class="arrow-diag" d="M10 2L2 10" stroke="currentColor" />
+                                        <path class="arrow-corn" d="M10 9L10 2L3 2" stroke="currentColor" />
                                     </svg>
                                     Telegram
                                 </a>
@@ -754,15 +923,17 @@
 
     <main class="gallery" id="gallery">
         <div class="loader">
-            <svg class="icon-desktop" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle class="loading-dot" cx="2" cy="8" r="1.5" fill="currentColor"/>
-                <circle class="loading-dot" cx="8" cy="8" r="1.5" fill="currentColor"/>
-                <circle class="loading-dot" cx="14" cy="8" r="1.5" fill="currentColor"/>
+            <svg class="icon-desktop" width="16" height="16" viewBox="0 0 16 16" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <circle class="loading-dot" cx="2" cy="8" r="1.5" fill="currentColor" />
+                <circle class="loading-dot" cx="8" cy="8" r="1.5" fill="currentColor" />
+                <circle class="loading-dot" cx="14" cy="8" r="1.5" fill="currentColor" />
             </svg>
-            <svg class="icon-mobile" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle class="loading-dot" cx="1.75" cy="7" r="1.25" fill="currentColor"/>
-                <circle class="loading-dot" cx="7" cy="7" r="1.25" fill="currentColor"/>
-                <circle class="loading-dot" cx="12.25" cy="7" r="1.25" fill="currentColor"/>
+            <svg class="icon-mobile" width="14" height="14" viewBox="0 0 14 14" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <circle class="loading-dot" cx="1.75" cy="7" r="1.25" fill="currentColor" />
+                <circle class="loading-dot" cx="7" cy="7" r="1.25" fill="currentColor" />
+                <circle class="loading-dot" cx="12.25" cy="7" r="1.25" fill="currentColor" />
             </svg>
         </div>
     </main>
@@ -770,20 +941,52 @@
     <footer class="site-footer">
         <div class="site-footer-inner">
             <div class="footer-logo">
-                <svg class="icon-desktop" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12.374 1.73457L13.0975 5.15444C13.1612 5.45376 13.3945 5.68709 13.6938 5.75073L17.1137 6.4743C17.5214 6.56033 17.5214 7.14366 17.1137 7.22969L13.6938 7.95325C13.3945 8.01689 13.1612 8.25022 13.0975 8.54955L12.374 11.9694C12.2879 12.3772 11.7046 12.3772 11.6186 11.9694L10.895 8.54955C10.8314 8.25022 10.598 8.01689 10.2987 7.95325L6.88003 7.22851C6.47228 7.14248 6.47228 6.55915 6.88003 6.47312L10.2999 5.74955C10.5992 5.68592 10.8325 5.45258 10.8962 5.15326L11.6198 1.7334C11.7046 1.32565 12.2879 1.32565 12.374 1.73457Z" fill="black"/>
-                    <path d="M11.2 19.9996H7.11906C6.94937 19.9996 6.81267 19.8629 6.81267 19.6932V18.7033C6.81267 18.2319 6.66536 17.7723 6.3896 17.3882L4.20947 14.3042C3.87832 13.7998 3.5625 13.2966 3.5625 12.6473L3.70274 6.13042C3.72041 5.27605 4.9896 5.2678 5.02024 6.121L5.19583 11.1247C5.20526 11.4005 5.30661 11.6656 5.48573 11.8765L7.21216 13.9164C7.61755 14.3961 8.35172 13.8292 7.99112 13.3154L6.49684 11.1872C5.86166 10.3917 7.00947 9.41005 7.6965 10.1619L10.3197 13.0338C11.0822 13.8681 11.5053 14.9582 11.5053 16.0895V19.6967C11.5029 19.8641 11.3674 19.9996 11.2 19.9996Z" fill="black"/>
-                    <path d="M12.7974 19.9996H16.8784C17.0481 19.9996 17.1848 19.8629 17.1848 19.6932V18.7033C17.1848 18.2319 17.3321 17.7723 17.6078 17.3882L19.788 14.3042C20.1191 13.7998 20.4349 13.2966 20.4349 12.6473L20.2947 6.13042C20.277 5.27605 19.0078 5.2678 18.9772 6.121L18.8016 11.1247C18.7922 11.4005 18.6908 11.6656 18.5117 11.8765L16.7853 13.9164C16.3799 14.3961 15.6457 13.8292 16.0063 13.3154L17.5006 11.1872C18.1358 10.3917 16.988 9.41005 16.3009 10.1619L13.6777 13.0338C12.9153 13.8681 12.4922 14.9582 12.4922 16.0895V19.6967C12.4945 19.8641 12.6301 19.9996 12.7974 19.9996Z" fill="black"/>
+                <svg class="icon-desktop" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M12.374 1.73457L13.0975 5.15444C13.1612 5.45376 13.3945 5.68709 13.6938 5.75073L17.1137 6.4743C17.5214 6.56033 17.5214 7.14366 17.1137 7.22969L13.6938 7.95325C13.3945 8.01689 13.1612 8.25022 13.0975 8.54955L12.374 11.9694C12.2879 12.3772 11.7046 12.3772 11.6186 11.9694L10.895 8.54955C10.8314 8.25022 10.598 8.01689 10.2987 7.95325L6.88003 7.22851C6.47228 7.14248 6.47228 6.55915 6.88003 6.47312L10.2999 5.74955C10.5992 5.68592 10.8325 5.45258 10.8962 5.15326L11.6198 1.7334C11.7046 1.32565 12.2879 1.32565 12.374 1.73457Z"
+                        fill="black" />
+                    <path
+                        d="M11.2 19.9996H7.11906C6.94937 19.9996 6.81267 19.8629 6.81267 19.6932V18.7033C6.81267 18.2319 6.66536 17.7723 6.3896 17.3882L4.20947 14.3042C3.87832 13.7998 3.5625 13.2966 3.5625 12.6473L3.70274 6.13042C3.72041 5.27605 4.9896 5.2678 5.02024 6.121L5.19583 11.1247C5.20526 11.4005 5.30661 11.6656 5.48573 11.8765L7.21216 13.9164C7.61755 14.3961 8.35172 13.8292 7.99112 13.3154L6.49684 11.1872C5.86166 10.3917 7.00947 9.41005 7.6965 10.1619L10.3197 13.0338C11.0822 13.8681 11.5053 14.9582 11.5053 16.0895V19.6967C11.5029 19.8641 11.3674 19.9996 11.2 19.9996Z"
+                        fill="black" />
+                    <path
+                        d="M12.7974 19.9996H16.8784C17.0481 19.9996 17.1848 19.8629 17.1848 19.6932V18.7033C17.1848 18.2319 17.3321 17.7723 17.6078 17.3882L19.788 14.3042C20.1191 13.7998 20.4349 13.2966 20.4349 12.6473L20.2947 6.13042C20.277 5.27605 19.0078 5.2678 18.9772 6.121L18.8016 11.1247C18.7922 11.4005 18.6908 11.6656 18.5117 11.8765L16.7853 13.9164C16.3799 14.3961 15.6457 13.8292 16.0063 13.3154L17.5006 11.1872C18.1358 10.3917 16.988 9.41005 16.3009 10.1619L13.6777 13.0338C12.9153 13.8681 12.4922 14.9582 12.4922 16.0895V19.6967C12.4945 19.8641 12.6301 19.9996 12.7974 19.9996Z"
+                        fill="black" />
                 </svg>
-                <svg class="icon-mobile" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M10.2978 1.75467L10.8983 4.5931C10.9512 4.84154 11.1448 5.0352 11.3932 5.08802L14.2315 5.68857C14.5699 5.75997 14.5699 6.24412 14.2315 6.31553L11.3932 6.91607C11.1448 6.96889 10.9512 7.16255 10.8983 7.41099L10.2978 10.2494C10.2264 10.5878 9.7423 10.5878 9.6709 10.2494L9.07038 7.41099C9.01757 7.16255 8.82391 6.96889 8.57549 6.91607L5.73818 6.31455C5.39977 6.24315 5.39977 5.75899 5.73818 5.68759L8.57647 5.08704C8.82489 5.03422 9.01854 4.84056 9.07136 4.59212L9.67188 1.75369C9.7423 1.41527 10.2264 1.41527 10.2978 1.75467Z" fill="black"/>
-                    <path d="M9.33481 16.9148H5.94784C5.807 16.9148 5.69354 16.8013 5.69354 16.6604V15.8388C5.69354 15.4476 5.57129 15.0662 5.34243 14.7473L3.53304 12.1876C3.25821 11.769 2.99609 11.3514 2.99609 10.8124L3.11248 5.40356C3.12715 4.69444 4.18051 4.6876 4.20594 5.39574L4.35167 9.54873C4.35949 9.7776 4.4436 9.99767 4.59226 10.1727L6.0251 11.8658C6.36155 12.2639 6.97087 11.7935 6.67159 11.367L5.43143 9.60056C4.90426 8.94035 5.85688 8.1256 6.42708 8.74962L8.60421 11.1332C9.23701 11.8257 9.58812 12.7305 9.58812 13.6694V16.6634C9.58617 16.8023 9.47369 16.9148 9.33481 16.9148Z" fill="black"/>
-                    <path d="M10.6557 16.9148H14.0426C14.1835 16.9148 14.2969 16.8013 14.2969 16.6604V15.8388C14.2969 15.4476 14.4192 15.0662 14.648 14.7473L16.4574 12.1876C16.7323 11.769 16.9944 11.3514 16.9944 10.8124L16.878 5.40356C16.8633 4.69444 15.81 4.6876 15.7845 5.39574L15.6388 9.54873C15.631 9.7776 15.5469 9.99767 15.3982 10.1727L13.9654 11.8658C13.6289 12.2639 13.0196 11.7935 13.3189 11.367L14.559 9.60056C15.0862 8.94035 14.1336 8.1256 13.5634 8.74962L11.3863 11.1332C10.7535 11.8257 10.4023 12.7305 10.4023 13.6694V16.6634C10.4043 16.8023 10.5168 16.9148 10.6557 16.9148Z" fill="black"/>
+                <svg class="icon-mobile" width="20" height="20" viewBox="0 0 20 20" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M10.2978 1.75467L10.8983 4.5931C10.9512 4.84154 11.1448 5.0352 11.3932 5.08802L14.2315 5.68857C14.5699 5.75997 14.5699 6.24412 14.2315 6.31553L11.3932 6.91607C11.1448 6.96889 10.9512 7.16255 10.8983 7.41099L10.2978 10.2494C10.2264 10.5878 9.7423 10.5878 9.6709 10.2494L9.07038 7.41099C9.01757 7.16255 8.82391 6.96889 8.57549 6.91607L5.73818 6.31455C5.39977 6.24315 5.39977 5.75899 5.73818 5.68759L8.57647 5.08704C8.82489 5.03422 9.01854 4.84056 9.07136 4.59212L9.67188 1.75369C9.7423 1.41527 10.2264 1.41527 10.2978 1.75467Z"
+                        fill="black" />
+                    <path
+                        d="M9.33481 16.9148H5.94784C5.807 16.9148 5.69354 16.8013 5.69354 16.6604V15.8388C5.69354 15.4476 5.57129 15.0662 5.34243 14.7473L3.53304 12.1876C3.25821 11.769 2.99609 11.3514 2.99609 10.8124L3.11248 5.40356C3.12715 4.69444 4.18051 4.6876 4.20594 5.39574L4.35167 9.54873C4.35949 9.7776 4.4436 9.99767 4.59226 10.1727L6.0251 11.8658C6.36155 12.2639 6.97087 11.7935 6.67159 11.367L5.43143 9.60056C4.90426 8.94035 5.85688 8.1256 6.42708 8.74962L8.60421 11.1332C9.23701 11.8257 9.58812 12.7305 9.58812 13.6694V16.6634C9.58617 16.8023 9.47369 16.9148 9.33481 16.9148Z"
+                        fill="black" />
+                    <path
+                        d="M10.6557 16.9148H14.0426C14.1835 16.9148 14.2969 16.8013 14.2969 16.6604V15.8388C14.2969 15.4476 14.4192 15.0662 14.648 14.7473L16.4574 12.1876C16.7323 11.769 16.9944 11.3514 16.9944 10.8124L16.878 5.40356C16.8633 4.69444 15.81 4.6876 15.7845 5.39574L15.6388 9.54873C15.631 9.7776 15.5469 9.99767 15.3982 10.1727L13.9654 11.8658C13.6289 12.2639 13.0196 11.7935 13.3189 11.367L14.559 9.60056C15.0862 8.94035 14.1336 8.1256 13.5634 8.74962L11.3863 11.1332C10.7535 11.8257 10.4023 12.7305 10.4023 13.6694V16.6634C10.4043 16.8023 10.5168 16.9148 10.6557 16.9148Z"
+                        fill="black" />
                 </svg>
             </div>
             <span class="footer-text">Ivan Skarabahatau, Warsaw, 2026</span>
         </div>
     </footer>
+
+    <div class="modal" id="modal" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="close-btn" onclick="closeModal(event)"></button>
+
+            <div class="modal-media" id="modal-media">
+                <button class="nav-btn prev" onclick="navigateModal(-1, event)"></button>
+                <div id="media-content-container"></div>
+                <button class="nav-btn next" onclick="navigateModal(1, event)"></button>
+            </div>
+
+            <div class="modal-info">
+                <div class="tags-container" id="modal-tags">
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <script>
         window.addEventListener('DOMContentLoaded', () => {
@@ -792,12 +995,12 @@
                 if (loader) {
                     loader.style.pointerEvents = 'none';
                     loader.style.opacity = '0';
-                    setTimeout(() => loader.remove(), 500); 
+                    setTimeout(() => loader.remove(), 500);
                 }
-            }, 3000); 
+            }, 3000);
         });
 
-        document.addEventListener('click', function(event) {
+        document.addEventListener('click', function (event) {
             const headerWrapper = document.querySelector('.header-wrapper');
             if (!headerWrapper.contains(event.target)) {
                 document.getElementById('filters-toggle').classList.remove('open');
@@ -833,12 +1036,12 @@
             return nameMapping[lower] || val;
         }
 
-        const projectOrder =['ecards', 'snrg', 'pra', 'life', 'embacy', 'qelvio', 'dazzle', 'mix'];
-        const fieldOrder =['ui/ux', 'web', 'graphic design', 'digital ad', 'outdoor ad', 'social media', 'branding', 'logo', 'aso', 'icon', 'presentation', 'merch', 'stickers', 'motion design'];
+        const projectOrder = ['ecards', 'snrg', 'pra', 'life', 'embacy', 'qelvio', 'dazzle', 'mix'];
+        const fieldOrder = ['ui/ux', 'web', 'graphic design', 'digital ad', 'outdoor ad', 'social media', 'branding', 'logo', 'aso', 'icon', 'presentation', 'merch', 'stickers', 'motion design'];
 
         let portfolioData = [];
-        let filteredIndices =[]; 
-        let currentModalIndex = 0; 
+        let filteredIndices = [];
+        let currentModalIndex = 0;
 
         let activeFilters = {
             project: new Set(),
@@ -847,8 +1050,8 @@
         };
 
         function toggleMenu(menuName, event) {
-            if(event) event.stopPropagation(); 
-            
+            if (event) event.stopPropagation();
+
             const isMobile = window.innerWidth <= 600;
             const filtersBtn = document.getElementById('filters-toggle');
             const filtersWrapper = document.getElementById('filters-wrapper');
@@ -904,9 +1107,9 @@
             header: true,
             transformHeader: h => h.trim().toLowerCase(),
             complete: function (results) {
-                portfolioData = results.data.filter(row => row.url && row.url.trim() !== ''); 
-                filteredIndices = portfolioData.map((_, i) => i); 
-                
+                portfolioData = results.data.filter(row => row.url && row.url.trim() !== '');
+                filteredIndices = portfolioData.map((_, i) => i);
+
                 buildFilters();
                 renderGallery();
             }
@@ -931,7 +1134,7 @@
 
         function renderFilterGroup(type, valuesSet) {
             const container = document.getElementById(`filter-row-${type}`);
-            
+
             const sortedValues = Array.from(valuesSet).sort((a, b) => {
                 if (type === 'project') {
                     let indexA = projectOrder.indexOf(a);
@@ -946,17 +1149,17 @@
                     if (indexB === -1) indexB = 999;
                     return indexA - indexB;
                 }
-                return b.localeCompare(a); 
+                return b.localeCompare(a);
             });
 
             sortedValues.forEach(val => {
-                if(!val) return;
+                if (!val) return;
                 const btn = document.createElement('button');
                 btn.className = 'filter-tag';
-                
+
                 btn.dataset.val = val;
                 btn.innerText = getDisplayName(val);
-                
+
                 if (type === 'field' && fieldColors[val]) {
                     btn.style.backgroundColor = fieldColors[val];
                 }
@@ -983,7 +1186,7 @@
             activeFilters[type].add(val);
             applyFilters();
             updateFilterButtonsUI();
-            
+
             closeModal();
             window.scrollTo({ top: 0, behavior: 'smooth' });
 
@@ -1000,7 +1203,8 @@
             }
         }
 
-        function updateFilterButtonsUI() {['project', 'field', 'year'].forEach(type => {
+        function updateFilterButtonsUI() {
+            ['project', 'field', 'year'].forEach(type => {
                 const container = document.getElementById(`filter-row-${type}`);
                 const buttons = container.querySelectorAll('.filter-tag');
                 buttons.forEach(btn => {
@@ -1015,7 +1219,7 @@
         }
 
         function applyFilters() {
-            filteredIndices =[];
+            filteredIndices = [];
             portfolioData.forEach((item, index) => {
                 const p = item.project ? item.project.trim().toLowerCase() : 'others';
                 const y = item.year ? item.year.trim() : '';
@@ -1024,7 +1228,7 @@
 
                 const passProject = activeFilters.project.size === 0 || activeFilters.project.has(p);
                 const passYear = activeFilters.year.size === 0 || activeFilters.year.has(y);
-                
+
                 let passField = activeFilters.field.size === 0;
                 if (!passField && (activeFilters.field.has(f1) || activeFilters.field.has(f2))) {
                     passField = true;
@@ -1047,11 +1251,11 @@
             }
 
             const groupedProjects = {};
-            
+
             filteredIndices.forEach((originalIndex) => {
                 const item = portfolioData[originalIndex];
                 const projectName = item.project ? item.project.trim() : 'others';
-                if (!groupedProjects[projectName]) groupedProjects[projectName] =[];
+                if (!groupedProjects[projectName]) groupedProjects[projectName] = [];
                 groupedProjects[projectName].push({ item, index: originalIndex });
             });
 
@@ -1069,7 +1273,7 @@
 
                 const sectionHeader = document.createElement('h2');
                 sectionHeader.className = 'project-header';
-                sectionHeader.innerText = getDisplayName(projectName); 
+                sectionHeader.innerText = getDisplayName(projectName);
                 projectWrapper.appendChild(sectionHeader);
 
                 const projectGrid = document.createElement('div');
@@ -1078,21 +1282,21 @@
                 groupedProjects[projectName].sort((a, b) => {
                     const yearA = parseInt(a.item.year) || 0;
                     const yearB = parseInt(b.item.year) || 0;
-                    return yearB - yearA; 
+                    return yearB - yearA;
                 });
 
                 groupedProjects[projectName].forEach(dataObj => {
                     const item = dataObj.item;
                     const isVideo = item.type && item.type.toLowerCase().trim() === 'vid';
-                    
+
                     const directUrl = getDirectDropboxUrl(item.url);
                     const optimizedImgUrl = isVideo ? '' : getOptimizedImageUrl(item.url);
 
                     const card = document.createElement('div');
                     card.className = 'thumb-card';
                     card.onclick = () => openModal(dataObj.index);
-                    
-                    let mediaHTML = isVideo 
+
+                    let mediaHTML = isVideo
                         ? `<video src="${directUrl}#t=0.1" preload="metadata" muted loop onmouseover="this.play()" onmouseout="this.pause()"></video><div class="video-icon"></div>`
                         : `<img src="${optimizedImgUrl}" loading="lazy" decoding="async">`;
 
@@ -1122,7 +1326,7 @@
 
         function openModal(originalIndex) {
             currentModalIndex = filteredIndices.indexOf(originalIndex);
-            
+
             const item = portfolioData[originalIndex];
             const isVideo = item.type && item.type.toLowerCase().trim() === 'vid';
 
@@ -1130,9 +1334,9 @@
             const optimizedImgUrl = isVideo ? '' : getOptimizedImageUrl(item.url);
 
             const mediaContainer = document.getElementById('media-content-container');
-            
-            mediaContainer.innerHTML = isVideo 
-                ? `<video src="${directUrl}" controls autoplay playsinline></video>` 
+
+            mediaContainer.innerHTML = isVideo
+                ? `<video src="${directUrl}" controls autoplay playsinline></video>`
                 : `<img src="${optimizedImgUrl}" decoding="async">`;
 
             const nextIndex = currentModalIndex + 1 >= filteredIndices.length ? 0 : currentModalIndex + 1;
@@ -1143,7 +1347,7 @@
             const tagsContainer = document.getElementById('modal-tags');
             tagsContainer.innerHTML = '';
 
-            const tags =[
+            const tags = [
                 { text: item.project, type: 'project', color: false },
                 { text: item.field, type: 'field', color: true },
                 { text: item['field opt'], type: 'field', color: true },
@@ -1155,8 +1359,8 @@
                     const cleanText = t.text.toLowerCase().trim();
                     const span = document.createElement('span');
                     span.className = 'filter-tag';
-                    span.innerText = getDisplayName(cleanText); 
-                    
+                    span.innerText = getDisplayName(cleanText);
+
                     if (t.color && fieldColors[cleanText]) {
                         span.style.backgroundColor = fieldColors[cleanText];
                     }
@@ -1170,16 +1374,16 @@
             navButtons.forEach(btn => btn.style.display = filteredIndices.length > 1 ? 'flex' : 'none');
 
             document.getElementById('modal').classList.add('active');
-            document.body.style.overflow = 'hidden'; 
+            document.body.style.overflow = 'hidden';
         }
 
         function navigateModal(direction, event) {
-            event.stopPropagation(); 
+            event.stopPropagation();
             currentModalIndex += direction;
-            
+
             if (currentModalIndex < 0) currentModalIndex = filteredIndices.length - 1;
             if (currentModalIndex >= filteredIndices.length) currentModalIndex = 0;
-            
+
             openModal(filteredIndices[currentModalIndex]);
         }
 
