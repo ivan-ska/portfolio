@@ -576,25 +576,39 @@
 
         /* ВСПЛЫВАЮЩЕЕ ОКНО (МОДАЛКА) */
         .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: var(--color-translucent-w);
-            backdrop-filter: var(--b-blur);
-            -webkit-backdrop-filter: var(--b-blur);
-            z-index: 100;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            box-sizing: border-box;
-        }
+    /* 1. Обязательно удали display: none; если он тут остался! */
+    /* 2. Ставим display: flex; прямо в базовый класс, чтобы она всегда существовала */
+    display: flex; 
+    
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-translucent-w);
+    backdrop-filter: var(--b-blur);
+    -webkit-backdrop-filter: var(--b-blur);
+    z-index: 100;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+    
+    /* 3. Скрываем через прозрачность и видимость */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0s 0.3s; /* visibility ждет 0.3s перед скрытием */
+}
 
-        .modal.active {
-            display: flex;
-        }
+.modal.active {
+    /* 4. Здесь display: flex; больше писать не нужно! Удали его, если есть. */
+    
+    /* 5. Показываем модалку */
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease, visibility 0s 0s; /* visibility срабатывает мгновенно */
+}
+
 
         .modal-content {
             background: var(--color-white);
@@ -606,7 +620,13 @@
             border-radius: var(--r-large);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
             box-sizing: border-box;
+            transform: scale(0.96);
+    transition: transform 0.3s ease;
         }
+
+        .modal.active .modal-content {
+    transform: scale(1);
+}
 
         .close-btn {
             position: absolute;
@@ -675,8 +695,78 @@
         .tags-container {
             display: flex;
             flex-wrap: wrap;
-            gap: 6px;
+            justify-content: center;
+            gap: 4px;
         }
+
+
+        /* ========================================= */
+        /*               ПОПАП КОНТАКТОВ             */
+        /* ========================================= */
+        .popup-overlay {
+            position: fixed;
+            inset: 0;
+            background-color: var(--color-translucent-w);
+            backdrop-filter: var(--b-blur);
+            -webkit-backdrop-filter: var(--b-blur);
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0s 0.3s;
+        }
+
+        .popup-overlay.active {
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.3s ease, visibility 0s 0s;
+        }
+
+        .popup-content {
+            width: 366px;
+            background-color: var(--color-active);
+            border-radius: var(--r-large);
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            /* Начальное положение для софт-анимации */
+            transform: translateY(-10px) scale(0.98);
+            transition: transform 0.3s ease;
+        }
+
+        .popup-overlay.active .popup-content {
+            transform: translateY(0) scale(1);
+        }
+
+        .popup-header {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .popup-info {
+            padding-right: 28px;
+        }
+
+        .popup-close-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            color: var(--color-black);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.2s ease;
+        }
+
+        .popup-close-btn:hover {
+            opacity: 0.7;
+        }
+
 
         /* АДАПТИВ (МОБИЛКА) */
         @media (max-width: 600px) {
@@ -779,6 +869,10 @@
                 -webkit-backdrop-filter: none;
                 background-color: var(--color-white);
             }
+
+            .popup-content {
+                width: 310px;
+            }
         }
     </style>
 </head>
@@ -839,7 +933,7 @@
                 </div>
 
                 <div class="header-col-plus">
-                    <button class="header-plus-btn">
+                    <button class="header-plus-btn" onclick="openContactPopup(event)">
                         <svg class="icon-desktop" width="14" height="14" viewBox="0 0 14 14" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
                             <path d="M7 2V12" stroke="currentColor" stroke-width="1.2" />
@@ -988,6 +1082,49 @@
     </div>
 
 
+    <div class="popup-overlay" id="contact-popup" onclick="closeContactPopup(event)">
+        <div class="popup-content" onclick="event.stopPropagation()">
+            <div class="popup-header">
+                <button class="popup-close-btn" onclick="closeContactPopup(event)">
+                    <svg class="icon-desktop" width="14" height="14" viewBox="0 0 14 14" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 3.00098L11 11.001" stroke="currentColor" stroke-width="1.2" />
+                        <path d="M3 11L11 3" stroke="currentColor" stroke-width="1.2" />
+                    </svg>
+                    <svg class="icon-mobile" width="12" height="12" viewBox="0 0 12 12" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path d="M2 2.00098L9.99904 10" stroke="currentColor" />
+                        <path d="M2 9.99902L9.99904 1.99998" stroke="currentColor" />
+                    </svg>
+                </button>
+            </div>
+            <div class="popup-info">
+                <p class="about-text">
+                    Contact me if You have a project on mind or want to collab
+                </p>
+                <div class="about-buttons">
+                    <a href="mailto:hello@example.com" class="filter-tag">
+                        <svg class="arrow-link-svg" width="12" height="12" viewBox="0 0 12 12" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path class="arrow-diag" d="M10 2L2 10" stroke="currentColor" />
+                            <path class="arrow-corn" d="M10 9L10 2L3 2" stroke="currentColor" />
+                        </svg>
+                        Mail
+                    </a>
+                    <a href="#" target="_blank" class="filter-tag">
+                        <svg class="arrow-link-svg" width="12" height="12" viewBox="0 0 12 12" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path class="arrow-diag" d="M10 2L2 10" stroke="currentColor" />
+                            <path class="arrow-corn" d="M10 9L10 2L3 2" stroke="currentColor" />
+                        </svg>
+                        Telegram
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <script>
         window.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
@@ -997,7 +1134,7 @@
                     loader.style.opacity = '0';
                     setTimeout(() => loader.remove(), 500);
                 }
-            }, 3000);
+            }, 2000);
         });
 
         document.addEventListener('click', function (event) {
@@ -1336,8 +1473,8 @@
             const mediaContainer = document.getElementById('media-content-container');
 
             mediaContainer.innerHTML = isVideo
-                ? `<video src="${directUrl}" controls autoplay playsinline></video>`
-                : `<img src="${optimizedImgUrl}" decoding="async">`;
+    ? `<video src="${directUrl}" controls autoplay playsinline webkit-playsinline muted></video>`
+    : `<img src="${optimizedImgUrl}" decoding="async">`;
 
             const nextIndex = currentModalIndex + 1 >= filteredIndices.length ? 0 : currentModalIndex + 1;
             const prevIndex = currentModalIndex - 1 < 0 ? filteredIndices.length - 1 : currentModalIndex - 1;
@@ -1388,12 +1525,39 @@
         }
 
         function closeModal(event) {
-            if (event && event.target.closest('.modal-content') && !event.target.classList.contains('close-btn')) {
-                return;
-            }
-            document.getElementById('modal').classList.remove('active');
-            document.body.style.overflow = '';
-            document.getElementById('media-content-container').innerHTML = '';
+    if (event && event.target.closest('.modal-content') && !event.target.classList.contains('close-btn')) {
+        return;
+    }
+    
+    document.getElementById('modal').classList.remove('active');
+    document.body.style.overflow = '';
+    
+    // Ждем 300мс (пока идет CSS-анимация opacity), и только потом очищаем медиа
+    setTimeout(() => {
+        document.getElementById('media-content-container').innerHTML = '';
+    }, 300);
+}
+
+        function openContactPopup(event) {
+            if (event) event.stopPropagation();
+
+            // Сбрасываем (закрываем) меню в шапке, если они были открыты
+            document.getElementById('filters-toggle').classList.remove('open');
+            document.getElementById('filters-wrapper').classList.remove('open');
+            document.getElementById('about-toggle').classList.remove('open');
+            document.getElementById('about-wrapper').classList.remove('open');
+
+            const popup = document.getElementById('contact-popup');
+            popup.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Блокируем скролл страницы на фоне
+        }
+
+        function closeContactPopup(event) {
+            if (event) event.stopPropagation();
+
+            const popup = document.getElementById('contact-popup');
+            popup.classList.remove('active');
+            document.body.style.overflow = ''; // Возвращаем скролл
         }
     </script>
 </body>
