@@ -509,6 +509,11 @@
             display: block;
         }
 
+        .thumb-media-wrapper video {
+            pointer-events: none;
+            /* Запрещаем iOS перехватывать тапы по превью-видео */
+        }
+
         .video-icon {
             position: absolute;
             top: 50%;
@@ -576,120 +581,148 @@
 
         /* ВСПЛЫВАЮЩЕЕ ОКНО (МОДАЛКА) */
         .modal {
-    /* 1. Обязательно удали display: none; если он тут остался! */
-    /* 2. Ставим display: flex; прямо в базовый класс, чтобы она всегда существовала */
-    display: flex; 
-    
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: var(--color-translucent-w);
-    backdrop-filter: var(--b-blur);
-    -webkit-backdrop-filter: var(--b-blur);
-    z-index: 100;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    box-sizing: border-box;
-    
-    /* 3. Скрываем через прозрачность и видимость */
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0s 0.3s; /* visibility ждет 0.3s перед скрытием */
-}
-
-.modal.active {
-    /* 4. Здесь display: flex; больше писать не нужно! Удали его, если есть. */
-    
-    /* 5. Показываем модалку */
-    opacity: 1;
-    visibility: visible;
-    transition: opacity 0.3s ease, visibility 0s 0s; /* visibility срабатывает мгновенно */
-}
-
-
-        .modal-content {
-            background: var(--color-white);
-            max-width: 1000px;
+            display: flex;
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-            position: relative;
-            border-radius: var(--r-large);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            height: 100%;
+            background-color: var(--color-translucent-w);
+            backdrop-filter: var(--b-blur);
+            -webkit-backdrop-filter: var(--b-blur);
+            z-index: 100;
+            padding: 40px;
             box-sizing: border-box;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0s 0.3s;
+        }
+
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.3s ease, visibility 0s 0s;
+        }
+
+        /* Плоская Grid-сетка */
+        .modal-content {
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            display: grid;
+            /* 3 колонки (стрелка, контент, стрелка) и 3 строки (крестик, контент, теги) */
+            grid-template-columns: auto 1fr auto;
+            grid-template-rows: auto minmax(0, 1fr) auto;
+            grid-template-areas:
+                ". . top"
+                "prev media next"
+                ". bottom .";
+            column-gap: 40px;
+            /* Расстояние от кнопок до контента 40px */
             transform: scale(0.96);
-    transition: transform 0.3s ease;
+            transition: transform 0.3s ease;
         }
 
         .modal.active .modal-content {
-    transform: scale(1);
-}
-
-        .close-btn {
-            position: absolute;
-            top: 16px;
-            right: 16px;
-            width: 32px;
-            height: 32px;
-            background-image: var(--icon-cross-large);
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-color: transparent;
-            border: none;
-            cursor: pointer;
-            z-index: 10;
+            transform: scale(1);
         }
 
-        .modal-media {
-            width: 100%;
+        .modal-top {
+            grid-area: top;
+            justify-self: end;
+            margin-bottom: 40px;
+        }
+
+        .close-btn {
             background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            color: var(--color-black);
             display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.2s ease;
+        }
+
+        .close-btn:hover {
+            opacity: 0.7;
+        }
+
+        /* Навигация (стрелки) */
+        .nav-area {
+            display: flex;
+            align-items: center;
+            /* Центрируем кнопку по вертикали */
+            cursor: pointer;
+        }
+
+        .nav-area.prev {
+            grid-area: prev;
+        }
+
+        .nav-area.next {
+            grid-area: next;
+        }
+
+        .nav-icon-box {
+            padding: 9px;
+            border-radius: var(--r-small);
+            background-color: var(--color-active);
+            color: var(--color-black);
+            display: flex;
+            align-items: center;
             justify-content: center;
             position: relative;
+        }
+
+        .nav-icon-box::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            background-color: var(--color-active);
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            pointer-events: none;
+        }
+
+        .nav-area:hover .nav-icon-box::after {
+            opacity: 1;
+        }
+
+        /* Контейнер для медиа */
+        .modal-media {
+            grid-area: media;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            padding: 20px;
+            /* Внутренние отступы 20px для десктопа */
+            box-sizing: border-box;
         }
 
         .modal-media img,
         .modal-media video {
             max-width: 100%;
-            max-height: 70vh;
+            max-height: 100%;
+            width: auto;
+            height: auto;
             object-fit: contain;
+            border-radius: var(--r-large);
         }
 
-        .nav-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 40px;
-            height: 40px;
-            background-color: transparent;
-            border: none;
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            cursor: pointer;
-            transition: transform 0.2s;
+        .modal-center-group {
+            display: contents;
         }
 
-        .nav-btn:hover {
-            transform: translateY(-50%) scale(1.05);
-        }
-
-        .nav-btn.prev {
-            left: 16px;
-            background-image: var(--icon-arrow-project-left);
-        }
-
-        .nav-btn.next {
-            right: 16px;
-            background-image: var(--icon-arrow-project-right);
-        }
-
-        .modal-info {
-            padding: 24px;
+        /* Контейнер тегов */
+        .modal-bottom {
+            grid-area: bottom;
+            display: flex;
+            justify-content: center;
+            margin-top: 40px;
         }
 
         .tags-container {
@@ -863,11 +896,88 @@
                 right: 8px;
             }
 
+            /* МОБИЛЬНАЯ МОДАЛКА */
             .modal {
-                padding: 12px;
-                backdrop-filter: none;
-                -webkit-backdrop-filter: none;
-                background-color: var(--color-white);
+                padding: 120px 20px;
+                /* Отступы 120 сверху-снизу и 20 по бокам */
+                background-color: var(--color-translucent-w);
+                /* Возвращаем размытый фон */
+                backdrop-filter: var(--b-blur);
+                -webkit-backdrop-filter: var(--b-blur);
+            }
+
+            .modal-content {
+                /* Теперь у нас 3 строки: крестик, общая группа (медиа+теги), стрелки */
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: auto minmax(0, 1fr) auto;
+                grid-template-areas:
+                    "top top"
+                    "center center"
+                    "prev next";
+                column-gap: 0;
+            }
+
+            /* Наша новая обертка оживает на мобилке */
+            .modal-center-group {
+                display: flex;
+                /* Отменяем contents */
+                flex-direction: column;
+                justify-content: center;
+                /* Центрируем группу целиком по вертикали */
+                align-items: center;
+                grid-area: center;
+                min-height: 0;
+                /* Обязательно, чтобы картинка могла сжиматься */
+                margin-bottom: 40px;
+                /* Гэп 40 до стрелок */
+            }
+
+            .modal-media {
+                flex: 0 1 auto;
+                min-height: 0;
+                padding: 0;
+                /* Убираем десктопный паддинг */
+                margin-bottom: 20px;
+                /* Жесткий гэп ровно 20px до тегов */
+            }
+
+            .modal-bottom {
+                flex: 0 0 auto;
+                margin: 0;
+                /* Сбрасываем десктопные марджины, теперь тут рулит обертка */
+            }
+
+            .modal-top {
+                margin-bottom: 40px;
+                /* Гэп 40 до контента */
+            }
+
+            .close-btn {
+                /* Делаем огромную невидимую кликабельную область */
+                padding: 15px;
+                margin: -15px;
+            }
+
+
+            .nav-area {
+                /* Большая зона для клика у стрелок */
+                padding: 15px;
+                margin: -15px;
+                align-items: flex-start;
+                /* Убираем центрирование, прижимаем на место */
+            }
+
+            .nav-area.prev {
+                justify-self: start;
+            }
+
+            .nav-area.next {
+                justify-self: end;
+            }
+
+            .nav-icon-box {
+                /* Кнопка: иконка + по 10px по бокам */
+                padding: 9px 10px;
             }
 
             .popup-content {
@@ -1065,19 +1175,62 @@
     </footer>
 
     <div class="modal" id="modal" onclick="closeModal(event)">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <button class="close-btn" onclick="closeModal(event)"></button>
+        <div class="modal-content">
 
-            <div class="modal-media" id="modal-media">
-                <button class="nav-btn prev" onclick="navigateModal(-1, event)"></button>
-                <div id="media-content-container"></div>
-                <button class="nav-btn next" onclick="navigateModal(1, event)"></button>
+            <!-- ВЕРХ: Крестик -->
+            <div class="modal-top">
+                <button class="close-btn" onclick="closeModal(event)">
+                    <svg class="icon-desktop" width="20" height="20" viewBox="0 0 20 20" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 4.00195L16 16.0019" stroke="currentColor" stroke-width="1.2" />
+                        <path d="M4 16L16 4" stroke="currentColor" stroke-width="1.2" />
+                    </svg>
+                    <svg class="icon-mobile" width="20" height="20" viewBox="0 0 20 20" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5 5.00195L15 15.002" stroke="currentColor" />
+                        <path d="M5 15L15 5" stroke="currentColor" />
+                    </svg>
+                </button>
             </div>
 
-            <div class="modal-info">
-                <div class="tags-container" id="modal-tags">
+            <!-- ЛЕВАЯ КНОПКА -->
+            <div class="nav-area nav-btn prev" onclick="navigateModal(-1, event)">
+                <div class="nav-icon-box">
+                    <svg class="icon-desktop" width="14" height="14" viewBox="0 0 14 14" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="1.2" />
+                    </svg>
+                    <svg class="icon-mobile" width="12" height="12" viewBox="0 0 12 12" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 1L3 6L8 11" stroke="currentColor" />
+                    </svg>
                 </div>
             </div>
+
+            <div class="modal-center-group">
+                <!-- КОНТЕНТ -->
+                <div class="modal-media" id="media-content-container"></div>
+
+                <!-- НИЗ: Теги -->
+                <div class="modal-bottom">
+                    <div class="tags-container" id="modal-tags"></div>
+                </div>
+            </div>
+
+            <!-- ПРАВАЯ КНОПКА -->
+            <div class="nav-area nav-btn next" onclick="navigateModal(1, event)">
+                <div class="nav-icon-box">
+                    <svg class="icon-desktop" width="14" height="14" viewBox="0 0 14 14" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5 2L10 7L5 12" stroke="currentColor" stroke-width="1.2" />
+                    </svg>
+                    <svg class="icon-mobile" width="12" height="12" viewBox="0 0 12 12" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 1L9 6L4 11" stroke="currentColor" />
+                    </svg>
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -1434,7 +1587,7 @@
                     card.onclick = () => openModal(dataObj.index);
 
                     let mediaHTML = isVideo
-                        ? `<video src="${directUrl}#t=0.1" preload="metadata" muted loop onmouseover="this.play()" onmouseout="this.pause()"></video><div class="video-icon"></div>`
+                        ? `<video src="${directUrl}#t=0.1" preload="metadata" muted loop playsinline webkit-playsinline onmouseover="this.play()" onmouseout="this.pause()"></video><div class="video-icon"></div>`
                         : `<img src="${optimizedImgUrl}" loading="lazy" decoding="async">`;
 
                     card.innerHTML = `<div class="thumb-media-wrapper">${mediaHTML}</div>`;
@@ -1473,8 +1626,8 @@
             const mediaContainer = document.getElementById('media-content-container');
 
             mediaContainer.innerHTML = isVideo
-    ? `<video src="${directUrl}" controls autoplay playsinline webkit-playsinline muted></video>`
-    : `<img src="${optimizedImgUrl}" decoding="async">`;
+                ? `<video src="${directUrl}" controls autoplay playsinline webkit-playsinline muted></video>`
+                : `<img src="${optimizedImgUrl}" decoding="async">`;
 
             const nextIndex = currentModalIndex + 1 >= filteredIndices.length ? 0 : currentModalIndex + 1;
             const prevIndex = currentModalIndex - 1 < 0 ? filteredIndices.length - 1 : currentModalIndex - 1;
@@ -1525,18 +1678,26 @@
         }
 
         function closeModal(event) {
-    if (event && event.target.closest('.modal-content') && !event.target.classList.contains('close-btn')) {
-        return;
-    }
-    
-    document.getElementById('modal').classList.remove('active');
-    document.body.style.overflow = '';
-    
-    // Ждем 300мс (пока идет CSS-анимация opacity), и только потом очищаем медиа
-    setTimeout(() => {
-        document.getElementById('media-content-container').innerHTML = '';
-    }, 300);
-}
+            if (event) {
+                const target = event.target;
+                // Игнорируем клики по самой картинке или видео
+                if (target.closest('img') || target.closest('video')) return;
+                // Игнорируем клики по стрелкам навигации
+                if (target.closest('.nav-area')) return;
+                // Игнорируем клики по блоку с тегами
+                if (target.closest('.tags-container')) return;
+
+                // В остальных случаях (клик по фону, крестику или пустой зоне) идём дальше и закрываем
+            }
+
+            document.getElementById('modal').classList.remove('active');
+            document.body.style.overflow = '';
+
+            // Ждем 300мс (пока идет CSS-анимация opacity), и очищаем медиа
+            setTimeout(() => {
+                document.getElementById('media-content-container').innerHTML = '';
+            }, 300);
+        }
 
         function openContactPopup(event) {
             if (event) event.stopPropagation();
