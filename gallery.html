@@ -4,7 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio Directory</title>
+    <title>Ivan Ska Gallery</title>
+    <meta name="description" content="Web gallery of a digital designer Ivan Skarabahatau">
+  <meta name="keywords"
+    content="ivan skorobogatov, ivan skarabahatau, v4nyprosto, иван скоробогатов, ваня скоробогатов, ivan ska gallery">
+  <meta name="robots" content="index, follow">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 
@@ -1049,7 +1053,7 @@
                     <div class="dropdown-container">
                         <div class="dropdown-inner">
                             <p class="about-text">
-                                Hi! I am a digital designer. Here is a selection of my recent works.
+                                Hi! I'm Ivan, digital designer. Here is a selection of my recent works.
                             </p>
                             <div class="about-buttons">
                                 <a href="https://ivan-ska.github.io/portfolio/" target="_blank" class="filter-tag">
@@ -1548,24 +1552,24 @@
                     return yearB - yearA;
                 });
 
-                groupedProjects[projectName].forEach(dataObj => {
-                    const item = dataObj.item;
-                    const isVideo = item.type && item.type.toLowerCase().trim() === 'vid';
+                let mediaHTML = isVideo
+                    ? `<video src="${directUrl}#t=0.1" preload="metadata" muted loop playsinline webkit-playsinline></video><div class="video-icon"></div>`
+                    : `<img src="${optimizedImgUrl}" loading="lazy" decoding="async">`;
 
-                    const directUrl = getDirectDropboxUrl(item.url);
-                    const optimizedImgUrl = isVideo ? '' : getOptimizedImageUrl(item.url);
+                card.innerHTML = `<div class="thumb-media-wrapper">${mediaHTML}</div>`;
+                
+                if (isVideo) {
+                    card.onmouseenter = () => { 
+                        const v = card.querySelector('video'); 
+                        if(v) v.play().catch(()=>{});
+                    };
+                    card.onmouseleave = () => { 
+                        const v = card.querySelector('video'); 
+                        if(v) v.pause(); 
+                    };
+                }
 
-                    const card = document.createElement('div');
-                    card.className = 'thumb-card';
-                    card.onclick = () => openModal(dataObj.index);
-
-                    let mediaHTML = isVideo
-                        ? `<video src="${directUrl}#t=0.1" preload="metadata" muted loop playsinline webkit-playsinline onmouseover="this.play()" onmouseout="this.pause()"></video><div class="video-icon"></div>`
-                        : `<img src="${optimizedImgUrl}" loading="lazy" decoding="async">`;
-
-                    card.innerHTML = `<div class="thumb-media-wrapper">${mediaHTML}</div>`;
-                    projectGrid.appendChild(card);
-                });
+                projectGrid.appendChild(card);
 
                 projectWrapper.appendChild(projectGrid);
                 gallery.appendChild(projectWrapper);
