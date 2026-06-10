@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ivan Ska Gallery</title>
     <meta name="description" content="Web gallery of a digital designer Ivan Skarabahatau">
-  <meta name="keywords"
-    content="ivan skorobogatov, ivan skarabahatau, v4nyprosto, иван скоробогатов, ваня скоробогатов, ivan ska gallery">
-  <meta name="robots" content="index, follow">
+    <meta name="keywords"
+        content="ivan skorobogatov, ivan skarabahatau, v4nyprosto, иван скоробогатов, ваня скоробогатов, ivan ska gallery">
+    <meta name="robots" content="index, follow">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 
@@ -1064,7 +1064,8 @@
                                     </svg>
                                     UI/UX Portfolio
                                 </a>
-                                <a href="https://drive.google.com/file/d/1u0F0QzZzTakj_7qrGdBI7BbPSZ8uQQDZ/view" target="_blank" class="filter-tag">
+                                <a href="https://drive.google.com/file/d/1u0F0QzZzTakj_7qrGdBI7BbPSZ8uQQDZ/view"
+                                    target="_blank" class="filter-tag">
                                     <svg class="arrow-link-svg" width="12" height="12" viewBox="0 0 12 12" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
                                         <path class="arrow-diag" d="M10 2L2 10" stroke="currentColor" />
@@ -1552,24 +1553,36 @@
                     return yearB - yearA;
                 });
 
-                let mediaHTML = isVideo
-                    ? `<video src="${directUrl}#t=0.1" preload="metadata" muted loop playsinline webkit-playsinline></video><div class="video-icon"></div>`
-                    : `<img src="${optimizedImgUrl}" loading="lazy" decoding="async">`;
+                groupedProjects[projectName].forEach(dataObj => {
+                    const item = dataObj.item;
+                    const isVideo = item.type && item.type.toLowerCase().trim() === 'vid';
 
-                card.innerHTML = `<div class="thumb-media-wrapper">${mediaHTML}</div>`;
-                
-                if (isVideo) {
-                    card.onmouseenter = () => { 
-                        const v = card.querySelector('video'); 
-                        if(v) v.play().catch(()=>{});
-                    };
-                    card.onmouseleave = () => { 
-                        const v = card.querySelector('video'); 
-                        if(v) v.pause(); 
-                    };
-                }
+                    const directUrl = getDirectDropboxUrl(item.url);
+                    const optimizedImgUrl = isVideo ? '' : getOptimizedImageUrl(item.url);
 
-                projectGrid.appendChild(card);
+                    const card = document.createElement('div');
+                    card.className = 'thumb-card';
+                    card.onclick = () => openModal(dataObj.index);
+
+                    let mediaHTML = isVideo
+                        ? `<video src="${directUrl}#t=0.1" preload="metadata" muted loop playsinline webkit-playsinline></video><div class="video-icon"></div>`
+                        : `<img src="${optimizedImgUrl}" loading="lazy" decoding="async">`;
+
+                    card.innerHTML = `<div class="thumb-media-wrapper">${mediaHTML}</div>`;
+
+                    if (isVideo) {
+                        card.onmouseenter = () => {
+                            const v = card.querySelector('video');
+                            if (v) v.play().catch(() => { });
+                        };
+                        card.onmouseleave = () => {
+                            const v = card.querySelector('video');
+                            if (v) v.pause();
+                        };
+                    }
+
+                    projectGrid.appendChild(card);
+                });
 
                 projectWrapper.appendChild(projectGrid);
                 gallery.appendChild(projectWrapper);
