@@ -1730,6 +1730,20 @@
             if (event) event.stopPropagation();
             document.getElementById('contact-popup').classList.remove('active');
         }
+
+        document.addEventListener('keydown', function (event) {
+            const modal = document.getElementById('modal');
+
+            if (modal && modal.classList.contains('active')) {
+                if (event.key === 'ArrowLeft') {
+                    navigateModal(-1, event);
+                } else if (event.key === 'ArrowRight') {
+                    navigateModal(1, event);
+                } else if (event.key === 'Escape') {
+                    closeModal(event);
+                }
+            }
+        });
     </script>
 </body>
 
